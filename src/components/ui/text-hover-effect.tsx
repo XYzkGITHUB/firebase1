@@ -1,6 +1,6 @@
 
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 export const TextHoverEffect = ({ text }: { text: string }) => {
@@ -8,13 +8,22 @@ export const TextHoverEffect = ({ text }: { text: string }) => {
   const [cursorPos, setCursorPos] = useState({ x: 150, y: 50 });
   const [isHovered, setIsHovered] = useState(false);
 
-  const handleMouseMove = (e: React.MouseEvent<SVGSVGElement>) => {
+  const handleMouseMove = (e: React.MouseEvent<SVGSVGElement> | React.TouchEvent<SVGSVGElement>) => {
     if (!svgRef.current) return;
     const rect = svgRef.current.getBoundingClientRect();
     
-    // Точный расчет координат в пространстве viewBox="0 0 300 100"
-    const x = ((e.clientX - rect.left) / rect.width) * 300;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    let clientX, clientY;
+    if ('touches' in e) {
+      clientX = e.touches[0].clientX;
+      clientY = e.touches[0].clientY;
+    } else {
+      clientX = e.clientX;
+      clientY = e.clientY;
+    }
+
+    // Precise coordinate calculation within the viewBox="0 0 300 100"
+    const x = ((clientX - rect.left) / rect.width) * 300;
+    const y = ((clientY - rect.top) / rect.height) * 100;
     
     setCursorPos({ x, y });
   };
@@ -29,10 +38,12 @@ export const TextHoverEffect = ({ text }: { text: string }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onMouseMove={handleMouseMove}
-      className="select-none overflow-visible cursor-default"
+      onTouchStart={() => setIsHovered(true)}
+      onTouchEnd={() => setIsHovered(false)}
+      onTouchMove={handleMouseMove}
+      className="select-none overflow-visible cursor-default max-w-full"
     >
       <defs>
-        {/* Более яркий и насыщенный градиент */}
         <radialGradient
           id="revealMask"
           gradientUnits="userSpaceOnUse"
@@ -49,8 +60,8 @@ export const TextHoverEffect = ({ text }: { text: string }) => {
         </mask>
 
         <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#ff3333" />
-          <stop offset="100%" stopColor="#3366ff" />
+          <stop offset="0%" stopColor="#ff0000" />
+          <stop offset="100%" stopColor="#0000ff" />
         </linearGradient>
       </defs>
 
@@ -59,8 +70,8 @@ export const TextHoverEffect = ({ text }: { text: string }) => {
         y="50%"
         textAnchor="middle"
         dominantBaseline="middle"
-        strokeWidth="0.5"
-        className="font-headline fill-transparent stroke-white/20 text-[110px] font-bold tracking-tighter"
+        strokeWidth="0.4"
+        className="font-headline fill-transparent stroke-white/10 text-[100px] lg:text-[110px] font-bold tracking-tighter"
       >
         {text}
       </text>
@@ -76,7 +87,7 @@ export const TextHoverEffect = ({ text }: { text: string }) => {
           textAnchor="middle"
           dominantBaseline="middle"
           fill="url(#textGradient)"
-          className="font-headline text-[110px] font-bold tracking-tighter"
+          className="font-headline text-[100px] lg:text-[110px] font-bold tracking-tighter"
         >
           {text}
         </text>

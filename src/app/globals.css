@@ -32,6 +32,9 @@
   * {
     @apply border-border;
   }
+  html, body {
+    @apply overflow-x-hidden;
+  }
   body {
     @apply bg-background text-foreground font-body antialiased selection:bg-primary selection:text-white;
     background-image: radial-gradient(circle at 50% 50%, rgba(201, 195, 188, 0.03) 0%, transparent 100%);
