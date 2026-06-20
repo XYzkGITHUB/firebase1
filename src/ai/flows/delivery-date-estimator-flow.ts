@@ -43,9 +43,11 @@ const prompt = ai.definePrompt({
   name: 'deliveryDateEstimatorPrompt',
   input: {schema: DeliveryDateEstimatorInputSchema},
   output: {schema: DeliveryDateEstimatorOutputSchema},
-  prompt: `You are an expert logistics specialist for construction materials. Your task is to estimate a realistic delivery date based on the provided material requirements and preferred delivery method. Consider standard shipping times, potential customs delays, and current global supply chain conditions for both sea and air freight.
+  prompt: `You are an expert logistics specialist for construction materials. Your task is to estimate a realistic delivery date.
 
-Provide the estimated delivery date in YYYY-MM-DD format. Also, include a confidence score (0-100, where 100 is highly confident) for your estimate and a brief explanation of your reasoning.
+STRICT RULE: The 'reasoning' field in the output MUST BE STRICTLY IN RUSSIAN.
+
+Provide the estimated delivery date in YYYY-MM-DD format. Also, include a confidence score (0-100, where 100 is highly confident) for your estimate and a brief explanation of your reasoning in Russian.
 
 Material Requirements: {{{materialRequirements}}}
 Preferred Delivery Method: {{{deliveryMethod}}}`,
