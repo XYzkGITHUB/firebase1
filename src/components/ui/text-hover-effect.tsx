@@ -13,12 +13,14 @@ export const TextHoverEffect = ({ text }: { text: string }) => {
     const rect = svgRef.current.getBoundingClientRect();
     
     let clientX, clientY;
-    if ('touches' in e) {
+    if ('touches' in e && e.touches.length > 0) {
       clientX = e.touches[0].clientX;
       clientY = e.touches[0].clientY;
-    } else {
+    } else if ('clientX' in e) {
       clientX = e.clientX;
       clientY = e.clientY;
+    } else {
+      return;
     }
 
     // Precise coordinate calculation within the viewBox="0 0 300 100"
@@ -70,8 +72,8 @@ export const TextHoverEffect = ({ text }: { text: string }) => {
         y="50%"
         textAnchor="middle"
         dominantBaseline="middle"
-        strokeWidth="0.4"
-        className="font-headline fill-transparent stroke-white/10 text-[100px] lg:text-[110px] font-bold tracking-tighter"
+        strokeWidth="0.5"
+        className="font-headline fill-transparent stroke-white/20 text-[90px] lg:text-[110px] font-bold tracking-tighter"
       >
         {text}
       </text>
@@ -87,7 +89,7 @@ export const TextHoverEffect = ({ text }: { text: string }) => {
           textAnchor="middle"
           dominantBaseline="middle"
           fill="url(#textGradient)"
-          className="font-headline text-[100px] lg:text-[110px] font-bold tracking-tighter"
+          className="font-headline text-[90px] lg:text-[110px] font-bold tracking-tighter"
         >
           {text}
         </text>

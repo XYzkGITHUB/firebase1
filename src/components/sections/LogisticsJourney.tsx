@@ -39,12 +39,13 @@ const stepsData = [
 ];
 
 function StepItem({ step, index, progress }: { step: any, index: number, progress: any }) {
-  const thresholds = [0, 0.25, 0.5, 0.7];
+  const thresholds = [0, 0.2, 0.4, 0.6];
   const stepThreshold = thresholds[index];
   
-  const opacity = useTransform(progress, [stepThreshold, stepThreshold + 0.1], [0.3, 1]);
+  // Acceleration for the last steps to ensure they are fully visible
+  const opacity = useTransform(progress, [stepThreshold, stepThreshold + 0.1], [0.2, 1]);
   const scale = useTransform(progress, [stepThreshold, stepThreshold + 0.1], [0.95, 1]);
-  const iconBg = useTransform(progress, [stepThreshold, stepThreshold + 0.05], ["#1a1715", "#ffffff"]);
+  const iconBg = useTransform(progress, [stepThreshold, stepThreshold + 0.05], ["#221f1d", "#ffffff"]);
   const iconColor = useTransform(progress, [stepThreshold, stepThreshold + 0.05], ["#4b4b4b", "hsl(var(--primary))"]);
 
   return (
@@ -91,8 +92,9 @@ export function LogisticsJourney({ activeTab }: LogisticsJourneyProps) {
     offset: ["start center", "end end"],
   });
 
+  // Smooth but fast line progress
   const pathProgress = useSpring(scrollYProgress, {
-    stiffness: 100,
+    stiffness: 120,
     damping: 30,
     restDelta: 0.001
   });
