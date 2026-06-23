@@ -1,4 +1,3 @@
-
 'use client';
 import { useRef, useEffect, useState } from 'react';
 import { gsap } from 'gsap';
@@ -26,14 +25,14 @@ interface SplitTextProps {
 const SplitText = ({
   text,
   className = '',
-  delay = 50,
-  duration = 1.25,
+  delay = 30, // Reduced from 50
+  duration = 0.8, // Reduced from 1.25
   ease = 'power3.out',
   splitType = 'chars',
   from = { opacity: 0, y: 40 },
   to = { opacity: 1, y: 0 },
   threshold = 0.1,
-  rootMargin = '-100px',
+  rootMargin = '-50px', // Adjusted for faster trigger
   textAlign = 'center',
   tag = 'p',
   onLetterAnimationComplete
@@ -66,7 +65,7 @@ const SplitText = ({
       const startPct = (1 - threshold) * 100;
       const start = `top ${startPct}%`;
 
-      // Simplified character splitting for compatibility
+      // Simplified character splitting for compatibility and performance
       const content = el.innerText;
       el.innerHTML = '';
       
@@ -104,7 +103,7 @@ const SplitText = ({
       );
     },
     {
-      dependencies: [text, fontsLoaded],
+      dependencies: [text, fontsLoaded, delay, duration],
       scope: ref
     }
   );

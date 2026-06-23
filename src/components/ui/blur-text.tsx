@@ -29,7 +29,7 @@ interface BlurTextProps {
 
 const BlurText = ({
   text = '',
-  delay = 200,
+  delay = 100, // Reduced from 200
   className = '',
   animateBy = 'words',
   direction = 'top',
@@ -39,7 +39,7 @@ const BlurText = ({
   animationTo,
   easing = t => t,
   onAnimationComplete,
-  stepDuration = 0.35
+  stepDuration = 0.3 // Reduced from 0.35
 }: BlurTextProps) => {
   const elements = animateBy === 'words' ? text.split(' ') : text.split('');
   const [inView, setInView] = useState(false);

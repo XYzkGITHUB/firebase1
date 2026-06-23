@@ -61,7 +61,8 @@ export function Hero({ activeTab }: HeroProps) {
                 text={current.title}
                 animateBy="words"
                 direction="bottom"
-                delay={80}
+                delay={60}
+                stepDuration={0.25}
                 className="text-4xl md:text-6xl lg:text-7xl font-headline text-foreground leading-tight uppercase tracking-tighter"
               />
               
@@ -69,7 +70,8 @@ export function Hero({ activeTab }: HeroProps) {
                 text={current.desc}
                 animateBy="words"
                 direction="bottom"
-                delay={40}
+                delay={30}
+                stepDuration={0.2}
                 className="text-base md:text-xl text-muted-foreground font-body leading-relaxed max-w-2xl mx-auto font-light opacity-90"
               />
               
