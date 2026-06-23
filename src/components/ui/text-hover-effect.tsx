@@ -48,11 +48,12 @@ export const TextHoverEffect = ({ text }: { text: string }) => {
         <radialGradient
           id="revealMask"
           gradientUnits="userSpaceOnUse"
-          r="40"
+          r="120"
           cx={cursorPos.x}
           cy={cursorPos.y}
         >
           <stop offset="0%" stopColor="white" />
+          <stop offset="40%" stopColor="white" stopOpacity="0.5" />
           <stop offset="100%" stopColor="black" />
         </radialGradient>
         
@@ -80,7 +81,7 @@ export const TextHoverEffect = ({ text }: { text: string }) => {
       <motion.g
         mask="url(#textMask)"
         animate={{ opacity: isHovered ? 1 : 0 }}
-        transition={{ duration: 0.2 }}
+        transition={{ duration: 0.4 }}
       >
         <text
           x="50%"
