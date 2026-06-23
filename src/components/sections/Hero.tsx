@@ -5,6 +5,7 @@ import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Box } from "lucide-react";
 import { ContentTab } from "@/app/page";
+import ShapeBlur from "@/components/ui/shape-blur";
 
 interface HeroProps {
   activeTab: ContentTab;
@@ -31,12 +32,25 @@ export function Hero({ activeTab }: HeroProps) {
       </div>
 
       <div className="z-10 w-full max-w-[1600px] px-8 flex flex-col items-center">
-        <div className="w-full h-[14rem] flex items-center justify-center cursor-default">
-          <TextHoverEffect text="IRGG" />
+        <div className="relative w-full h-[14rem] flex items-center justify-center cursor-default group">
+          {/* ShapeBlur Background Effect */}
+          <div className="absolute inset-0 z-0 pointer-events-none opacity-40 group-hover:opacity-100 transition-opacity duration-700">
+            <ShapeBlur
+              variation={0}
+              shapeSize={1.7}
+              roundness={0.65}
+              borderSize={0.045}
+              circleSize={0.2}
+              circleEdge={0.7}
+            />
+          </div>
+          
+          <div className="relative z-10 w-full h-full flex items-center justify-center">
+            <TextHoverEffect text="IRGG" />
+          </div>
         </div>
         
         <div className="mt-8 text-center space-y-6 max-w-2xl animate-fade-in-up">
-          {/* Уменьшенный размер текста для премиального вида */}
           <h1 className="text-4xl md:text-5xl font-headline text-foreground leading-tight uppercase tracking-tighter">
             {current.title}
           </h1>
@@ -57,7 +71,6 @@ export function Hero({ activeTab }: HeroProps) {
         </div>
       </div>
 
-      {/* Индикатор скролла сдвинут ниже */}
       <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-30">
         <span className="text-[9px] uppercase tracking-[1em] text-muted-foreground font-bold">Листайте вниз</span>
         <div className="w-[1px] h-12 bg-gradient-to-b from-primary to-transparent" />
