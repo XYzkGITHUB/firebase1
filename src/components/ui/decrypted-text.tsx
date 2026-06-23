@@ -113,7 +113,8 @@ export default function DecryptedText({
           return (
             <span 
               key={i} 
-              className={item.isRevealed ? "" : "text-[0.6em] opacity-50 font-code inline-block translate-y-[-0.1em]"}
+              className={item.isRevealed ? "" : "text-[0.6em] opacity-50 font-code inline-block w-[0.6em] text-center"}
+              style={!item.isRevealed ? { verticalAlign: 'middle' } : {}}
             >
               {item.char}
             </span>

@@ -59,7 +59,8 @@ export function Hero({ activeTab }: HeroProps) {
             </div>
             
             <div className="mt-8 text-center space-y-6 max-w-4xl">
-              <div className="pointer-events-auto">
+              {/* Stable height container to prevent snapping */}
+              <div className="pointer-events-auto min-h-[90px] md:min-h-[140px] lg:min-h-[160px] flex items-center justify-center">
                 <DecryptedText 
                   text={current.title}
                   speed={20}
@@ -74,7 +75,7 @@ export function Hero({ activeTab }: HeroProps) {
                   text={current.desc}
                   animateBy="words"
                   direction="bottom"
-                  delay={20}
+                  delay={15}
                   stepDuration={0.2}
                   className="text-base md:text-xl text-muted-foreground font-body leading-relaxed max-w-2xl mx-auto font-light opacity-90"
                 />
