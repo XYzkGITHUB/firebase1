@@ -17,13 +17,12 @@ export const TextHoverEffect = ({ text }: { text: string }) => {
       clientX = e.touches[0].clientX;
       clientY = e.touches[0].clientY;
     } else if ('clientX' in e) {
-      clientX = e.clientX;
-      clientY = e.clientY;
+      clientX = (e as React.MouseEvent).clientX;
+      clientY = (e as React.MouseEvent).clientY;
     } else {
       return;
     }
 
-    // Precise coordinate calculation within the viewBox="0 0 300 100"
     const x = ((clientX - rect.left) / rect.width) * 300;
     const y = ((clientY - rect.top) / rect.height) * 100;
     
@@ -49,7 +48,7 @@ export const TextHoverEffect = ({ text }: { text: string }) => {
         <radialGradient
           id="revealMask"
           gradientUnits="userSpaceOnUse"
-          r="80"
+          r="60"
           cx={cursorPos.x}
           cy={cursorPos.y}
         >
@@ -62,8 +61,8 @@ export const TextHoverEffect = ({ text }: { text: string }) => {
         </mask>
 
         <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#ff1a1a" />
-          <stop offset="100%" stopColor="#1a1aff" />
+          <stop offset="0%" stopColor="#ef4444" />
+          <stop offset="100%" stopColor="#3b82f6" />
         </linearGradient>
       </defs>
 
@@ -72,8 +71,8 @@ export const TextHoverEffect = ({ text }: { text: string }) => {
         y="50%"
         textAnchor="middle"
         dominantBaseline="middle"
-        strokeWidth="0.8"
-        className="font-headline fill-transparent stroke-white/20 text-[90px] lg:text-[110px] font-bold tracking-tighter"
+        strokeWidth="0.5"
+        className="font-headline fill-transparent stroke-white/10 text-[80px] lg:text-[100px] font-bold tracking-tighter"
       >
         {text}
       </text>
@@ -81,7 +80,7 @@ export const TextHoverEffect = ({ text }: { text: string }) => {
       <motion.g
         mask="url(#textMask)"
         animate={{ opacity: isHovered ? 1 : 0 }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.2 }}
       >
         <text
           x="50%"
@@ -89,7 +88,7 @@ export const TextHoverEffect = ({ text }: { text: string }) => {
           textAnchor="middle"
           dominantBaseline="middle"
           fill="url(#textGradient)"
-          className="font-headline text-[90px] lg:text-[110px] font-bold tracking-tighter"
+          className="font-headline text-[80px] lg:text-[100px] font-bold tracking-tighter"
         >
           {text}
         </text>

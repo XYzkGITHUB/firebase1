@@ -18,7 +18,7 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -41,28 +41,28 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
 
   return (
     <nav className={cn(
-      "fixed top-0 left-0 w-full z-50 transition-all duration-700 py-6 px-6 lg:py-10 lg:px-12",
+      "fixed top-0 left-0 w-full z-[100] transition-all duration-500 py-6 px-6 lg:py-8 lg:px-12",
       isScrolled 
-        ? "bg-white/[0.03] backdrop-blur-2xl border-b border-white/10 py-4 lg:py-8 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]" 
+        ? "bg-white/[0.05] backdrop-blur-2xl border-b border-white/10 shadow-2xl" 
         : "bg-transparent"
     )}>
       <div className="max-w-[1800px] mx-auto flex items-center justify-between">
         <Link 
           href="/" 
           onClick={() => setActiveTab("keramogranit")}
-          className="text-3xl lg:text-4xl font-headline font-bold text-foreground tracking-tighter hover:text-primary transition-all shrink-0 mr-[30px] lg:mr-[50px]"
+          className="text-3xl lg:text-4xl font-headline font-bold text-foreground tracking-tighter hover:text-primary transition-all shrink-0 mr-[50px]"
         >
           IRGG
         </Link>
 
         {/* Desktop Links */}
-        <div className="hidden xl:flex items-center gap-6 lg:gap-10">
+        <div className="hidden xl:flex items-center gap-10">
           {navLinks.map((link) => (
             <button 
               key={link.id} 
               onClick={() => handleNavClick(link.id)}
               className={cn(
-                "text-[10px] lg:text-[11px] font-bold transition-all tracking-[0.2em] uppercase relative py-2",
+                "text-[11px] font-bold transition-all tracking-[0.2em] uppercase relative py-2",
                 activeTab === link.id 
                   ? "text-primary" 
                   : "text-foreground/70 hover:text-primary"
@@ -79,11 +79,11 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
         <div className="hidden lg:flex items-center shrink-0">
           <Button 
             variant="outline" 
-            className="text-[10px] lg:text-[11px] font-bold text-white border-white hover:bg-white/10 uppercase tracking-[0.2em] rounded-none px-6 h-12 lg:px-8 lg:h-14 ml-[30px] lg:ml-[50px] bg-transparent"
+            className="text-[11px] font-bold text-white border-white hover:bg-white/10 uppercase tracking-[0.2em] rounded-none px-8 h-14 ml-[50px] bg-transparent"
           >
             <User className="mr-2 h-4 w-4" /> Войти
           </Button>
-          <Button className="rounded-none bg-primary hover:bg-primary/90 px-6 h-12 lg:px-8 lg:h-14 font-bold text-[10px] uppercase tracking-[0.3em] text-white ml-4 lg:ml-6">
+          <Button className="rounded-none bg-primary hover:bg-primary/90 px-8 h-14 font-bold text-[11px] uppercase tracking-[0.3em] text-white ml-6">
             Регистрация
           </Button>
         </div>
@@ -98,7 +98,7 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 top-0 w-full h-screen bg-background/98 backdrop-blur-3xl xl:hidden animate-in fade-in slide-in-from-top-4 z-[100] overflow-y-auto">
+        <div className="fixed inset-0 top-0 w-full h-screen bg-background/98 backdrop-blur-3xl xl:hidden z-[110] animate-in fade-in slide-in-from-top-4 overflow-y-auto">
           <div className="flex justify-end p-8">
             <button onClick={() => setIsMobileMenuOpen(false)}><X size={32} /></button>
           </div>
