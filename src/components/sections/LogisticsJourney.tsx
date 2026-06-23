@@ -39,10 +39,10 @@ const stepsData = [
 ];
 
 function StepItem({ step, index, progress }: { step: any, index: number, progress: any }) {
-  const thresholds = [0, 0.2, 0.4, 0.6];
+  // Accelerated thresholds for the last steps
+  const thresholds = [0, 0.2, 0.4, 0.65];
   const stepThreshold = thresholds[index];
   
-  // Acceleration for the last steps to ensure they are fully visible
   const opacity = useTransform(progress, [stepThreshold, stepThreshold + 0.1], [0.2, 1]);
   const scale = useTransform(progress, [stepThreshold, stepThreshold + 0.1], [0.95, 1]);
   const iconBg = useTransform(progress, [stepThreshold, stepThreshold + 0.05], ["#221f1d", "#ffffff"]);
@@ -56,7 +56,7 @@ function StepItem({ step, index, progress }: { step: any, index: number, progres
       )}
       style={{ opacity, scale }}
     >
-      {/* Indicator Circle - perfectly aligned */}
+      {/* Indicator Circle */}
       <motion.div 
         className="absolute left-[20px] md:left-1/2 -translate-x-1/2 w-12 h-12 lg:w-16 lg:h-16 rounded-full flex items-center justify-center z-30 shadow-2xl border border-white/5"
         style={{ backgroundColor: iconBg, color: iconColor }}
@@ -92,10 +92,9 @@ export function LogisticsJourney({ activeTab }: LogisticsJourneyProps) {
     offset: ["start center", "end end"],
   });
 
-  // Smooth but fast line progress
   const pathProgress = useSpring(scrollYProgress, {
-    stiffness: 120,
-    damping: 30,
+    stiffness: 150,
+    damping: 40,
     restDelta: 0.001
   });
 
@@ -114,10 +113,9 @@ export function LogisticsJourney({ activeTab }: LogisticsJourneyProps) {
         </div>
 
         <div className="relative min-h-[1000px] lg:min-h-[1200px]">
-          {/* Progress Line - thicker and aligned */}
-          <div className="absolute left-[20px] md:left-1/2 top-0 bottom-0 w-[2px] bg-white/5 -translate-x-1/2" />
+          {/* Solid Progress Line */}
           <motion.div 
-            className="absolute left-[20px] md:left-1/2 top-0 bottom-0 w-[3px] bg-primary -translate-x-1/2 origin-top z-10"
+            className="absolute left-[20px] md:left-1/2 top-0 bottom-0 w-[4px] bg-primary -translate-x-1/2 origin-top z-10"
             style={{ scaleY: pathProgress }}
           />
 

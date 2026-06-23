@@ -1,6 +1,6 @@
 
 "use client";
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
 
 export const TextHoverEffect = ({ text }: { text: string }) => {
@@ -49,7 +49,7 @@ export const TextHoverEffect = ({ text }: { text: string }) => {
         <radialGradient
           id="revealMask"
           gradientUnits="userSpaceOnUse"
-          r="60"
+          r="80"
           cx={cursorPos.x}
           cy={cursorPos.y}
         >
@@ -62,8 +62,8 @@ export const TextHoverEffect = ({ text }: { text: string }) => {
         </mask>
 
         <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#ff0000" />
-          <stop offset="100%" stopColor="#0000ff" />
+          <stop offset="0%" stopColor="#ff1a1a" />
+          <stop offset="100%" stopColor="#1a1aff" />
         </linearGradient>
       </defs>
 
@@ -72,7 +72,7 @@ export const TextHoverEffect = ({ text }: { text: string }) => {
         y="50%"
         textAnchor="middle"
         dominantBaseline="middle"
-        strokeWidth="0.5"
+        strokeWidth="0.8"
         className="font-headline fill-transparent stroke-white/20 text-[90px] lg:text-[110px] font-bold tracking-tighter"
       >
         {text}

@@ -42,7 +42,9 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
   return (
     <nav className={cn(
       "fixed top-0 left-0 w-full z-50 transition-all duration-700 py-6 px-6 lg:py-10 lg:px-12",
-      isScrolled ? "bg-background/95 backdrop-blur-3xl border-b border-white/5 py-4 lg:py-8 shadow-2xl" : "bg-transparent"
+      isScrolled 
+        ? "bg-white/[0.03] backdrop-blur-2xl border-b border-white/10 py-4 lg:py-8 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]" 
+        : "bg-transparent"
     )}>
       <div className="max-w-[1800px] mx-auto flex items-center justify-between">
         <Link 
