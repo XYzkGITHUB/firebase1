@@ -49,7 +49,7 @@ export function Hero({ activeTab }: HeroProps) {
         <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-primary blur-[200px] rounded-full" />
       </div>
 
-      {/* Content Layer */}
+      {/* Content Layer - Use pointer-events-none so mouse goes through to background lines */}
       <div className="z-10 w-full max-w-[1600px] px-8 flex flex-col items-center pointer-events-none">
         <div className="relative w-full max-w-6xl py-24 px-6 md:px-16 flex flex-col items-center justify-center">
           
@@ -61,8 +61,8 @@ export function Hero({ activeTab }: HeroProps) {
             <div className="mt-8 text-center space-y-6 max-w-4xl">
               <DecryptedText 
                 text={current.title}
-                speed={50}
-                maxIterations={10}
+                speed={30}
+                maxIterations={5}
                 className="text-4xl md:text-6xl lg:text-7xl font-headline text-foreground leading-tight uppercase tracking-tighter"
               />
               
