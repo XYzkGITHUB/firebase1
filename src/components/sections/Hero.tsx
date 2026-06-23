@@ -5,7 +5,6 @@ import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Box } from "lucide-react";
 import { ContentTab } from "@/app/page";
-import ShapeBlur from "@/components/ui/shape-blur";
 import FloatingLines from "@/components/ui/floating-lines";
 
 interface HeroProps {
@@ -49,18 +48,7 @@ export function Hero({ activeTab }: HeroProps) {
       </div>
 
       <div className="z-10 w-full max-w-[1600px] px-8 flex flex-col items-center">
-        <div className="relative w-full max-w-6xl py-24 px-6 md:px-16 flex flex-col items-center justify-center group">
-          
-          <div className="absolute -inset-20 md:-inset-40 lg:-inset-60 z-0 pointer-events-none opacity-30 group-hover:opacity-60 transition-opacity duration-1000">
-            <ShapeBlur
-              variation={0}
-              shapeSize={1.4}
-              roundness={0.7}
-              borderSize={0.03}
-              circleSize={0.2}
-              circleEdge={0.6}
-            />
-          </div>
+        <div className="relative w-full max-w-6xl py-24 px-6 md:px-16 flex flex-col items-center justify-center">
           
           <div className="relative z-10 flex flex-col items-center w-full">
             <div className="w-full h-[10rem] md:h-[14rem] flex items-center justify-center cursor-default">
