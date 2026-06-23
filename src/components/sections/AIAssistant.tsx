@@ -5,8 +5,9 @@ import { materialRecommendationAssistant, type MaterialRecommendationAssistantOu
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Sparkles, Loader2, Star, CheckCircle2 } from "lucide-react";
+import { Sparkles, Loader2, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import SplitText from "@/components/ui/split-text";
 
 export function AIAssistant() {
   const [query, setQuery] = useState("");
@@ -32,7 +33,12 @@ export function AIAssistant() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-16">
           <div>
             <Badge variant="outline" className="mb-4 border-primary/30 text-primary uppercase tracking-[0.2em] px-4 py-1">AI Assistant</Badge>
-            <h2 className="text-4xl md:text-6xl font-headline mb-8 uppercase tracking-tighter leading-none">Умный подбор покрытия</h2>
+            <SplitText
+              text="Умный подбор покрытия"
+              tag="h2"
+              className="text-4xl md:text-6xl font-headline mb-8 uppercase tracking-tighter leading-none"
+              textAlign="left"
+            />
             <p className="text-muted-foreground text-xl leading-relaxed max-w-xl">
               Наш ИИ-эксперт анализирует тысячи вариантов коллекций керамогранита и ламината, чтобы подобрать идеальное решение под ваш стиль, бюджет и технические требования объекта.
             </p>
@@ -72,7 +78,6 @@ export function AIAssistant() {
           </Card>
         </div>
 
-        {/* Results Area */}
         <div className="mt-8">
           {isLoading && (
             <div className="h-64 flex flex-col items-center justify-center space-y-4 border border-white/5 bg-card/20 backdrop-blur-sm">

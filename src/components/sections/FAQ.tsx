@@ -3,6 +3,7 @@
 import React from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ContentTab } from "@/app/page";
+import SplitText from "@/components/ui/split-text";
 
 interface FAQProps {
   activeTab: ContentTab;
@@ -34,7 +35,12 @@ export function FAQ({ activeTab }: FAQProps) {
 
   return (
     <section className="py-32 px-8 max-w-5xl mx-auto">
-      <h2 className="text-4xl md:text-6xl font-headline text-center mb-20 uppercase tracking-tighter">Часто задаваемые вопросы</h2>
+      <SplitText
+        text="Часто задаваемые вопросы"
+        tag="h2"
+        className="text-4xl md:text-6xl font-headline text-center mb-20 uppercase tracking-tighter"
+        textAlign="center"
+      />
       <Accordion type="single" collapsible className="w-full space-y-6">
         {commonFaqs.map((faq, i) => (
           <AccordionItem key={i} value={`item-${i}`} className="border border-white/5 rounded-none px-8 bg-card/20 transition-all hover:bg-card/30">

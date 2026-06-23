@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Send } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { ContentTab } from "@/app/page";
+import SplitText from "@/components/ui/split-text";
 
 interface ContactProps {
   activeTab: ContentTab;
@@ -19,9 +20,12 @@ export function Contact({ activeTab }: ContactProps) {
         <Separator className="bg-white/5 mb-16 md:mb-32" />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
           <div className="space-y-6 md:space-y-10 lg:sticky lg:top-32">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-headline uppercase tracking-tighter leading-[1] md:leading-[0.9]">
-              {activeTab === 'keramogranit' ? 'Нужен керамогранит?' : 'Нужен ламинат или SPS?'}
-            </h2>
+            <SplitText
+              text={activeTab === 'keramogranit' ? 'Нужен керамогранит?' : 'Нужен ламинат или SPS?'}
+              tag="h2"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-headline uppercase tracking-tighter leading-[1] md:leading-[0.9]"
+              textAlign="left"
+            />
             <p className="text-lg md:text-2xl text-muted-foreground leading-relaxed font-light max-w-xl">
               Оставьте заявку и мы предложим решение под Ваш проект. Расскажем, какие материалы нужны и предложим решение под ваш объект.
             </p>

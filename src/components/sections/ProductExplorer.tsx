@@ -6,6 +6,7 @@ import { Download, Check, HelpCircle } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { ContentTab } from "@/app/page";
+import SplitText from "@/components/ui/split-text";
 
 interface ProductExplorerProps {
   activeTab: ContentTab;
@@ -32,9 +33,13 @@ export function ProductExplorer({ activeTab }: ProductExplorerProps) {
   return (
     <section className="py-24 lg:py-32 px-6 lg:px-8 bg-background">
       <div className="max-w-[1600px] mx-auto">
-        {/* Checklist Section */}
         <div className="mb-24 lg:mb-40">
-          <h2 className="text-3xl lg:text-5xl font-headline mb-16 lg:mb-20 uppercase tracking-tighter">Что вы получаете, выбирая нас</h2>
+          <SplitText
+            text="Что вы получаете, выбирая нас"
+            tag="h2"
+            className="text-3xl lg:text-5xl font-headline mb-16 lg:mb-20 uppercase tracking-tighter"
+            textAlign="left"
+          />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 lg:gap-x-16 gap-y-10 lg:gap-y-12">
             {currentCheck.map((item, i) => (
               <div key={i} className="flex items-start gap-4 lg:gap-6 group">
@@ -52,16 +57,18 @@ export function ProductExplorer({ activeTab }: ProductExplorerProps) {
 
         <Separator className="bg-white/5 mb-24 lg:mb-32" />
 
-        {/* Catalogue Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           <div className="space-y-8 lg:space-y-12">
              <div className="space-y-4 lg:space-y-6">
                <div className="h-32 lg:h-40 cursor-default overflow-hidden">
                  <TextHoverEffect text="IRGG" />
                </div>
-               <h2 className="text-4xl lg:text-7xl font-headline leading-[1] lg:leading-[0.9] uppercase tracking-tighter">
-                 {activeTab === 'keramogranit' ? 'Выбор керамогранита' : 'Ламинат и SPS-покрытия'}
-               </h2>
+               <SplitText
+                 text={activeTab === 'keramogranit' ? 'Выбор керамогранита' : 'Ламинат и SPS-покрытия'}
+                 tag="h2"
+                 className="text-4xl lg:text-7xl font-headline leading-[1] lg:leading-[0.9] uppercase tracking-tighter"
+                 textAlign="left"
+               />
                <p className="text-xl lg:text-2xl text-muted-foreground font-light leading-relaxed max-w-xl">
                  {activeTab === 'keramogranit' 
                    ? 'Мы поставляем керамогранит практически без ограничений по формату и дизайну под ваши требования.' 

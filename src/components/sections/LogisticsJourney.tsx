@@ -6,6 +6,7 @@ import { Building, ClipboardCheck, Factory, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ContentTab } from "@/app/page";
 import { cn } from "@/lib/utils";
+import SplitText from "@/components/ui/split-text";
 
 interface LogisticsJourneyProps {
   activeTab: ContentTab;
@@ -38,7 +39,7 @@ const stepsData = [
     title: "4. Логистика и доставка",
     desc: "Организуем поставку в согласованные сроки до вашего объекта, беря на себя все вопросы таможенного оформления и фрахта.",
     icon: <Truck className="w-5 h-5 lg:w-6 lg:h-6" />,
-    threshold: 0.7, // Активируем раньше для удобства чтения
+    threshold: 0.7,
   },
 ];
 
@@ -100,16 +101,18 @@ export function LogisticsJourney({ activeTab }: LogisticsJourneyProps) {
     <section ref={containerRef} className="py-24 lg:py-40 px-6 lg:px-8 bg-background border-t border-white/5 relative overflow-hidden">
       <div className="max-w-[1200px] mx-auto">
         <div className="text-center mb-24 lg:mb-40 space-y-6">
-          <h2 className="text-3xl lg:text-5xl font-headline uppercase tracking-tighter">
-            {activeTab === 'keramogranit' ? 'Один партнер вместо десяти подрядчиков' : 'Как организована поставка'}
-          </h2>
+          <SplitText
+            text={activeTab === 'keramogranit' ? 'Один партнер вместо десяти подрядчиков' : 'Как организована поставка'}
+            tag="h2"
+            className="text-3xl lg:text-5xl font-headline uppercase tracking-tighter"
+            textAlign="center"
+          />
           <p className="text-muted-foreground text-base lg:text-xl max-w-3xl mx-auto font-light leading-relaxed">
             Мы берем на себя весь цикл ВЭД, чтобы вы получили качественный материал без лишних сложностей.
           </p>
         </div>
 
         <div className="relative min-h-[1200px] lg:min-h-[1400px]">
-          {/* Progress Line */}
           <motion.div 
             className="absolute left-[20px] md:left-1/2 top-0 bottom-0 w-[4px] bg-primary -translate-x-1/2 origin-top z-10"
             style={{ scaleY: pathProgress }}
