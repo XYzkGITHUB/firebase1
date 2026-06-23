@@ -1,3 +1,4 @@
+
 "use client";
 import React from "react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
@@ -6,6 +7,7 @@ import { ArrowRight, Box } from "lucide-react";
 import { ContentTab } from "@/app/page";
 import FloatingLines from "@/components/ui/floating-lines";
 import BlurText from "@/components/ui/blur-text";
+import DecryptedText from "@/components/ui/decrypted-text";
 
 interface HeroProps {
   activeTab: ContentTab;
@@ -57,12 +59,10 @@ export function Hero({ activeTab }: HeroProps) {
             </div>
             
             <div className="mt-8 text-center space-y-6 max-w-4xl">
-              <BlurText 
+              <DecryptedText 
                 text={current.title}
-                animateBy="words"
-                direction="bottom"
-                delay={60}
-                stepDuration={0.25}
+                speed={50}
+                maxIterations={10}
                 className="text-4xl md:text-6xl lg:text-7xl font-headline text-foreground leading-tight uppercase tracking-tighter"
               />
               
