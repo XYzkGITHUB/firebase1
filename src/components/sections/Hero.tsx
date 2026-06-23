@@ -27,7 +27,7 @@ export function Hero({ activeTab }: HeroProps) {
 
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-start overflow-hidden bg-background pt-32 md:pt-48 pb-40">
-      {/* Dynamic Background Lines - Reduced opacity for less "shininess" */}
+      {/* Dynamic Background Lines - Background layer that should receive events */}
       <div className="absolute inset-0 z-0 opacity-15">
         <FloatingLines 
           linesGradient={['#8B5E3C', '#C9C3BC', '#4A3728']}
@@ -42,16 +42,18 @@ export function Hero({ activeTab }: HeroProps) {
         />
       </div>
 
-      {/* Subtle Background Glow - Toned down */}
+      {/* Subtle Background Glow */}
       <div className="absolute inset-0 z-0 opacity-5 pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-primary blur-[200px] rounded-full" />
       </div>
 
-      <div className="z-10 w-full max-w-[1600px] px-8 flex flex-col items-center">
+      {/* Content Layer - Added pointer-events-none to allow events to pass to background */}
+      <div className="z-10 w-full max-w-[1600px] px-8 flex flex-col items-center pointer-events-none">
         <div className="relative w-full max-w-6xl py-24 px-6 md:px-16 flex flex-col items-center justify-center">
           
           <div className="relative z-10 flex flex-col items-center w-full">
-            <div className="w-full h-[10rem] md:h-[14rem] flex items-center justify-center cursor-default">
+            {/* Text hover effect should still be interactive if needed, but here we prioritize background for demo */}
+            <div className="w-full h-[10rem] md:h-[14rem] flex items-center justify-center cursor-default pointer-events-auto">
               <TextHoverEffect text="IRGG" />
             </div>
             
@@ -63,7 +65,8 @@ export function Hero({ activeTab }: HeroProps) {
                 {current.desc}
               </p>
               
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-12">
+              {/* Buttons must have pointer-events-auto to remain clickable */}
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-12 pointer-events-auto">
                 <Button size="lg" className="h-16 px-10 rounded-none font-bold group bg-primary hover:bg-primary/90 text-[11px] uppercase tracking-[0.3em] text-white shadow-2xl transition-all">
                   Связаться с менеджером
                   <ArrowRight className="ml-3 h-4 w-4 transition-transform group-hover:translate-x-2" />
@@ -78,7 +81,7 @@ export function Hero({ activeTab }: HeroProps) {
         </div>
       </div>
 
-      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-30">
+      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-30 pointer-events-none">
         <span className="text-[9px] uppercase tracking-[1em] text-muted-foreground font-bold">Листайте вниз</span>
         <div className="w-[1px] h-12 bg-gradient-to-b from-primary to-transparent" />
       </div>
