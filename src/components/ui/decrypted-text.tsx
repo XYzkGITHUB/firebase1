@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 /**
  * DecryptedText component that scrambles text with random characters
- * until it settles on the target character, creating an "uncrackable" reveal effect.
+ * until it settles on the target character, creating a fast "decryption" effect.
  */
 
 interface DecryptedTextProps {
@@ -21,12 +21,12 @@ interface DecryptedTextProps {
   animateOnViewThreshold?: number;
 }
 
-const DEFAULT_CHARS = '!@#$%^&*()_+{}:"<>?|[];\',./`~';
+const DEFAULT_CHARS = "$%#@!*&";
 
 export default function DecryptedText({
   text,
-  speed = 40,
-  maxIterations = 5,
+  speed = 25,
+  maxIterations = 3,
   sequential = true,
   characters = DEFAULT_CHARS,
   className = "",
@@ -34,16 +34,15 @@ export default function DecryptedText({
   animateOn = "view",
   animateOnViewThreshold = 0.1,
 }: DecryptedTextProps) {
-  const [displayText, setDisplayText] = useState("");
+  const [displayText, setDisplayText] = useState<({ char: string; isRevealed: boolean } | string)[]>([]);
   const [isRevealing, setIsRevealing] = useState(false);
   const [hasAnimated, setHasAnimated] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Reset animation when text changes (e.g., tab switch)
     setHasAnimated(false);
     setIsRevealing(false);
-    setDisplayText("");
+    setDisplayText(text.split("").map(c => ({ char: c, isRevealed: false })));
   }, [text]);
 
   useEffect(() => {
@@ -72,28 +71,27 @@ export default function DecryptedText({
 
     if (isRevealing) {
       interval = setInterval(() => {
-        setDisplayText(
-          text
-            .split("")
-            .map((char, index) => {
-              if (char === " ") return " ";
-              
-              const revealIndex = sequential ? iteration / maxIterations : iteration;
-              
-              if (index < revealIndex) {
-                return text[index];
-              }
+        const nextText = text.split("").map((char, index) => {
+          if (char === " ") return " ";
+          
+          const revealIndex = sequential ? iteration / maxIterations : iteration;
+          
+          if (index < revealIndex) {
+            return { char, isRevealed: true };
+          }
 
-              return characters[Math.floor(Math.random() * characters.length)];
-            })
-            .join("")
-        );
+          return { 
+            char: characters[Math.floor(Math.random() * characters.length)], 
+            isRevealed: false 
+          };
+        });
 
+        setDisplayText(nextText);
         iteration++;
 
         if (iteration >= text.length * maxIterations) {
           clearInterval(interval);
-          setDisplayText(text);
+          setDisplayText(text.split("").map(char => ({ char, isRevealed: true })));
           setIsRevealing(false);
         }
       }, speed);
@@ -108,9 +106,19 @@ export default function DecryptedText({
         className={className}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.2 }}
       >
-        {displayText || (isRevealing ? "" : " ")}
+        {displayText.map((item, i) => {
+          if (typeof item === 'string') return item;
+          return (
+            <span 
+              key={i} 
+              className={item.isRevealed ? "" : "text-[0.6em] opacity-50 font-code inline-block translate-y-[-0.1em]"}
+            >
+              {item.char}
+            </span>
+          );
+        })}
       </motion.span>
     </div>
   );
