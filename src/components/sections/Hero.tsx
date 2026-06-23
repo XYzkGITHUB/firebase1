@@ -29,8 +29,8 @@ export function Hero({ activeTab }: HeroProps) {
 
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-start overflow-hidden bg-background pt-32 md:pt-48 pb-40">
-      {/* Dynamic Background Lines */}
-      <div className="absolute inset-0 z-0 opacity-10">
+      {/* Dynamic Background Lines - Subtle and Matte */}
+      <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
         <FloatingLines 
           linesGradient={['#8B5E3C', '#C9C3BC', '#4A3728']}
           lineCount={[10, 15, 20]}
@@ -59,12 +59,12 @@ export function Hero({ activeTab }: HeroProps) {
             </div>
             
             <div className="mt-8 text-center space-y-6 max-w-4xl">
-              {/* Stable height container to prevent snapping */}
+              {/* Stable height container to prevent snapping with very fast decrypt */}
               <div className="pointer-events-auto min-h-[90px] md:min-h-[140px] lg:min-h-[160px] flex items-center justify-center">
                 <DecryptedText 
                   text={current.title}
-                  speed={20}
-                  maxIterations={3}
+                  speed={10}
+                  maxIterations={2}
                   characters="$%#@!"
                   className="text-4xl md:text-6xl lg:text-7xl font-headline text-foreground leading-tight uppercase tracking-tighter"
                 />
