@@ -33,17 +33,17 @@ export function Hero({ activeTab }: HeroProps) {
       </div>
 
       <div className="z-10 w-full max-w-[1600px] px-8 flex flex-col items-center">
-        {/* Main Content Container with ShapeBlur Background */}
+        {/* Main Content Container */}
         <div className="relative w-full max-w-6xl py-24 px-6 md:px-16 flex flex-col items-center justify-center group">
           
-          {/* ShapeBlur Background Effect - Expanded container */}
-          <div className="absolute inset-0 z-0 pointer-events-none opacity-30 group-hover:opacity-60 transition-opacity duration-1000 scale-110 md:scale-125">
+          {/* ShapeBlur Background Effect - Expanded container with negative insets to prevent clipping */}
+          <div className="absolute -inset-20 md:-inset-40 lg:-inset-60 z-0 pointer-events-none opacity-30 group-hover:opacity-60 transition-opacity duration-1000">
             <ShapeBlur
               variation={0}
-              shapeSize={1.8}
+              shapeSize={1.4}
               roundness={0.7}
               borderSize={0.03}
-              circleSize={0.25}
+              circleSize={0.2}
               circleEdge={0.6}
             />
           </div>
