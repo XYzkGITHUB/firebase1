@@ -48,12 +48,13 @@ export function Hero({ activeTab }: HeroProps) {
         <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-primary blur-[200px] rounded-full" />
       </div>
 
-      {/* Content Layer - pointer-events-none so mouse reaches background lines */}
+      {/* Content Layer */}
       <div className="z-10 w-full max-w-[1600px] px-8 flex flex-col items-center pointer-events-none">
         <div className="relative w-full max-w-6xl py-24 px-6 md:px-16 flex flex-col items-center justify-center">
           
           <div className="relative z-10 flex flex-col items-center w-full">
-            <div className="w-full h-[10rem] md:h-[14rem] flex items-center justify-center cursor-default">
+            {/* Wrapper with pointer-events-auto for text effect */}
+            <div className="w-full h-[10rem] md:h-[14rem] flex items-center justify-center cursor-default pointer-events-auto">
               <TextHoverEffect text="IRGG" />
             </div>
             

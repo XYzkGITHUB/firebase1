@@ -42,13 +42,13 @@ export const TextHoverEffect = ({ text }: { text: string }) => {
       onTouchStart={() => setIsHovered(true)}
       onTouchEnd={() => setIsHovered(false)}
       onTouchMove={handleMouseMove}
-      className="select-none overflow-visible cursor-default max-w-full"
+      className="select-none overflow-visible cursor-default max-w-full pointer-events-auto"
     >
       <defs>
         <radialGradient
           id="revealMask"
           gradientUnits="userSpaceOnUse"
-          r="60"
+          r="40"
           cx={cursorPos.x}
           cy={cursorPos.y}
         >
