@@ -27,8 +27,8 @@ export function Hero({ activeTab }: HeroProps) {
 
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-start overflow-hidden bg-background pt-32 md:pt-48 pb-40">
-      {/* Dynamic Background Lines */}
-      <div className="absolute inset-0 z-0 opacity-40">
+      {/* Dynamic Background Lines - Reduced opacity for less "shininess" */}
+      <div className="absolute inset-0 z-0 opacity-15">
         <FloatingLines 
           linesGradient={['#8B5E3C', '#C9C3BC', '#4A3728']}
           lineCount={[10, 15, 20]}
@@ -37,13 +37,13 @@ export function Hero({ activeTab }: HeroProps) {
           bendStrength={-0.5}
           interactive={true}
           parallax={true}
-          animationSpeed={0.5}
-          mixBlendMode="screen"
+          animationSpeed={0.3}
+          mixBlendMode="normal"
         />
       </div>
 
-      {/* Subtle Background Glow */}
-      <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
+      {/* Subtle Background Glow - Toned down */}
+      <div className="absolute inset-0 z-0 opacity-5 pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-primary blur-[200px] rounded-full" />
       </div>
 
@@ -56,10 +56,10 @@ export function Hero({ activeTab }: HeroProps) {
             </div>
             
             <div className="mt-8 text-center space-y-6 max-w-2xl animate-fade-in-up">
-              <h1 className="text-3xl md:text-5xl font-headline text-foreground leading-tight uppercase tracking-tighter">
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-headline text-foreground leading-tight uppercase tracking-tighter">
                 {current.title}
               </h1>
-              <p className="text-sm md:text-base text-muted-foreground font-body leading-relaxed max-w-lg mx-auto font-light opacity-80">
+              <p className="text-base md:text-lg text-muted-foreground font-body leading-relaxed max-w-lg mx-auto font-light opacity-80">
                 {current.desc}
               </p>
               
