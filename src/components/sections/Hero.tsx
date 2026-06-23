@@ -34,10 +34,10 @@ export function Hero({ activeTab }: HeroProps) {
 
       <div className="z-10 w-full max-w-[1600px] px-8 flex flex-col items-center">
         {/* Main Content Container with ShapeBlur Background */}
-        <div className="relative w-full max-w-5xl py-20 px-6 md:px-12 flex flex-col items-center justify-center group">
+        <div className="relative w-full max-w-6xl py-24 px-6 md:px-16 flex flex-col items-center justify-center group">
           
-          {/* ShapeBlur Background Effect - Acts as a container for all elements */}
-          <div className="absolute inset-0 z-0 pointer-events-none opacity-30 group-hover:opacity-60 transition-opacity duration-1000">
+          {/* ShapeBlur Background Effect - Expanded container */}
+          <div className="absolute inset-0 z-0 pointer-events-none opacity-30 group-hover:opacity-60 transition-opacity duration-1000 scale-110 md:scale-125">
             <ShapeBlur
               variation={0}
               shapeSize={1.8}
