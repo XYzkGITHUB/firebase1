@@ -40,11 +40,16 @@ export function FAQ({ activeTab }: FAQProps) {
         tag="h2"
         className="text-4xl md:text-6xl font-headline text-center mb-20 uppercase tracking-tighter"
         textAlign="center"
+        delay={30}
+        duration={0.8}
       />
       <Accordion type="single" collapsible className="w-full space-y-6">
         {commonFaqs.map((faq, i) => (
           <AccordionItem key={i} value={`item-${i}`} className="border border-white/5 rounded-none px-8 bg-card/20 transition-all hover:bg-card/30">
-            <AccordionTrigger className="text-left font-bold text-xl md:text-2xl hover:no-underline hover:text-primary py-8 uppercase tracking-tighter leading-tight transition-colors">
+            <AccordionTrigger 
+              className="text-left font-bold text-xl md:text-2xl hover:no-underline hover:text-primary py-8 uppercase tracking-tighter leading-tight transition-colors"
+              onClick={(e) => e.stopPropagation()}
+            >
               {faq.q}
             </AccordionTrigger>
             <AccordionContent className="text-muted-foreground pb-10 leading-relaxed text-lg font-light">
