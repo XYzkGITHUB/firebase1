@@ -10,6 +10,7 @@ import { AIAssistant } from "@/components/sections/AIAssistant";
 import { Contact } from "@/components/sections/Contact";
 import { FAQ } from "@/components/sections/FAQ";
 import { Footer } from "@/components/sections/Footer";
+import { PaymentModule } from "@/components/sections/PaymentModule";
 import ClickSpark from "@/components/ui/click-spark";
 
 export type ContentTab = "keramogranit" | "laminate_sps" | "delivery";
@@ -38,6 +39,8 @@ export default function Home() {
         <ProductExplorer activeTab={activeTab} />
         
         <LogisticsJourney activeTab={activeTab} />
+
+        {activeTab === "delivery" && <PaymentModule />}
 
         {activeTab !== "delivery" && (
           <section className="py-24 md:py-32 px-6 bg-primary flex flex-col items-center justify-center text-center">
