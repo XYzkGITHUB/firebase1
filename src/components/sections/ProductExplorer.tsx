@@ -170,18 +170,18 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
           <SplitText
             text={activeTab === 'delivery' ? "Что мы гарантируем при доставке" : (activeTab === 'contacts' ? "Сервис и поддержка" : "Что вы получаете, выбирая нас")}
             tag="h2"
-            className="text-xl lg:text-2xl font-headline mb-12 lg:mb-16 uppercase tracking-tighter"
+            className="text-2xl md:text-3xl lg:text-4xl font-headline mb-12 lg:mb-16 uppercase tracking-tighter"
             textAlign="left"
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 lg:gap-x-16 gap-y-10 lg:gap-y-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 lg:gap-x-16 gap-y-12 lg:gap-y-16">
             {currentCheck.map((item, i) => (
               <div key={i} className="flex items-start gap-4 lg:gap-6 group">
-                <div className="w-8 h-8 lg:w-9 lg:h-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1 transition-colors group-hover:bg-primary group-hover:text-white">
-                  <Check className="w-5 h-5 text-primary group-hover:text-white transition-colors" />
+                <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1 transition-colors group-hover:bg-primary group-hover:text-white">
+                  <Check className="w-6 h-6 text-primary group-hover:text-white transition-colors" />
                 </div>
-                <div>
-                  <h4 className="font-bold text-sm lg:text-base mb-1 tracking-tight group-hover:text-primary transition-colors">{item.title}</h4>
-                  <p className="text-xs lg:text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                <div className="space-y-2">
+                  <h4 className="font-bold text-xl lg:text-2xl tracking-tight group-hover:text-primary transition-colors">{item.title}</h4>
+                  <p className="text-base lg:text-lg text-muted-foreground leading-relaxed">{item.desc}</p>
                 </div>
               </div>
             ))}
@@ -191,15 +191,15 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
         <Separator className="bg-white/5 mb-20 lg:mb-24" />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-          <div className="space-y-8">
+          <div className="space-y-10">
              <div className="space-y-6">
                <SplitText
                  text={activeTab === 'delivery' ? 'Надежная доставка грузов' : (activeTab === 'keramogranit' ? 'Выбор керамогранита' : (activeTab === 'contacts' ? 'Наш шоурум' : 'Ламинат и SPS-покрытия'))}
                  tag="h2"
-                 className="text-xl lg:text-2xl leading-[1.1] uppercase tracking-tighter"
+                 className="text-2xl md:text-4xl leading-[1.1] uppercase tracking-tighter"
                  textAlign="left"
                />
-               <p className="text-sm text-muted-foreground font-light leading-relaxed max-w-xl">
+               <p className="text-base md:text-lg text-muted-foreground font-light leading-relaxed max-w-xl">
                  {activeTab === 'delivery' 
                    ? 'Мы берем на себя полную ответственность за ваш груз. От завода в Индии или Китае до вашего склада в России.' 
                    : (activeTab === 'keramogranit' 
@@ -209,18 +209,18 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
                        : 'Под проекты любого масштаба — от регулярных заказов до комплексных поставок.'))}
                </p>
              </div>
-             <div className="flex flex-col sm:flex-row gap-4">
-                <Button variant="outline" className="h-14 lg:h-16 px-6 lg:px-8 rounded-none border-primary/50 text-primary hover:bg-primary hover:text-white transition-all font-bold uppercase tracking-[0.3em] text-[9px] lg:text-[10px] w-full md:w-auto">
-                  <Download className="mr-3 h-4 w-4" />
+             <div className="flex flex-col sm:flex-row gap-6">
+                <Button variant="outline" className="h-16 lg:h-20 px-10 lg:px-12 rounded-none border-primary/50 text-primary hover:bg-primary hover:text-white transition-all font-bold uppercase tracking-[0.3em] text-xs w-full md:w-auto">
+                  <Download className="mr-3 h-5 w-5" />
                   {activeTab === 'delivery' ? 'Прайс-лист' : (activeTab === 'contacts' ? 'Реквизиты' : `Каталог`)}
                 </Button>
                 {activeTab === 'contacts' && (
                   <Button 
                     onClick={handleLearnAboutShipping}
-                    className="h-14 lg:h-16 px-6 lg:px-8 rounded-none bg-primary text-white hover:bg-primary/90 transition-all font-bold uppercase tracking-[0.3em] text-[9px] lg:text-[10px] w-full md:w-auto shadow-2xl group flex items-center justify-center"
+                    className="h-16 lg:h-20 px-10 lg:px-12 rounded-none bg-primary text-white hover:bg-primary/90 transition-all font-bold uppercase tracking-[0.3em] text-xs w-full md:w-auto shadow-2xl group flex items-center justify-center"
                   >
                     <span>О логистике</span>
-                    <ArrowRight className="ml-3 h-4 w-4 transition-transform group-hover:translate-x-2" />
+                    <ArrowRight className="ml-3 h-5 w-5 transition-transform group-hover:translate-x-2" />
                   </Button>
                 )}
              </div>
@@ -236,8 +236,8 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
             ) : (
               <div className="aspect-[4/3] bg-card/30 border border-white/5 flex flex-col items-center justify-center text-muted-foreground relative group overflow-hidden shadow-2xl">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                <HelpCircle className="w-12 h-12 lg:w-16 mb-4 opacity-20" />
-                <span className="text-[9px] uppercase tracking-[0.5em] opacity-40 font-bold">Фото загружаются</span>
+                <HelpCircle className="w-16 h-16 mb-4 opacity-20" />
+                <span className="text-xs uppercase tracking-[0.5em] opacity-40 font-bold">Фото загружаются</span>
               </div>
             )}
           </div>
