@@ -82,23 +82,23 @@ export function Stats({ activeTab }: StatsProps) {
   const contactsAdv = [
     {
       icon: <Phone className="w-10 h-10 text-primary" />,
-      title: "Номера",
-      desc: "• +7 989 919 95 41 \u00A0\u00A0 • +7 989 937 41 11",
+      title: "Номера телефонов",
+      desc: "• +7 989 919 95 41\n• +7 989 937 41 11",
     },
     {
       icon: <Mail className="w-10 h-10 text-primary" />,
-      title: "Gmail",
+      title: "Электронная почта",
       desc: "• irggimport@bk.ru",
     },
     {
       icon: <MapPin className="w-10 h-10 text-primary" />,
-      title: "Адрес",
-      desc: "• Россия, Чеченская Республика, с. Элин-Юрт, Надтеречный район",
+      title: "Наш адрес",
+      desc: "• Чеченская Республика\n• село Элин-Юрт\n• Надтеречный район",
     },
     {
       icon: <Clock className="w-10 h-10 text-primary" />,
-      title: "Поддержка",
-      desc: "• 24/7 • WhatsApp & Telegram для оперативных запросов",
+      title: "График работы",
+      desc: "• Круглосуточно 24/7\n• WhatsApp / Telegram",
     },
   ];
 
@@ -118,7 +118,7 @@ export function Stats({ activeTab }: StatsProps) {
           <SplitText
             text={activeTab === 'delivery' ? "Надежная логистика под ключ" : (activeTab === 'contacts' ? "Как с нами связаться" : "Наши главные преимущества")}
             tag="h2"
-            className="text-4xl md:text-5xl font-headline max-w-5xl mx-auto leading-tight uppercase tracking-tighter"
+            className="text-4xl md:text-5xl font-headline max-w-5xl mx-auto leading-tight tracking-tighter"
             textAlign="center"
           />
         </div>
