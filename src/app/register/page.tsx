@@ -35,14 +35,14 @@ export default function RegisterPage() {
     setIsLoading(true);
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      // Give the loader enough time to show the cinematic effect
+      // Fast 0.7s loader duration
       setTimeout(() => {
         toast({
           title: "Регистрация успешна",
           description: "Добро пожаловать в команду IRGG.",
         });
         router.push("/");
-      }, 1500);
+      }, 700);
     } catch (error: any) {
       toast({
         variant: "destructive",

@@ -35,14 +35,14 @@ export default function LoginPage() {
     setIsLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      // Give the loader enough time to show the cinematic effect
+      // Fast 0.7s loader duration
       setTimeout(() => {
         toast({
           title: "Успешный вход",
           description: "Добро пожаловать в IRGG Luxe Surface.",
         });
         router.push("/");
-      }, 1500);
+      }, 700);
     } catch (error: any) {
       toast({
         variant: "destructive",

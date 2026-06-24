@@ -22,7 +22,6 @@ export function LuxuryLoader({ isVisible }: LuxuryLoaderProps) {
     }
   `;
 
-  // Luxury Dark Beige Palette adapted for IRGG theme
   const darkBeige = '#8B5E3C'; 
   const faintBeige = 'rgba(139, 115, 85, 0.1)';
 
@@ -32,7 +31,7 @@ export function LuxuryLoader({ isVisible }: LuxuryLoaderProps) {
     fontSize: '6rem',
     fontWeight: '900',
     fontFamily: '"Inter", sans-serif',
-    letterSpacing: '0.4em', // High letter spacing for luxury feel
+    letterSpacing: '0.4em', 
     color: faintBeige,
     lineHeight: '1',
     userSelect: 'none',
@@ -48,11 +47,11 @@ export function LuxuryLoader({ isVisible }: LuxuryLoaderProps) {
     color: darkBeige,
     overflow: 'hidden',
     whiteSpace: 'nowrap',
-    animation: 'luxuryFill 1.3s forwards cubic-bezier(0.65, 0, 0.35, 1)',
+    animation: 'luxuryFill 0.7s forwards cubic-bezier(0.65, 0, 0.35, 1)',
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-background/98 backdrop-blur-md animate-in fade-in duration-300">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-background animate-in fade-in duration-200">
       <style>{styles}</style>
       
       <div style={containerStyle}>
