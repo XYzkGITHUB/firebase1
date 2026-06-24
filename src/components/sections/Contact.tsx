@@ -31,9 +31,9 @@ export function Contact({ activeTab }: ContactProps) {
   });
 
   const getTitle = () => {
-    if (activeTab === 'keramogranit') return 'Need Porcelain Tile?';
-    if (activeTab === 'laminate_sps') return 'Need Laminate or SPS?';
-    return 'Need Cargo Delivery?';
+    if (activeTab === 'keramogranit') return 'Нужен керамогранит?';
+    if (activeTab === 'laminate_sps') return 'Нужен ламинат или SPS?';
+    return 'Нужна доставка груза?';
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -47,8 +47,8 @@ export function Contact({ activeTab }: ContactProps) {
     if (!db || !auth) {
       toast({
         variant: "destructive",
-        title: "Configuration Error",
-        description: "Firebase services are initializing. Please try again in a moment.",
+        title: "Ошибка конфигурации",
+        description: "Сервисы Firebase инициализируются. Пожалуйста, попробуйте через секунду.",
       });
       return;
     }
@@ -56,8 +56,8 @@ export function Contact({ activeTab }: ContactProps) {
     if (!formData.name.trim() || !formData.phone.trim()) {
       toast({
         variant: "destructive",
-        title: "Validation Error",
-        description: "Please provide your name and phone number.",
+        title: "Ошибка валидации",
+        description: "Пожалуйста, укажите ваше имя и номер телефона.",
       });
       return;
     }
@@ -65,18 +65,14 @@ export function Contact({ activeTab }: ContactProps) {
     setIsSubmitting(true);
     
     try {
-      // Step 1: Ensure Auth is active
+      // Step 1: Ensure Auth is active (required for security rules usually)
       if (!user) {
         try {
           await signInAnonymously(auth);
         } catch (authError: any) {
-          setIsSubmitting(false);
-          toast({
-            variant: "destructive",
-            title: "Authentication Failed",
-            description: "Could not establish a secure connection. Please check if Anonymous Auth is enabled in Firebase.",
-          });
-          return;
+          console.error("Auth error:", authError);
+          // We continue anyway, Firestore might allow it if rules are open, 
+          // but usually Anonymous Auth is safer.
         }
       }
 
@@ -95,8 +91,8 @@ export function Contact({ activeTab }: ContactProps) {
       addDoc(leadsRef, leadData)
         .then(() => {
           toast({
-            title: "Success",
-            description: "Your request has been sent! We will contact you shortly.",
+            title: "Успешно",
+            description: "Ваш запрос отправлен! Мы свяжемся с вами в ближайшее время.",
           });
           setFormData({ name: "", phone: "", message: "" });
           setIsSubmitting(false);
@@ -115,8 +111,8 @@ export function Contact({ activeTab }: ContactProps) {
       setIsSubmitting(false);
       toast({
         variant: "destructive",
-        title: "Submission Error",
-        description: "An unexpected error occurred. Please check your internet connection.",
+        title: "Ошибка отправки",
+        description: "Произошла непредвиденная ошибка. Проверьте интернет-соединение.",
       });
     }
   };
@@ -134,7 +130,7 @@ export function Contact({ activeTab }: ContactProps) {
               textAlign="left"
             />
             <p className="text-lg md:text-2xl text-muted-foreground leading-relaxed font-light max-w-xl">
-              Leave a request and we will propose a solution for your project. We'll tell you which materials are needed and provide a full estimate.
+              Оставьте заявку, и мы предложим решение для вашего проекта. Расскажем, какие материалы необходимы, и предоставим полный расчет.
             </p>
             <div className="space-y-4 pt-6 md:pt-10">
                <div className="text-2xl md:text-3xl font-headline font-bold text-primary tracking-tighter">+7 989 919 95 41</div>
@@ -145,19 +141,19 @@ export function Contact({ activeTab }: ContactProps) {
           <div className="p-6 sm:p-10 lg:p-16 border border-white/5 bg-card/30 backdrop-blur-3xl shadow-2xl w-full">
             <form className="space-y-8 md:space-y-12" onSubmit={handleSubmit}>
               <div className="space-y-4">
-                <label className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Your Name</label>
+                <label className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Ваше имя</label>
                 <Input 
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  placeholder="Enter your name" 
+                  placeholder="Введите ваше имя" 
                   className="h-14 md:h-16 bg-background/50 border-white/5 rounded-none text-base md:text-lg px-6 focus:ring-primary focus:border-primary" 
                 />
               </div>
               <div className="space-y-4">
-                <label className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Phone Number</label>
+                <label className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Номер телефона</label>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <div className="flex items-center justify-center bg-white/5 border border-white/5 h-14 md:h-16 px-6 md:px-8 text-[12px] font-bold uppercase tracking-widest shrink-0">Russia +7</div>
+                  <div className="flex items-center justify-center bg-white/5 border border-white/5 h-14 md:h-16 px-6 md:px-8 text-[12px] font-bold uppercase tracking-widest shrink-0">Россия +7</div>
                   <Input 
                     name="phone"
                     value={formData.phone}
@@ -168,17 +164,17 @@ export function Contact({ activeTab }: ContactProps) {
                 </div>
               </div>
               <div className="space-y-4">
-                <label className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Describe your request</label>
+                <label className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Описание запроса</label>
                 <Textarea 
                   name="message"
                   value={formData.message}
                   onChange={handleInputChange}
-                  placeholder="Object type, volume, preferences..." 
+                  placeholder="Тип объекта, объем, предпочтения..." 
                   className="min-h-[150px] md:min-h-[200px] bg-background/50 border-white/5 rounded-none text-base md:text-lg p-6" 
                 />
               </div>
               <p className="text-[9px] md:text-[10px] text-muted-foreground uppercase tracking-[0.2em] leading-loose opacity-60">
-                By clicking the button, you consent to the processing of personal data and agree to the privacy policy.
+                Нажимая на кнопку, вы даете согласие на обработку персональных данных и соглашаетесь с политикой конфиденциальности.
               </p>
               <Button 
                 type="submit"
@@ -190,7 +186,7 @@ export function Contact({ activeTab }: ContactProps) {
                   <Loader2 className="h-5 w-5 animate-spin" />
                 ) : (
                   <>
-                    Send Request
+                    Отправить запрос
                     <Send className="ml-3 h-4 w-4 md:h-5 md:w-5 transition-transform group-hover:translate-x-2" />
                   </>
                 )}

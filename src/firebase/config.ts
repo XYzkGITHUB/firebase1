@@ -2,14 +2,13 @@
 
 /**
  * Firebase configuration object.
- * IMPORTANT: Replace the placeholders below with values from your Firebase Console:
- * Project Settings -> Your Apps -> Firebase SDK snippet -> Config
+ * Updated with user provided credentials for project studio-5658849706-d1baf.
  */
 export const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "REPLACE_WITH_YOUR_ACTUAL_API_KEY",
-  authDomain: "flam-next-js.firebaseapp.com",
-  projectId: "flam-next-js",
-  storageBucket: "flam-next-js.firebasestorage.app",
-  messagingSenderId: "1234567890",
-  appId: "1:1234567890:web:abcdef"
+  apiKey: "AIzaSyA9MoCmiJt6acSPzeBt8bULeUzEs2varb0",
+  authDomain: "studio-5658849706-d1baf.firebaseapp.com",
+  projectId: "studio-5658849706-d1baf",
+  storageBucket: "studio-5658849706-d1baf.firebasestorage.app",
+  messagingSenderId: "155962247575",
+  appId: "1:155962247575:web:fffb3db7c59586bd2adcd2"
 };
