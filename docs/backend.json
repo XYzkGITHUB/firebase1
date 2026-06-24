@@ -3,29 +3,29 @@
   "entities": {
     "Lead": {
       "title": "Lead",
-      "description": "Информация о потенциальном клиенте из формы обратной связи.",
+      "description": "Information about a potential client from the feedback form.",
       "type": "object",
       "properties": {
         "name": {
           "type": "string",
-          "description": "Имя клиента"
+          "description": "Client name"
         },
         "phone": {
           "type": "string",
-          "description": "Номер телефона"
+          "description": "Phone number"
         },
         "section": {
           "type": "string",
-          "description": "Раздел сайта, в котором была оставлена заявка"
+          "description": "The site section where the request was left (e.g., keramogranit, laminate_sps, delivery)"
         },
         "description": {
           "type": "string",
-          "description": "Текст сообщения или описания запроса"
+          "description": "The text of the message or request description"
         },
         "createdAt": {
           "type": "string",
           "format": "date-time",
-          "description": "Время создания заявки"
+          "description": "Timestamp of when the lead was created"
         }
       },
       "required": [
@@ -43,7 +43,7 @@
   "firestore": {
     "/leads/{leadId}": {
       "schema": "Lead",
-      "description": "Коллекция входящих заявок от клиентов."
+      "description": "Collection of incoming leads from clients."
     }
   }
 }

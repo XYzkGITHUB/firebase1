@@ -29,9 +29,9 @@ export function Contact({ activeTab }: ContactProps) {
   });
 
   const getTitle = () => {
-    if (activeTab === 'keramogranit') return 'Нужен керамогранит?';
-    if (activeTab === 'laminate_sps') return 'Нужен ламинат или SPS?';
-    return 'Нужна доставка груза?';
+    if (activeTab === 'keramogranit') return 'Need Porcelain Tile?';
+    if (activeTab === 'laminate_sps') return 'Need Laminate or SPS?';
+    return 'Need Cargo Delivery?';
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -46,8 +46,8 @@ export function Contact({ activeTab }: ContactProps) {
     if (!formData.name.trim() || !formData.phone.trim()) {
       toast({
         variant: "destructive",
-        title: "Ошибка",
-        description: "Пожалуйста, заполните имя и телефон.",
+        title: "Error",
+        description: "Please fill in your name and phone number.",
       });
       return;
     }
@@ -57,7 +57,7 @@ export function Contact({ activeTab }: ContactProps) {
     const leadData = {
       name: formData.name,
       phone: formData.phone,
-      description: formData.message, // Map message to description in DB
+      description: formData.message,
       section: activeTab,
       createdAt: serverTimestamp(),
     };
@@ -67,8 +67,8 @@ export function Contact({ activeTab }: ContactProps) {
     addDoc(leadsRef, leadData)
       .then(() => {
         toast({
-          title: "Заявка принята",
-          description: "Менеджер свяжется с вами в ближайшее время.",
+          title: "Request Received",
+          description: "Our manager will contact you shortly.",
         });
         setFormData({ name: "", phone: "", message: "" });
       })
@@ -98,7 +98,7 @@ export function Contact({ activeTab }: ContactProps) {
               textAlign="left"
             />
             <p className="text-lg md:text-2xl text-muted-foreground leading-relaxed font-light max-w-xl">
-              Оставьте заявку и мы предложим решение под Ваш проект. Расскажем, какие материалы нужны и предложим решение под ваш объект.
+              Leave a request and we will propose a solution for your project. We'll tell you which materials are needed and provide a full estimate.
             </p>
             <div className="space-y-4 pt-6 md:pt-10">
                <div className="text-2xl md:text-3xl font-headline font-bold text-primary tracking-tighter">+7 989 919 95 41</div>
@@ -109,17 +109,17 @@ export function Contact({ activeTab }: ContactProps) {
           <div className="p-6 sm:p-10 lg:p-16 border border-white/5 bg-card/30 backdrop-blur-3xl shadow-2xl w-full">
             <form className="space-y-8 md:space-y-12" onSubmit={handleSubmit}>
               <div className="space-y-4">
-                <label className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Ваше Имя</label>
+                <label className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Your Name</label>
                 <Input 
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  placeholder="Введите имя" 
+                  placeholder="Enter your name" 
                   className="h-14 md:h-16 bg-background/50 border-white/5 rounded-none text-base md:text-lg px-6 focus:ring-primary focus:border-primary" 
                 />
               </div>
               <div className="space-y-4">
-                <label className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Телефон</label>
+                <label className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Phone Number</label>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <div className="flex items-center justify-center bg-white/5 border border-white/5 h-14 md:h-16 px-6 md:px-8 text-[12px] font-bold uppercase tracking-widest shrink-0">Russia +7</div>
                   <Input 
@@ -132,17 +132,17 @@ export function Contact({ activeTab }: ContactProps) {
                 </div>
               </div>
               <div className="space-y-4">
-                <label className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Опишите ваш запрос</label>
+                <label className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Describe your request</label>
                 <Textarea 
                   name="message"
                   value={formData.message}
                   onChange={handleInputChange}
-                  placeholder="Тип объекта, объем, предпочтения..." 
+                  placeholder="Object type, volume, preferences..." 
                   className="min-h-[150px] md:min-h-[200px] bg-background/50 border-white/5 rounded-none text-base md:text-lg p-6" 
                 />
               </div>
               <p className="text-[9px] md:text-[10px] text-muted-foreground uppercase tracking-[0.2em] leading-loose opacity-60">
-                Нажимая на кнопку, вы даете согласие на обработку персональных данных и соглашаетесь c политикой конфиденциальности.
+                By clicking the button, you consent to the processing of personal data and agree to the privacy policy.
               </p>
               <Button 
                 type="submit"
@@ -154,7 +154,7 @@ export function Contact({ activeTab }: ContactProps) {
                   <Loader2 className="h-5 w-5 animate-spin" />
                 ) : (
                   <>
-                    Отправить заявку
+                    Send Request
                     <Send className="ml-3 h-4 w-4 md:h-5 md:w-5 transition-transform group-hover:translate-x-2" />
                   </>
                 )}
