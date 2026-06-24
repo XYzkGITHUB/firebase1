@@ -31,12 +31,11 @@ export function Contact({ activeTab }: ContactProps) {
     message: "",
   });
 
-  // Pre-authenticate the user on mount to speed up the first submission
+  // Background auth - don't block the UI with this
   useEffect(() => {
     if (auth && !user) {
-      signInAnonymously(auth).catch((err) => {
-        // Silently fail, we'll try again on submit if needed
-        console.warn("Background auth failed, will retry on submit:", err);
+      signInAnonymously(auth).catch(() => {
+        // Silent fail, the rules 'allow create: if true' will still work
       });
     }
   }, [auth, user]);
@@ -52,14 +51,14 @@ export function Contact({ activeTab }: ContactProps) {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!db || !auth) {
+    if (!db) {
       toast({
         variant: "destructive",
         title: "Ошибка",
-        description: "Сервисы еще не готовы. Пожалуйста, подождите.",
+        description: "Сервисы еще не готовы. Проверьте интернет.",
       });
       return;
     }
@@ -74,21 +73,6 @@ export function Contact({ activeTab }: ContactProps) {
     }
 
     setIsSubmitting(true);
-    
-    // Fallback auth check (rarely needed if useEffect succeeded)
-    if (!user) {
-      try {
-        await signInAnonymously(auth);
-      } catch (authError: any) {
-        setIsSubmitting(false);
-        toast({
-          variant: "destructive",
-          title: "Ошибка доступа",
-          description: "Не удалось авторизоваться. Проверьте интернет.",
-        });
-        return;
-      }
-    }
 
     const leadData = {
       name: formData.name,
@@ -100,7 +84,7 @@ export function Contact({ activeTab }: ContactProps) {
 
     const leadsRef = collection(db, "leads");
 
-    // Initiate write immediately without awaiting (Non-blocking)
+    // NON-BLOCKING: Initiate write and handle UI feedback via .then/.catch
     addDoc(leadsRef, leadData)
       .then(() => {
         toast({
@@ -110,13 +94,22 @@ export function Contact({ activeTab }: ContactProps) {
         setFormData({ name: "", phone: "", message: "" });
         setIsSubmitting(false);
       })
-      .catch(async (error) => {
+      .catch((error: any) => {
+        console.error("Firestore Write Error:", error);
+        
+        // Emit rich error for developer feedback
         const permissionError = new FirestorePermissionError({
           path: leadsRef.path,
           operation: "create",
           requestResourceData: leadData,
         });
         errorEmitter.emit("permission-error", permissionError);
+
+        toast({
+          variant: "destructive",
+          title: "Ошибка отправки",
+          description: "Не удалось отправить данные. Проверьте правила доступа в консоли Firebase.",
+        });
         setIsSubmitting(false);
       });
   };
