@@ -1,7 +1,7 @@
 
 "use client";
 import React from "react";
-import { Handshake, Construction, ShieldCheck, Layers, Package, TrendingUp, Factory, Globe, Clock, ShieldAlert } from "lucide-react";
+import { Handshake, Construction, ShieldCheck, Layers, Package, TrendingUp, Factory, Globe, Clock, ShieldAlert, Phone, Mail, MapPin } from "lucide-react";
 import { ContentTab } from "@/app/page";
 import SplitText from "@/components/ui/split-text";
 
@@ -79,10 +79,34 @@ export function Stats({ activeTab }: StatsProps) {
     },
   ];
 
+  const contactsAdv = [
+    {
+      icon: <Phone className="w-10 h-10 text-primary" />,
+      title: "Горячая линия",
+      desc: "+7 989 919 95 41 - Менеджер по работе с клиентами. +7 989 937 41 11 - Отдел логистики.",
+    },
+    {
+      icon: <Mail className="w-10 h-10 text-primary" />,
+      title: "Электронная почта",
+      desc: "irggimport@bk.ru - Основной адрес для запросов и предложений.",
+    },
+    {
+      icon: <MapPin className="w-10 h-10 text-primary" />,
+      title: "Главный офис",
+      desc: "Россия, Чеченская Республика, Надтеречный район, с. Элин-Юрт.",
+    },
+    {
+      icon: <ShieldCheck className="w-10 h-10 text-primary" />,
+      title: "Надежное партнерство",
+      desc: "Официальные контракты и юридическая прозрачность каждой сделки.",
+    },
+  ];
+
   const getAdv = () => {
     if (activeTab === 'keramogranit') return keramogranitAdv;
     if (activeTab === 'laminate_sps') return laminateAdv;
-    return deliveryAdv;
+    if (activeTab === 'delivery') return deliveryAdv;
+    return contactsAdv;
   }
 
   const currentAdv = getAdv();
@@ -92,7 +116,7 @@ export function Stats({ activeTab }: StatsProps) {
       <div className="max-w-[1600px] mx-auto">
         <div className="mb-24 text-center">
           <SplitText
-            text={activeTab === 'delivery' ? "Надежная логистика под ключ" : "Наши главные преимущества"}
+            text={activeTab === 'delivery' ? "Надежная логистика под ключ" : (activeTab === 'contacts' ? "Как с нами связаться" : "Наши главные преимущества")}
             tag="h2"
             className="text-4xl md:text-5xl font-headline max-w-5xl mx-auto leading-tight uppercase tracking-tighter"
             textAlign="center"

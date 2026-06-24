@@ -3,7 +3,7 @@
 import React from "react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Box } from "lucide-react";
+import { ArrowRight, Box, MapPin } from "lucide-react";
 import { ContentTab } from "@/app/page";
 import FloatingLines from "@/components/ui/floating-lines";
 import BlurText from "@/components/ui/blur-text";
@@ -36,10 +36,14 @@ export function Hero({ activeTab }: HeroProps) {
     delivery: {
       title: "ЛОГИСТИКА БЕЗ ГРАНИЦ",
       desc: "Бережная доставка ваших материалов из Индии (25 дней) и Китая (35 дней) с полной страховкой."
+    },
+    contacts: {
+      title: "НАШИ КОНТАКТЫ",
+      desc: "Россия, Чеченская Республика, с. Элин-Юрт. Мы всегда на связи для решения ваших задач."
     }
   };
 
-  const current = content[activeTab];
+  const current = content[activeTab] || content.keramogranit;
 
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-start overflow-hidden bg-background pt-32 md:pt-48 pb-40">

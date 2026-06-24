@@ -35,13 +35,13 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
   const navLinks = [
     { name: "Керамогранит", id: "keramogranit" as const },
     { name: "Ламинат и SPS", id: "laminate_sps" as const },
-    { name: "Доставка", id: "delivery" as const },
     { name: "Сантехника", id: "sanitary" },
     { name: "Таможня", id: "customs" },
+    { name: "Наши контакты", id: "contacts" as const },
   ];
 
   const handleNavClick = (id: string) => {
-    if (id === "keramogranit" || id === "laminate_sps" || id === "delivery") {
+    if (id === "keramogranit" || id === "laminate_sps" || id === "delivery" || id === "contacts") {
       setActiveTab(id as ContentTab);
     }
     setIsMobileMenuOpen(false);

@@ -12,7 +12,7 @@ import { FAQ } from "@/components/sections/FAQ";
 import { Footer } from "@/components/sections/Footer";
 import ClickSpark from "@/components/ui/click-spark";
 
-export type ContentTab = "keramogranit" | "laminate_sps" | "delivery";
+export type ContentTab = "keramogranit" | "laminate_sps" | "delivery" | "contacts";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<ContentTab>("keramogranit");
@@ -33,13 +33,15 @@ export default function Home() {
         
         <Stats activeTab={activeTab} />
 
-        {activeTab !== "delivery" && <AIAssistant />}
+        {activeTab !== "delivery" && activeTab !== "contacts" && <AIAssistant />}
         
-        <ProductExplorer activeTab={activeTab} />
+        <ProductExplorer activeTab={activeTab} setActiveTab={setActiveTab} />
         
-        <LogisticsJourney activeTab={activeTab} />
+        {(activeTab === "delivery" || activeTab === "contacts") && (
+          <LogisticsJourney activeTab={activeTab} />
+        )}
 
-        {activeTab !== "delivery" && (
+        {activeTab !== "delivery" && activeTab !== "contacts" && (
           <section className="py-24 md:py-32 px-6 bg-primary flex flex-col items-center justify-center text-center">
              <h2 className="text-3xl md:text-6xl font-headline text-white mb-8 uppercase tracking-tighter max-w-4xl">
                Связаться с менеджером
