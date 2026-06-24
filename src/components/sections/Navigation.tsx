@@ -50,10 +50,9 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
   const handleAuthNavigation = (path: string) => {
     setIsNavigating(true);
     setIsMobileMenuOpen(false);
-    // Optimized 0.7s delay for luxury loader
     setTimeout(() => {
       router.push(path);
-    }, 700);
+    }, 500);
   };
 
   const handleSignOut = () => {

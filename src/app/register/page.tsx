@@ -30,19 +30,26 @@ export default function RegisterPage() {
     "IRGG Luxe Surface"
   ];
 
+  const handleBackToSite = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setTimeout(() => {
+      router.push("/");
+    }, 500);
+  };
+
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      // Fast 0.7s loader duration
       setTimeout(() => {
         toast({
           title: "Регистрация успешна",
           description: "Добро пожаловать в команду IRGG.",
         });
         router.push("/");
-      }, 700);
+      }, 500);
     } catch (error: any) {
       toast({
         variant: "destructive",
@@ -58,9 +65,12 @@ export default function RegisterPage() {
       <LuxuryLoader isVisible={isLoading} />
 
       <div className="absolute top-8 left-8">
-        <Link href="/" className="flex items-center text-muted-foreground hover:text-primary transition-colors gap-2 uppercase tracking-widest text-[10px] font-bold">
+        <button 
+          onClick={handleBackToSite}
+          className="flex items-center text-muted-foreground hover:text-primary transition-colors gap-2 uppercase tracking-widest text-[10px] font-bold bg-transparent border-none cursor-pointer"
+        >
           <ArrowLeft size={16} /> Назад на сайт
-        </Link>
+        </button>
       </div>
 
       <Card className="w-full max-w-md glass-panel border-white/5 shadow-2xl overflow-hidden">

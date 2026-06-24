@@ -47,7 +47,7 @@ export function LuxuryLoader({ isVisible }: LuxuryLoaderProps) {
     color: darkBeige,
     overflow: 'hidden',
     whiteSpace: 'nowrap',
-    animation: 'luxuryFill 0.7s forwards cubic-bezier(0.65, 0, 0.35, 1)',
+    animation: 'luxuryFill 0.5s forwards cubic-bezier(0.65, 0, 0.35, 1)',
   };
 
   return (
