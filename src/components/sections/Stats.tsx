@@ -42,7 +42,7 @@ export function Stats({ activeTab }: StatsProps) {
     {
       icon: <TrendingUp className="w-10 h-10 text-primary" />,
       title: "Выстроенная система поставок",
-      desc: "Контролируем стабильные условия работы и отгрузок на всех этапах.",
+      desc: "Контролируем стабильные условия работы и отгрузок на всех эта этапе.",
     },
     {
       icon: <Factory className="w-10 h-10 text-primary" />,
@@ -83,7 +83,7 @@ export function Stats({ activeTab }: StatsProps) {
     {
       icon: <Phone className="w-10 h-10 text-primary" />,
       title: "Номера",
-      desc: "• +7 989 919 95 41 • +7 989 937 41 11",
+      desc: "• +7 989 919 95 41 \u00A0\u00A0 • +7 989 937 41 11",
     },
     {
       icon: <Mail className="w-10 h-10 text-primary" />,
@@ -98,7 +98,7 @@ export function Stats({ activeTab }: StatsProps) {
     {
       icon: <Clock className="w-10 h-10 text-primary" />,
       title: "Поддержка",
-      desc: "• 24/7 Мы всегда на связи в WhatsApp и Telegram для ваших запросов",
+      desc: "• 24/7 • WhatsApp & Telegram для оперативных запросов",
     },
   ];
 
@@ -127,8 +127,12 @@ export function Stats({ activeTab }: StatsProps) {
           {currentAdv.map((adv, idx) => (
             <div key={idx} className="relative p-12 border border-white/5 bg-card/30 hover:bg-card/50 hover:border-primary/40 transition-all duration-700 group overflow-hidden">
               <div className="mb-10 transform transition-transform group-hover:scale-110 duration-500">{adv.icon}</div>
-              <h3 className="text-2xl font-headline font-bold mb-6 text-foreground leading-tight uppercase tracking-tight">{adv.title}</h3>
-              <p className="text-muted-foreground text-base leading-relaxed font-light">{adv.desc}</p>
+              <h3 className="text-2xl font-headline font-bold mb-6 text-foreground leading-tight tracking-tight">
+                {adv.title}
+              </h3>
+              <p className="text-muted-foreground text-base leading-relaxed font-light whitespace-pre-line">
+                {adv.desc}
+              </p>
             </div>
           ))}
         </div>
