@@ -4,49 +4,49 @@
     {
       "id": "ceramic-tile-1",
       "description": "Premium ceramic tile texture 1",
-      "imageUrl": "https://picsum.photos/seed/tile101/800/800",
+      "imageUrl": "/imgs/ceramic-1.jpg",
       "imageHint": "porcelain tile"
     },
     {
       "id": "ceramic-tile-2",
       "description": "Premium ceramic tile texture 2",
-      "imageUrl": "https://picsum.photos/seed/tile102/800/800",
+      "imageUrl": "/imgs/ceramic-2.jpg",
       "imageHint": "marble tile"
     },
     {
       "id": "ceramic-tile-3",
       "description": "Premium ceramic tile texture 3",
-      "imageUrl": "https://picsum.photos/seed/tile103/800/800",
+      "imageUrl": "/imgs/ceramic-3.jpg",
       "imageHint": "stone tile"
     },
     {
       "id": "construction-site",
       "description": "Modern construction site with luxury materials",
-      "imageUrl": "https://picsum.photos/seed/const404/1200/800",
+      "imageUrl": "/imgs/construction.jpg",
       "imageHint": "construction site"
     },
     {
       "id": "logistics-hub",
       "description": "Global logistics terminal with containers",
-      "imageUrl": "https://picsum.photos/seed/log808/1200/800",
+      "imageUrl": "/imgs/logistics.jpg",
       "imageHint": "cargo containers"
     },
     {
       "id": "laminate-1",
       "description": "Premium wood laminate texture",
-      "imageUrl": "https://picsum.photos/seed/wood202/800/800",
+      "imageUrl": "/imgs/laminate-1.jpg",
       "imageHint": "wood laminate"
     },
     {
       "id": "sanitary-1",
       "description": "Modern luxury sanitary ware",
-      "imageUrl": "https://picsum.photos/seed/bath303/800/800",
+      "imageUrl": "/imgs/sanitary-1.jpg",
       "imageHint": "luxury bathroom"
     },
     {
       "id": "aerial-map",
       "description": "Top-down aerial view of building address",
-      "imageUrl": "https://picsum.photos/seed/map999/1600/900",
+      "imageUrl": "/imgs/map.jpg",
       "imageHint": "aerial city"
     },
     {

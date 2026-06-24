@@ -171,7 +171,7 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
                  className="text-4xl lg:text-7xl font-headline leading-[1] lg:leading-[0.9] uppercase tracking-tighter"
                  textAlign="left"
                />
-               <p className="text-xl lg:text-2xl text-muted-foreground font-light leading-relaxed max-w-xl">
+               <p className="text-xl lg:text-2xl text-muted-foreground font-light leading-relaxed max-wxl">
                  {activeTab === 'delivery' 
                    ? 'Мы берем на себя полную ответственность за ваш груз. От завода в Индии или Китае до вашего склада в России.' 
                    : (activeTab === 'keramogranit' 
