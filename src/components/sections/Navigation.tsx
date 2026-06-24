@@ -3,9 +3,11 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Menu, X, User } from "lucide-react";
+import { Menu, X, User, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ContentTab } from "@/app/page";
+import { useUser, useAuth } from "@/firebase";
+import { signOut } from "firebase/auth";
 
 interface NavigationProps {
   activeTab: ContentTab;
@@ -15,6 +17,8 @@ interface NavigationProps {
 export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user } = useUser();
+  const auth = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,6 +41,10 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
       setActiveTab(id as ContentTab);
     }
     setIsMobileMenuOpen(false);
+  };
+
+  const handleSignOut = () => {
+    signOut(auth);
   };
 
   return (
@@ -77,15 +85,36 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
         </div>
 
         <div className="hidden lg:flex items-center shrink-0">
-          <Button 
-            variant="outline" 
-            className="text-[11px] font-bold text-white border-white hover:bg-white/10 uppercase tracking-[0.2em] rounded-none px-8 h-14 ml-[50px] bg-transparent"
-          >
-            <User className="mr-2 h-4 w-4" /> Войти
-          </Button>
-          <Button className="rounded-none bg-primary hover:bg-primary/90 px-8 h-14 font-bold text-[11px] uppercase tracking-[0.3em] text-white ml-6">
-            Регистрация
-          </Button>
+          {user && !user.isAnonymous ? (
+             <div className="flex items-center gap-6">
+                <span className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">
+                  {user.email}
+                </span>
+                <Button 
+                  onClick={handleSignOut}
+                  variant="ghost" 
+                  className="text-[10px] font-bold text-white hover:bg-white/10 uppercase tracking-[0.2em] rounded-none px-4 h-14 ml-[20px] bg-transparent"
+                >
+                  <LogOut className="mr-2 h-4 w-4" /> Выйти
+                </Button>
+             </div>
+          ) : (
+            <>
+              <Link href="/login">
+                <Button 
+                  variant="outline" 
+                  className="text-[11px] font-bold text-white border-white hover:bg-white/10 uppercase tracking-[0.2em] rounded-none px-8 h-14 ml-[50px] bg-transparent"
+                >
+                  <User className="mr-2 h-4 w-4" /> Войти
+                </Button>
+              </Link>
+              <Link href="/register">
+                <Button className="rounded-none bg-primary hover:bg-primary/90 px-8 h-14 font-bold text-[11px] uppercase tracking-[0.3em] text-white ml-6">
+                  Регистрация
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
 
         <button 
@@ -116,8 +145,21 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
               </button>
             ))}
             <div className="pt-8 flex flex-col gap-4">
-              <Button variant="outline" className="h-16 rounded-none border-white text-white uppercase tracking-widest text-xs">Войти</Button>
-              <Button className="h-16 rounded-none bg-primary text-white uppercase tracking-widest text-xs">Регистрация</Button>
+              {user && !user.isAnonymous ? (
+                <>
+                  <div className="text-center py-4 text-muted-foreground text-xs uppercase tracking-widest">{user.email}</div>
+                  <Button onClick={handleSignOut} variant="outline" className="h-16 rounded-none border-white text-white uppercase tracking-widest text-xs">Выйти</Button>
+                </>
+              ) : (
+                <>
+                  <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
+                    <Button variant="outline" className="w-full h-16 rounded-none border-white text-white uppercase tracking-widest text-xs">Войти</Button>
+                  </Link>
+                  <Link href="/register" onClick={() => setIsMobileMenuOpen(false)}>
+                    <Button className="w-full h-16 rounded-none bg-primary text-white uppercase tracking-widest text-xs">Регистрация</Button>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
