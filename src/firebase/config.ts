@@ -1,5 +1,10 @@
+
 'use client';
 
+/**
+ * Firebase configuration object.
+ * When deploying to Netlify, ensure these environment variables are set in the Netlify UI.
+ */
 export const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "fallback-api-key",
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "nextn-9002.firebaseapp.com",
