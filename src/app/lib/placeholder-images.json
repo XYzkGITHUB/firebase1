@@ -14,6 +14,12 @@
       "imageHint": "marble texture"
     },
     {
+      "id": "tiles-tertiary",
+      "description": "Additional tile samples",
+      "imageUrl": "/imgs/inside-store-tiles3.jpeg",
+      "imageHint": "tile textures"
+    },
+    {
       "id": "laminat-primary",
       "description": "Premium laminate flooring",
       "imageUrl": "/imgs/inside-store-laminat.jpeg",
@@ -60,6 +66,30 @@
       "description": "Showroom entrance nighttime",
       "imageUrl": "/imgs/outside-store-frontview-nighttime.jpeg",
       "imageHint": "illuminated building"
+    },
+    {
+      "id": "store-faraway",
+      "description": "Showroom distant view",
+      "imageUrl": "/imgs/outside-store-abitfaraway-daylight.jpeg",
+      "imageHint": "building distance"
+    },
+    {
+      "id": "store-logo-place",
+      "description": "Showroom logo area",
+      "imageUrl": "/imgs/inside-store-aplacewithIRGGlogo.jpeg",
+      "imageHint": "logo wall"
+    },
+    {
+      "id": "store-random",
+      "description": "Random store place",
+      "imageUrl": "/imgs/inside-store-random-place.jpeg",
+      "imageHint": "interior space"
+    },
+    {
+      "id": "sideview-night",
+      "description": "Side view at night",
+      "imageUrl": "/imgs/outside-store-sideview-nighttime.jpeg",
+      "imageHint": "night building"
     }
   ]
 }

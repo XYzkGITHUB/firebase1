@@ -41,6 +41,7 @@ function InteractiveImage({ primaryImage, secondaryImage, label }: { primaryImag
                 src={primaryImage.imageUrl}
                 alt={label}
                 fill
+                unoptimized
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
                 data-ai-hint={primaryImage.imageHint}
                 sizes="(max-width: 768px) 100vw, 50vw"
@@ -62,6 +63,7 @@ function InteractiveImage({ primaryImage, secondaryImage, label }: { primaryImag
                 src={secondaryImage.imageUrl}
                 alt={`${label} hover view`}
                 fill
+                unoptimized
                 className="object-cover"
                 data-ai-hint={secondaryImage.imageHint}
                 sizes="(max-width: 768px) 100vw, 50vw"
@@ -133,7 +135,7 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
     if (activeTab === 'keramogranit') {
       return {
         primary: PlaceHolderImages.find(i => i.id === "tiles-primary"),
-        secondary: PlaceHolderImages.find(i => i.id === "tiles-secondary"),
+        secondary: PlaceHolderImages.find(i => i.id === "tiles-tertiary"),
         label: "Керамогранит"
       };
     }
@@ -170,7 +172,7 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
           <SplitText
             text={activeTab === 'delivery' ? "Что мы гарантируем при доставке" : (activeTab === 'contacts' ? "Сервис и поддержка" : "Что вы получаете, выбирая нас")}
             tag="h2"
-            className="text-2xl md:text-3xl font-headline mb-12 lg:mb-16 uppercase tracking-tighter"
+            className="text-2xl md:text-4xl font-headline mb-12 lg:mb-16 uppercase tracking-tighter"
             textAlign="left"
           />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-12">
@@ -180,8 +182,8 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
                   <Check className="w-5 h-5 text-primary group-hover:text-white transition-colors" />
                 </div>
                 <div className="space-y-2">
-                  <h4 className="font-bold text-lg md:text-xl tracking-tight group-hover:text-primary transition-colors">{item.title}</h4>
-                  <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{item.desc}</p>
+                  <h4 className="font-bold text-xl tracking-tight group-hover:text-primary transition-colors">{item.title}</h4>
+                  <p className="text-base text-muted-foreground leading-relaxed">{item.desc}</p>
                 </div>
               </div>
             ))}
@@ -199,7 +201,7 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
                  className="text-2xl md:text-4xl leading-[1.1] uppercase tracking-tighter"
                  textAlign="left"
                />
-               <p className="text-base text-muted-foreground font-light leading-relaxed max-w-xl">
+               <p className="text-lg text-muted-foreground font-light leading-relaxed max-w-xl">
                  {activeTab === 'delivery' 
                    ? 'Мы берем на себя полную ответственность за ваш груз. От завода в Индии или Китае до вашего склада в России.' 
                    : (activeTab === 'keramogranit' 
