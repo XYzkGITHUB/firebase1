@@ -48,6 +48,18 @@
       "description": "Top-down aerial view of building address",
       "imageUrl": "https://picsum.photos/seed/map999/1600/900",
       "imageHint": "aerial city"
+    },
+    {
+      "id": "store-daytime",
+      "description": "IRGG Store daytime view",
+      "imageUrl": "https://picsum.photos/seed/daystore/1200/800",
+      "imageHint": "luxury storefront"
+    },
+    {
+      "id": "store-nighttime",
+      "description": "IRGG Store night view",
+      "imageUrl": "https://picsum.photos/seed/nightstore/1200/800",
+      "imageHint": "illuminated shop"
     }
   ]
 }

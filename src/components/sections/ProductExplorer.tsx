@@ -1,16 +1,79 @@
 
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Download, Check, HelpCircle, Truck, MapPin, ArrowRight } from "lucide-react";
+import { Download, Check, HelpCircle, Truck, MapPin, ArrowRight, Eye } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { ContentTab } from "@/app/page";
 import SplitText from "@/components/ui/split-text";
+import { PlaceHolderImages } from "@/lib/placeholder-images";
+import Image from "next/image";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 
 interface ProductExplorerProps {
   activeTab: ContentTab;
   setActiveTab?: (tab: ContentTab) => void;
+}
+
+function InteractiveImage({ image, label }: { image: any; label: string }) {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const mouseXSpring = useSpring(x);
+  const mouseYSpring = useSpring(y);
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    const xPct = (mouseX / width) - 0.5;
+    const yPct = (mouseY / height) - 0.5;
+
+    x.set(xPct);
+    y.set(yPct);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div 
+      style={{
+        rotateX,
+        rotateY,
+        transformStyle: "preserve-3d",
+      }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="relative w-full aspect-[4/3] group cursor-none perspective-[1000px]"
+    >
+      <div className="absolute inset-0 bg-primary/20 blur-3xl opacity-0 group-hover:opacity-40 transition-opacity duration-700" />
+      <div className="relative w-full h-full overflow-hidden border border-white/10 bg-card/50 shadow-2xl">
+        <Image 
+          src={image?.imageUrl || "https://picsum.photos/seed/fallback/800/600"}
+          alt={label}
+          fill
+          className="object-cover transition-transform duration-700 group-hover:scale-110"
+          data-ai-hint={image?.imageHint || "store view"}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="absolute bottom-6 left-6 translate-z-[50px] opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
+          <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-white bg-primary px-4 py-2">
+            {label}
+          </span>
+        </div>
+      </div>
+    </motion.div>
+  );
 }
 
 export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProps) {
@@ -53,6 +116,8 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
   }
 
   const currentCheck = getCheck();
+  const dayStoreImage = PlaceHolderImages.find(img => img.id === "store-daytime");
+  const nightStoreImage = PlaceHolderImages.find(img => img.id === "store-nighttime");
 
   const handleLearnAboutShipping = () => {
     if (setActiveTab) {
@@ -95,7 +160,7 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
                  <TextHoverEffect text="IRGG" />
                </div>
                <SplitText
-                 text={activeTab === 'delivery' ? 'Надежная доставка грузов' : (activeTab === 'keramogranit' ? 'Выбор керамогранита' : (activeTab === 'contacts' ? 'Свяжитесь с нами' : 'Ламинат и SPS-покрытия'))}
+                 text={activeTab === 'delivery' ? 'Надежная доставка грузов' : (activeTab === 'keramogranit' ? 'Выбор керамогранита' : (activeTab === 'contacts' ? 'Вид нашего шоурума' : 'Ламинат и SPS-покрытия'))}
                  tag="h2"
                  className="text-4xl lg:text-7xl font-headline leading-[1] lg:leading-[0.9] uppercase tracking-tighter"
                  textAlign="left"
@@ -106,7 +171,7 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
                    : (activeTab === 'keramogranit' 
                      ? 'Мы поставляем керамогранит практически без ограничений по формату и дизайну под ваши требования.' 
                      : (activeTab === 'contacts' 
-                       ? 'Наш центральный офис расположен в Чеченской Республике. Мы работаем с клиентами по всей России и СНГ.' 
+                       ? 'Посетите наш шоурум в Бено-Юрт, чтобы лично оценить качество материалов и получить консультацию.' 
                        : 'Под проекты любого масштаба — от регулярных заказов до комплексных поставок.'))}
                </p>
              </div>
@@ -126,18 +191,24 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
                 )}
              </div>
           </div>
-          <div className="aspect-square bg-card/30 border border-white/5 flex flex-col items-center justify-center text-muted-foreground relative group overflow-hidden shadow-2xl">
-             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-             {activeTab === 'delivery' ? (
-                <Truck className="w-16 h-16 lg:w-24 lg:h-24 mb-6 opacity-20 group-hover:scale-110 transition-transform duration-700" />
-             ) : (
-                activeTab === 'contacts' ? (
-                  <MapPin className="w-16 h-16 lg:w-24 lg:h-24 mb-6 opacity-20 group-hover:scale-110 transition-transform duration-700" />
+
+          <div className="space-y-8">
+            {activeTab === 'contacts' ? (
+              <div className="grid grid-cols-1 gap-8">
+                <InteractiveImage image={dayStoreImage} label="Дневной вид (Daytime)" />
+                <InteractiveImage image={nightStoreImage} label="Ночной вид (Nighttime)" />
+              </div>
+            ) : (
+              <div className="aspect-square bg-card/30 border border-white/5 flex flex-col items-center justify-center text-muted-foreground relative group overflow-hidden shadow-2xl">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                {activeTab === 'delivery' ? (
+                    <Truck className="w-16 h-16 lg:w-24 lg:h-24 mb-6 opacity-20 group-hover:scale-110 transition-transform duration-700" />
                 ) : (
                   <HelpCircle className="w-16 h-16 lg:w-24 lg:h-24 mb-6 opacity-20 group-hover:scale-110 transition-transform duration-700" />
-                )
-             )}
-             <span className="text-[10px] uppercase tracking-[0.5em] opacity-40 font-bold">Image is coming soon</span>
+                )}
+                <span className="text-[10px] uppercase tracking-[0.5em] opacity-40 font-bold">Image is coming soon</span>
+              </div>
+            )}
           </div>
         </div>
       </div>
