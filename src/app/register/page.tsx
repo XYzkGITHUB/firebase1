@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -9,8 +8,9 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
-import { UserPlus, Loader2, ArrowLeft } from "lucide-react";
+import { UserPlus, ArrowLeft } from "lucide-react";
 import { TypingAnimation } from "@/components/ui/typing-animation";
+import { LuxuryLoader } from "@/components/ui/luxury-loader";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
@@ -45,13 +45,14 @@ export default function RegisterPage() {
         title: "Ошибка регистрации",
         description: error.message || "Не удалось создать аккаунт.",
       });
-    } finally {
       setIsLoading(false);
     }
   };
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-background p-6">
+      <LuxuryLoader isVisible={isLoading} />
+
       <div className="absolute top-8 left-8">
         <Link href="/" className="flex items-center text-muted-foreground hover:text-primary transition-colors gap-2 uppercase tracking-widest text-[10px] font-bold">
           <ArrowLeft size={16} /> Назад на сайт
@@ -100,7 +101,7 @@ export default function RegisterPage() {
               className="w-full h-14 bg-primary text-white font-bold uppercase tracking-widest text-xs"
               disabled={isLoading}
             >
-              {isLoading ? <Loader2 className="animate-spin" /> : <UserPlus className="mr-2 h-4 w-4" />}
+              <UserPlus className="mr-2 h-4 w-4" />
               Создать аккаунт
             </Button>
             <div className="text-center">

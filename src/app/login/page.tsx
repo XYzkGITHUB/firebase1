@@ -8,8 +8,9 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
-import { LogIn, Loader2, ArrowLeft } from "lucide-react";
+import { LogIn, ArrowLeft } from "lucide-react";
 import { TypingAnimation } from "@/components/ui/typing-animation";
+import { LuxuryLoader } from "@/components/ui/luxury-loader";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -44,13 +45,14 @@ export default function LoginPage() {
         title: "Ошибка входа",
         description: "Неверный email или пароль.",
       });
-    } finally {
       setIsLoading(false);
     }
   };
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-background p-6">
+      <LuxuryLoader isVisible={isLoading} />
+      
       <div className="absolute top-8 left-8">
         <Link href="/" className="flex items-center text-muted-foreground hover:text-primary transition-colors gap-2 uppercase tracking-widest text-[10px] font-bold">
           <ArrowLeft size={16} /> Назад на сайт
@@ -99,7 +101,7 @@ export default function LoginPage() {
               className="w-full h-14 bg-primary text-white font-bold uppercase tracking-widest text-xs"
               disabled={isLoading}
             >
-              {isLoading ? <Loader2 className="animate-spin" /> : <LogIn className="mr-2 h-4 w-4" />}
+              <LogIn className="mr-2 h-4 w-4" />
               Войти
             </Button>
             <div className="text-center">
