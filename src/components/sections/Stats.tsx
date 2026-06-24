@@ -4,7 +4,6 @@ import React from "react";
 import { Handshake, Construction, ShieldCheck, Layers, Package, TrendingUp, Factory, Globe, Clock, ShieldAlert, Phone, Mail, MapPin } from "lucide-react";
 import { ContentTab } from "@/app/page";
 import SplitText from "@/components/ui/split-text";
-import { ZoomGlobe } from "@/components/ui/zoom-globe";
 
 interface StatsProps {
   activeTab: ContentTab;
@@ -154,7 +153,21 @@ export function Stats({ activeTab }: StatsProps) {
                 </p>
               </div>
             </div>
-            <ZoomGlobe />
+            
+            <div className="relative w-full h-[500px] mt-12 bg-card/20 border border-white/5 overflow-hidden shadow-2xl">
+              <div className="absolute inset-0 grayscale invert contrast-125 opacity-70 pointer-events-auto">
+                <iframe
+                  src="https://yandex.ru/map-widget/v1/?text=%D0%A7%D0%B5%D1%87%D0%B5%D0%BD%D1%81%D0%BA%D0%B0%D1%8F%20%D1%80%D0%B5%D1%81%D0%BF%D1%83%D0%B1%D0%BB%D0%B8%D0%BA%D0%B0%2C%20%D1%81.%20%D0%AD%D0%BB%D0%B8%D0%BD-%D0%AE%D1%80%D1%82%2C%20%D1%83%D0%BB.%20%D0%A2%D0%BE%D1%80%D0%B3%D0%BE%D0%B2%D0%B0%D1%8F%2C%20185&z=16&l=map"
+                  width="100%"
+                  height="100%"
+                  frameBorder="0"
+                  allowFullScreen={true}
+                  className="w-full h-full"
+                ></iframe>
+              </div>
+              {/* Overlay for aesthetic interaction */}
+              <div className="absolute inset-0 pointer-events-none border border-white/5 shadow-[inset_0_0_100px_rgba(0,0,0,0.5)]"></div>
+            </div>
           </div>
         )}
       </div>
