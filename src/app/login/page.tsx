@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -34,11 +35,14 @@ export default function LoginPage() {
     setIsLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      toast({
-        title: "Успешный вход",
-        description: "Добро пожаловать в IRGG Luxe Surface.",
-      });
-      router.push("/");
+      // Give the loader enough time to show the cinematic effect
+      setTimeout(() => {
+        toast({
+          title: "Успешный вход",
+          description: "Добро пожаловать в IRGG Luxe Surface.",
+        });
+        router.push("/");
+      }, 1500);
     } catch (error: any) {
       toast({
         variant: "destructive",

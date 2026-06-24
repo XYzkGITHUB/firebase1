@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useMemo } from 'react';
@@ -28,13 +29,14 @@ export function LuxuryLoader({ isVisible }: LuxuryLoaderProps) {
   const containerStyle: React.CSSProperties = {
     position: 'relative',
     display: 'inline-block',
-    fontSize: '5rem',
+    fontSize: '6rem',
     fontWeight: '900',
-    fontFamily: '"Playfair Display", serif',
-    letterSpacing: '0.15em', // Added spacing per user request
+    fontFamily: '"Inter", sans-serif',
+    letterSpacing: '0.4em', // High letter spacing for luxury feel
     color: faintBeige,
     lineHeight: '1',
-    userSelect: 'none'
+    userSelect: 'none',
+    textAlign: 'center'
   };
 
   const overlayStyle: React.CSSProperties = {
@@ -50,7 +52,7 @@ export function LuxuryLoader({ isVisible }: LuxuryLoaderProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-background/95 backdrop-blur-sm animate-in fade-in duration-300">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-background/98 backdrop-blur-md animate-in fade-in duration-300">
       <style>{styles}</style>
       
       <div style={containerStyle}>

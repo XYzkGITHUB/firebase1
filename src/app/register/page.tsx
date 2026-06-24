@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -34,11 +35,14 @@ export default function RegisterPage() {
     setIsLoading(true);
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      toast({
-        title: "Регистрация успешна",
-        description: "Добро пожаловать в команду IRGG.",
-      });
-      router.push("/");
+      // Give the loader enough time to show the cinematic effect
+      setTimeout(() => {
+        toast({
+          title: "Регистрация успешна",
+          description: "Добро пожаловать в команду IRGG.",
+        });
+        router.push("/");
+      }, 1500);
     } catch (error: any) {
       toast({
         variant: "destructive",
