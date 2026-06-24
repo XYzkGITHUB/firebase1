@@ -83,7 +83,7 @@ export function Stats({ activeTab }: StatsProps) {
   const contactsAdv = [
     {
       icon: <Phone className="w-10 h-10 text-primary" />,
-      title: "Номера телефонов",
+      title: "Телефон",
       desc: "• +7 989 919 95 41\n\n• +7 989 937 41 11",
     },
     {
@@ -94,7 +94,7 @@ export function Stats({ activeTab }: StatsProps) {
     {
       icon: <MapPin className="w-10 h-10 text-primary" />,
       title: "Наш адрес",
-      desc: "• Чеченская Республика\n\n• Торговая улица, 185",
+      desc: "• Торговая улица, 185\n\n• с. Элин-Юрт",
     },
     {
       icon: <Clock className="w-10 h-10 text-primary" />,
@@ -138,7 +138,25 @@ export function Stats({ activeTab }: StatsProps) {
           ))}
         </div>
 
-        {activeTab === 'contacts' && <ZoomGlobe />}
+        {activeTab === 'contacts' && (
+          <div className="mt-40 animate-in fade-in slide-in-from-bottom-10 duration-1000">
+            <div className="mb-16 text-center space-y-6">
+              <SplitText
+                text="Где мы находимся?"
+                tag="h2"
+                className="text-3xl md:text-6xl font-headline uppercase tracking-tighter"
+                textAlign="center"
+              />
+              <div className="flex flex-col items-center gap-2">
+                <div className="h-[1px] w-24 bg-primary/40" />
+                <p className="text-muted-foreground font-light uppercase tracking-[0.4em] text-[10px] max-w-md">
+                  Чеченская Республика, с. Элин-Юрт, ул. Торговая, 185
+                </p>
+              </div>
+            </div>
+            <ZoomGlobe />
+          </div>
+        )}
       </div>
     </section>
   );
