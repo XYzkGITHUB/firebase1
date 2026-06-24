@@ -91,11 +91,6 @@ export function Stats({ activeTab }: StatsProps) {
       desc: "• irggimport@bk.ru",
     },
     {
-      icon: <MapPin className="w-10 h-10 text-primary" />,
-      title: "Наш адрес",
-      desc: "• Чеченская Республика, с. Элин-Юрт, Торговая, 185",
-    },
-    {
       icon: <Clock className="w-10 h-10 text-primary" />,
       title: "График работы",
       desc: "• Круглосуточно 24/7\n\n• WhatsApp / Telegram",
@@ -110,20 +105,21 @@ export function Stats({ activeTab }: StatsProps) {
   }
 
   const currentAdv = getAdv();
+  const isContacts = activeTab === 'contacts';
 
   return (
     <section className="py-32 px-8 bg-card/10 border-y border-white/5">
       <div className="max-w-[1600px] mx-auto">
         <div className="mb-24 text-center">
           <SplitText
-            text={activeTab === 'delivery' ? "Надежная логистика под ключ" : (activeTab === 'contacts' ? "Как с нами связаться" : "Наши главные преимущества")}
+            text={activeTab === 'delivery' ? "Надежная логистика под ключ" : (isContacts ? "Как с нами связаться" : "Наши главные преимущества")}
             tag="h2"
             className="text-4xl md:text-5xl font-headline max-w-5xl mx-auto leading-tight tracking-tighter"
             textAlign="center"
           />
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+        <div className={`grid grid-cols-1 md:grid-cols-2 ${isContacts ? 'lg:grid-cols-3' : 'lg:grid-cols-4'} gap-12`}>
           {currentAdv.map((adv, idx) => (
             <div key={idx} className="relative p-12 border border-white/5 bg-card/30 hover:bg-card/50 hover:border-primary/40 transition-all duration-700 group overflow-hidden">
               <div className="mb-10 transform transition-transform group-hover:scale-110 duration-500">{adv.icon}</div>
@@ -137,7 +133,7 @@ export function Stats({ activeTab }: StatsProps) {
           ))}
         </div>
 
-        {activeTab === 'contacts' && (
+        {isContacts && (
           <div className="mt-40 animate-in fade-in slide-in-from-bottom-10 duration-1000">
             <div className="mb-16 text-center space-y-6">
               <SplitText
