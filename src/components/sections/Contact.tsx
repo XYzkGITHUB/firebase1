@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -65,24 +64,22 @@ export function Contact({ activeTab }: ContactProps) {
     setIsSubmitting(true);
     
     try {
-      // Step 1: Ensure Auth is active (Requires "Anonymous" enabled in Firebase Console)
+      // Ensure Anonymous Auth is active
       if (!user) {
         try {
           await signInAnonymously(auth);
         } catch (authError: any) {
           console.error("Auth failed:", authError);
-          // If auth fails, we show a descriptive toast. Most common cause is "Anonymous provider disabled".
           toast({
             variant: "destructive",
             title: "Authentication Failed",
-            description: "Please enable 'Anonymous Authentication' in your Firebase Console.",
+            description: "Please enable 'Anonymous Authentication' in your Firebase Console (Authentication > Sign-in method).",
           });
           setIsSubmitting(false);
           return;
         }
       }
 
-      // Step 2: Prepare the data
       const leadData = {
         name: formData.name,
         phone: formData.phone,
@@ -93,12 +90,11 @@ export function Contact({ activeTab }: ContactProps) {
 
       const leadsRef = collection(db, "leads");
 
-      // Step 3: Write to Firestore (Don't use await directly for optimistic UI)
       addDoc(leadsRef, leadData)
         .then(() => {
           toast({
             title: "Request Received",
-            description: "Our manager will contact you shortly.",
+            description: "Our manager will contact you shortly. Check your Firestore console!",
           });
           setFormData({ name: "", phone: "", message: "" });
         })
@@ -119,7 +115,7 @@ export function Contact({ activeTab }: ContactProps) {
       toast({
         variant: "destructive",
         title: "Submission Error",
-        description: "An unexpected error occurred. Please check console.",
+        description: "An unexpected error occurred. Check the console for details.",
       });
       setIsSubmitting(false);
     }
