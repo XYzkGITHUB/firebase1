@@ -37,7 +37,7 @@ export function Stats({ activeTab }: StatsProps) {
     {
       icon: <Package className="w-10 h-10 text-primary" />,
       title: "Опыт работы с крупными поставками",
-      desc: "Работаем с регулярными и этапными отгрузками для разных типов проектов.",
+      desc: "Работаем with регулярными и этапными отгрузками для разных типов проектов.",
     },
     {
       icon: <TrendingUp className="w-10 h-10 text-primary" />,
@@ -93,7 +93,7 @@ export function Stats({ activeTab }: StatsProps) {
     {
       icon: <MapPin className="w-10 h-10 text-primary" />,
       title: "Наш адрес",
-      desc: "• Торговая улица, 185\n\n• с. Элин-Юрт",
+      desc: "• Торговая, 185",
     },
     {
       icon: <Clock className="w-10 h-10 text-primary" />,
@@ -149,7 +149,7 @@ export function Stats({ activeTab }: StatsProps) {
               <div className="flex flex-col items-center gap-2">
                 <div className="h-[1px] w-24 bg-primary/40" />
                 <p className="text-muted-foreground font-light uppercase tracking-[0.4em] text-[10px] max-w-md">
-                  Чеченская Республика, с. Элин-Юрт, ул. Торговая, 185
+                  Торговая, 185
                 </p>
               </div>
             </div>
@@ -165,7 +165,6 @@ export function Stats({ activeTab }: StatsProps) {
                   className="w-full h-full"
                 ></iframe>
               </div>
-              {/* Overlay for aesthetic interaction */}
               <div className="absolute inset-0 pointer-events-none border border-white/5 shadow-[inset_0_0_100px_rgba(0,0,0,0.5)]"></div>
             </div>
           </div>
