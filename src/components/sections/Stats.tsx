@@ -93,7 +93,7 @@ export function Stats({ activeTab }: StatsProps) {
     {
       icon: <MapPin className="w-10 h-10 text-primary" />,
       title: "Наш адрес",
-      desc: "• Торговая, 185",
+      desc: "• Чеченская Республика, с. Элин-Юрт, Торговая, 185",
     },
     {
       icon: <Clock className="w-10 h-10 text-primary" />,
@@ -148,8 +148,8 @@ export function Stats({ activeTab }: StatsProps) {
               />
               <div className="flex flex-col items-center gap-2">
                 <div className="h-[1px] w-24 bg-primary/40" />
-                <p className="text-muted-foreground font-light uppercase tracking-[0.4em] text-[10px] max-w-md">
-                  Торговая, 185
+                <p className="text-muted-foreground font-light uppercase tracking-[0.4em] text-[10px] max-w-2xl text-center">
+                  Чеченская Республика, с. Элин-Юрт, Торговая, 185
                 </p>
               </div>
             </div>
