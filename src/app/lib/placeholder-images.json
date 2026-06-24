@@ -2,88 +2,64 @@
 {
   "placeholderImages": [
     {
-      "id": "tiles-1",
-      "description": "Premium porcelain tiles display",
+      "id": "tiles-primary",
+      "description": "Premium porcelain tiles",
       "imageUrl": "/imgs/inside-store-tiles.jpeg",
       "imageHint": "porcelain tiles"
     },
     {
-      "id": "tiles-2",
-      "description": "Marble texture tiles",
+      "id": "tiles-secondary",
+      "description": "Marble texture detail",
       "imageUrl": "/imgs/inside-store-tiles2.jpeg",
       "imageHint": "marble texture"
     },
     {
-      "id": "tiles-3",
-      "description": "Ceramic collection view",
-      "imageUrl": "/imgs/inside-store-tiles3.jpeg",
-      "imageHint": "ceramic collection"
-    },
-    {
-      "id": "laminate-1",
-      "description": "Wood laminate flooring display",
+      "id": "laminat-primary",
+      "description": "Premium laminate flooring",
       "imageUrl": "/imgs/inside-store-laminat.jpeg",
-      "imageHint": "wood laminate"
+      "imageHint": "wood flooring"
     },
     {
-      "id": "laminate-2",
-      "description": "SPS flooring samples",
+      "id": "laminat-secondary",
+      "description": "SPS flooring detail",
       "imageUrl": "/imgs/inside-store-laminat2.jpeg",
       "imageHint": "flooring samples"
     },
     {
-      "id": "sanitary-1",
-      "description": "Luxury sanitary ware section",
+      "id": "sanitary-primary",
+      "description": "Luxury sanitary ware",
       "imageUrl": "/imgs/inside-store-santehnika.jpeg",
       "imageHint": "luxury bathroom"
     },
     {
-      "id": "store-logo-interior",
-      "description": "IRGG Logo interior view",
-      "imageUrl": "/imgs/inside-store-aplacewithIRGGlogo.jpeg",
-      "imageHint": "store interior"
+      "id": "sanitary-secondary",
+      "description": "Store interior detail",
+      "imageUrl": "/imgs/inside-store-random2.jpeg",
+      "imageHint": "interior view"
     },
     {
-      "id": "store-day-1",
-      "description": "Showroom entrance daylight",
-      "imageUrl": "/imgs/outside-store-entrance-daylight.jpeg",
-      "imageHint": "showroom entrance"
-    },
-    {
-      "id": "store-day-far",
-      "description": "Showroom view from distance",
-      "imageUrl": "/imgs/outside-store-abitfaraway-daylight.jpeg",
-      "imageHint": "showroom exterior"
-    },
-    {
-      "id": "store-day-side",
-      "description": "Showroom side view daylight",
-      "imageUrl": "/imgs/outside-store-sideview-daylight.jpeg",
-      "imageHint": "building side"
-    },
-    {
-      "id": "store-day-top",
-      "description": "Showroom top view daylight",
+      "id": "delivery-primary",
+      "description": "Logistics hub aerial",
       "imageUrl": "/imgs/outside-store-topview-daylight.jpeg",
       "imageHint": "building top"
     },
     {
-      "id": "store-night-front",
-      "description": "Showroom front view nighttime",
+      "id": "delivery-secondary",
+      "description": "Logistics hub side view",
+      "imageUrl": "/imgs/outside-store-sideview-daylight.jpeg",
+      "imageHint": "building side"
+    },
+    {
+      "id": "contacts-primary",
+      "description": "Showroom entrance daytime",
+      "imageUrl": "/imgs/outside-store-entrance-daylight.jpeg",
+      "imageHint": "showroom exterior"
+    },
+    {
+      "id": "contacts-secondary",
+      "description": "Showroom entrance nighttime",
       "imageUrl": "/imgs/outside-store-frontview-nighttime.jpeg",
       "imageHint": "illuminated building"
-    },
-    {
-      "id": "store-night-side",
-      "description": "Showroom side view nighttime",
-      "imageUrl": "/imgs/outside-store-sideview-nighttime.jpeg",
-      "imageHint": "night building"
-    },
-    {
-      "id": "interior-random",
-      "description": "Showroom interior space",
-      "imageUrl": "/imgs/inside-store-random-place.jpeg",
-      "imageHint": "interior design"
     }
   ]
 }

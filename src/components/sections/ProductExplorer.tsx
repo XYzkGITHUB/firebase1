@@ -43,6 +43,8 @@ function InteractiveImage({ primaryImage, secondaryImage, label }: { primaryImag
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
                 data-ai-hint={primaryImage.imageHint}
+                sizes="(max-width: 768px) 100vw, 50vw"
+                priority
               />
             )}
           </motion.div>
@@ -62,6 +64,7 @@ function InteractiveImage({ primaryImage, secondaryImage, label }: { primaryImag
                 fill
                 className="object-cover"
                 data-ai-hint={secondaryImage.imageHint}
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
             )}
           </motion.div>
@@ -122,29 +125,29 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
   const getImages = () => {
     if (activeTab === 'contacts') {
       return {
-        primary: PlaceHolderImages.find(i => i.id === "store-day-1"),
-        secondary: PlaceHolderImages.find(i => i.id === "store-night-front"),
+        primary: PlaceHolderImages.find(i => i.id === "contacts-primary"),
+        secondary: PlaceHolderImages.find(i => i.id === "contacts-secondary"),
         label: "Наш шоурум"
       };
     }
     if (activeTab === 'keramogranit') {
       return {
-        primary: PlaceHolderImages.find(i => i.id === "tiles-1"),
-        secondary: PlaceHolderImages.find(i => i.id === "tiles-2"),
+        primary: PlaceHolderImages.find(i => i.id === "tiles-primary"),
+        secondary: PlaceHolderImages.find(i => i.id === "tiles-secondary"),
         label: "Керамогранит"
       };
     }
     if (activeTab === 'laminate_sps') {
       return {
-        primary: PlaceHolderImages.find(i => i.id === "laminate-1"),
-        secondary: PlaceHolderImages.find(i => i.id === "laminate-2"),
+        primary: PlaceHolderImages.find(i => i.id === "laminat-primary"),
+        secondary: PlaceHolderImages.find(i => i.id === "laminat-secondary"),
         label: "Ламинат и SPS"
       };
     }
     if (activeTab === 'delivery') {
       return {
-        primary: PlaceHolderImages.find(i => i.id === "store-day-top"),
-        secondary: PlaceHolderImages.find(i => i.id === "store-day-side"),
+        primary: PlaceHolderImages.find(i => i.id === "delivery-primary"),
+        secondary: PlaceHolderImages.find(i => i.id === "delivery-secondary"),
         label: "Логистический узел"
       };
     }
@@ -163,40 +166,40 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
   return (
     <section className="py-24 lg:py-32 px-6 lg:px-8 bg-background">
       <div className="max-w-[1600px] mx-auto">
-        <div className="mb-24 lg:mb-40">
+        <div className="mb-20 lg:mb-32">
           <SplitText
             text={activeTab === 'delivery' ? "Что мы гарантируем при доставке" : (activeTab === 'contacts' ? "Сервис и поддержка" : "Что вы получаете, выбирая нас")}
             tag="h2"
-            className="text-2xl lg:text-3xl font-headline mb-16 lg:mb-20 uppercase tracking-tighter"
+            className="text-xl lg:text-2xl font-headline mb-12 lg:mb-16 uppercase tracking-tighter"
             textAlign="left"
           />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 lg:gap-x-16 gap-y-10 lg:gap-y-12">
             {currentCheck.map((item, i) => (
               <div key={i} className="flex items-start gap-4 lg:gap-6 group">
-                <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1 transition-colors group-hover:bg-primary group-hover:text-white">
-                  <Check className="w-5 h-5 lg:w-6 lg:h-6 text-primary group-hover:text-white transition-colors" />
+                <div className="w-8 h-8 lg:w-9 lg:h-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1 transition-colors group-hover:bg-primary group-hover:text-white">
+                  <Check className="w-5 h-5 text-primary group-hover:text-white transition-colors" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-base lg:text-lg mb-2 tracking-tight group-hover:text-primary transition-colors">{item.title}</h4>
-                  <p className="text-sm lg:text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                  <h4 className="font-bold text-sm lg:text-base mb-1 tracking-tight group-hover:text-primary transition-colors">{item.title}</h4>
+                  <p className="text-xs lg:text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        <Separator className="bg-white/5 mb-24 lg:mb-32" />
+        <Separator className="bg-white/5 mb-20 lg:mb-24" />
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32 items-center">
-          <div className="space-y-8 lg:space-y-10">
-             <div className="space-y-6 lg:space-y-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+          <div className="space-y-8">
+             <div className="space-y-6">
                <SplitText
                  text={activeTab === 'delivery' ? 'Надежная доставка грузов' : (activeTab === 'keramogranit' ? 'Выбор керамогранита' : (activeTab === 'contacts' ? 'Наш шоурум' : 'Ламинат и SPS-покрытия'))}
                  tag="h2"
-                 className="text-2xl lg:text-3xl leading-[1.1] uppercase tracking-tighter"
+                 className="text-xl lg:text-2xl leading-[1.1] uppercase tracking-tighter"
                  textAlign="left"
                />
-               <p className="text-sm lg:text-base text-muted-foreground font-light leading-relaxed max-w-xl">
+               <p className="text-sm text-muted-foreground font-light leading-relaxed max-w-xl">
                  {activeTab === 'delivery' 
                    ? 'Мы берем на себя полную ответственность за ваш груз. От завода в Индии или Китае до вашего склада в России.' 
                    : (activeTab === 'keramogranit' 
@@ -206,18 +209,18 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
                        : 'Под проекты любого масштаба — от регулярных заказов до комплексных поставок.'))}
                </p>
              </div>
-             <div className="flex flex-col sm:flex-row gap-6">
-                <Button variant="outline" className="h-16 lg:h-18 px-8 lg:px-10 rounded-none border-primary/50 text-primary hover:bg-primary hover:text-white transition-all font-bold uppercase tracking-[0.3em] text-[10px] lg:text-[11px] w-full md:w-auto">
-                  <Download className="mr-3 h-5 w-5" />
-                  {activeTab === 'delivery' ? 'Прайс-лист на логистику' : (activeTab === 'contacts' ? 'Карточка реквизитов' : `Скачать каталог ${activeTab === 'keramogranit' ? 'керамогранита' : ''}`)}
+             <div className="flex flex-col sm:flex-row gap-4">
+                <Button variant="outline" className="h-14 lg:h-16 px-6 lg:px-8 rounded-none border-primary/50 text-primary hover:bg-primary hover:text-white transition-all font-bold uppercase tracking-[0.3em] text-[9px] lg:text-[10px] w-full md:w-auto">
+                  <Download className="mr-3 h-4 w-4" />
+                  {activeTab === 'delivery' ? 'Прайс-лист' : (activeTab === 'contacts' ? 'Реквизиты' : `Каталог`)}
                 </Button>
                 {activeTab === 'contacts' && (
                   <Button 
                     onClick={handleLearnAboutShipping}
-                    className="h-16 lg:h-18 px-8 lg:px-10 rounded-none bg-primary text-white hover:bg-primary/90 transition-all font-bold uppercase tracking-[0.3em] text-[10px] lg:text-[11px] w-full md:w-auto shadow-2xl group flex items-center justify-center"
+                    className="h-14 lg:h-16 px-6 lg:px-8 rounded-none bg-primary text-white hover:bg-primary/90 transition-all font-bold uppercase tracking-[0.3em] text-[9px] lg:text-[10px] w-full md:w-auto shadow-2xl group flex items-center justify-center"
                   >
                     <span>О логистике</span>
-                    <ArrowRight className="ml-3 h-5 w-5 transition-transform group-hover:translate-x-2" />
+                    <ArrowRight className="ml-3 h-4 w-4 transition-transform group-hover:translate-x-2" />
                   </Button>
                 )}
              </div>
@@ -233,8 +236,8 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
             ) : (
               <div className="aspect-[4/3] bg-card/30 border border-white/5 flex flex-col items-center justify-center text-muted-foreground relative group overflow-hidden shadow-2xl">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                <HelpCircle className="w-16 h-16 lg:w-20 mb-6 opacity-20" />
-                <span className="text-[10px] uppercase tracking-[0.5em] opacity-40 font-bold">Скоро здесь появятся фото</span>
+                <HelpCircle className="w-12 h-12 lg:w-16 mb-4 opacity-20" />
+                <span className="text-[9px] uppercase tracking-[0.5em] opacity-40 font-bold">Фото загружаются</span>
               </div>
             )}
           </div>
