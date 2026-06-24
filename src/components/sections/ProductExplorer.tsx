@@ -1,81 +1,78 @@
 
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Download, Check, HelpCircle, Truck, ArrowRight } from "lucide-react";
+import { Download, Check, HelpCircle, ArrowRight } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { ContentTab } from "@/app/page";
 import SplitText from "@/components/ui/split-text";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import Image from "next/image";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface ProductExplorerProps {
   activeTab: ContentTab;
   setActiveTab?: (tab: ContentTab) => void;
 }
 
-function InteractiveImage({ image, label }: { image: any; label: string }) {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const mouseXSpring = useSpring(x, { stiffness: 150, damping: 20 });
-  const mouseYSpring = useSpring(y, { stiffness: 150, damping: 20 });
-
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"]);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-
-    const xPct = (mouseX / width) - 0.5;
-    const yPct = (mouseY / height) - 0.5;
-
-    x.set(xPct);
-    y.set(yPct);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
+function InteractiveImage({ primaryImage, secondaryImage, label }: { primaryImage: any; secondaryImage: any; label: string }) {
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <motion.div 
-      style={{
-        rotateX,
-        rotateY,
-        transformStyle: "preserve-3d",
-      }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="relative w-full aspect-[4/3] group cursor-default perspective-[1000px]"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="relative w-full aspect-[4/3] group cursor-default overflow-hidden border border-white/10 bg-card/50 shadow-2xl"
     >
-      <div className="absolute inset-0 bg-primary/20 blur-3xl opacity-0 group-hover:opacity-40 transition-opacity duration-700" />
-      <div className="relative w-full h-full overflow-hidden border border-white/10 bg-card/50 shadow-2xl">
-        {image?.imageUrl ? (
-          <Image 
-            src={image.imageUrl}
-            alt={label}
-            fill
-            className="object-cover transition-transform duration-700 group-hover:scale-110"
-            data-ai-hint={image.imageHint}
-          />
+      <div className="absolute inset-0 bg-primary/10 blur-3xl opacity-0 group-hover:opacity-40 transition-opacity duration-700" />
+      
+      <AnimatePresence mode="wait">
+        {!isHovered ? (
+          <motion.div
+            key="primary"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6 }}
+            className="absolute inset-0"
+          >
+            {primaryImage?.imageUrl && (
+              <Image 
+                src={primaryImage.imageUrl}
+                alt={label}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                data-ai-hint={primaryImage.imageHint}
+              />
+            )}
+          </motion.div>
         ) : (
-          <div className="w-full h-full bg-muted flex items-center justify-center">
-             <span className="text-xs uppercase tracking-widest opacity-20">No Image</span>
-          </div>
+          <motion.div
+            key="secondary"
+            initial={{ opacity: 0, scale: 1.1 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.1 }}
+            transition={{ duration: 0.6 }}
+            className="absolute inset-0"
+          >
+            {secondaryImage?.imageUrl && (
+              <Image 
+                src={secondaryImage.imageUrl}
+                alt={`${label} hover view`}
+                fill
+                className="object-cover"
+                data-ai-hint={secondaryImage.imageHint}
+              />
+            )}
+          </motion.div>
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-        <div className="absolute bottom-6 left-6 translate-z-[50px] opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
-          <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-white bg-primary px-4 py-2">
-            {label}
-          </span>
-        </div>
+      </AnimatePresence>
+
+      <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="absolute bottom-6 left-6 z-10 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
+        <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-white bg-primary px-4 py-2">
+          {label}
+        </span>
       </div>
     </motion.div>
   );
@@ -122,36 +119,39 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
 
   const currentCheck = getCheck();
 
-  // Map images based on active tab
-  const getDisplayImages = () => {
+  const getImages = () => {
     if (activeTab === 'contacts') {
-      return [
-        { img: PlaceHolderImages.find(i => i.id === "store-day-1"), label: "Вход в шоурум" },
-        { img: PlaceHolderImages.find(i => i.id === "store-night-front"), label: "Вид ночью" }
-      ];
+      return {
+        primary: PlaceHolderImages.find(i => i.id === "store-day-1"),
+        secondary: PlaceHolderImages.find(i => i.id === "store-night-front"),
+        label: "Наш шоурум"
+      };
     }
     if (activeTab === 'keramogranit') {
-      return [
-        { img: PlaceHolderImages.find(i => i.id === "tiles-1"), label: "Коллекции" },
-        { img: PlaceHolderImages.find(i => i.id === "tiles-2"), label: "Текстуры" }
-      ];
+      return {
+        primary: PlaceHolderImages.find(i => i.id === "tiles-1"),
+        secondary: PlaceHolderImages.find(i => i.id === "tiles-2"),
+        label: "Керамогранит"
+      };
     }
     if (activeTab === 'laminate_sps') {
-      return [
-        { img: PlaceHolderImages.find(i => i.id === "laminate-1"), label: "Ламинат" },
-        { img: PlaceHolderImages.find(i => i.id === "laminate-2"), label: "SPS покрытия" }
-      ];
+      return {
+        primary: PlaceHolderImages.find(i => i.id === "laminate-1"),
+        secondary: PlaceHolderImages.find(i => i.id === "laminate-2"),
+        label: "Ламинат и SPS"
+      };
     }
     if (activeTab === 'delivery') {
-      return [
-        { img: PlaceHolderImages.find(i => i.id === "store-day-top"), label: "Логистический хаб" },
-        { img: PlaceHolderImages.find(i => i.id === "store-day-side"), label: "Отгрузка" }
-      ];
+      return {
+        primary: PlaceHolderImages.find(i => i.id === "store-day-top"),
+        secondary: PlaceHolderImages.find(i => i.id === "store-day-side"),
+        label: "Логистический узел"
+      };
     }
-    return [];
+    return null;
   };
 
-  const displayImages = getDisplayImages();
+  const currentImages = getImages();
 
   const handleLearnAboutShipping = () => {
     if (setActiveTab) {
@@ -167,7 +167,7 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
           <SplitText
             text={activeTab === 'delivery' ? "Что мы гарантируем при доставке" : (activeTab === 'contacts' ? "Сервис и поддержка" : "Что вы получаете, выбирая нас")}
             tag="h2"
-            className="text-2xl lg:text-4xl font-headline mb-16 lg:mb-20 uppercase tracking-tighter"
+            className="text-2xl lg:text-3xl font-headline mb-16 lg:mb-20 uppercase tracking-tighter"
             textAlign="left"
           />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 lg:gap-x-16 gap-y-10 lg:gap-y-12">
@@ -177,8 +177,8 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
                   <Check className="w-5 h-5 lg:w-6 lg:h-6 text-primary group-hover:text-white transition-colors" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-lg lg:text-xl mb-2 tracking-tight group-hover:text-primary transition-colors">{item.title}</h4>
-                  <p className="text-sm lg:text-base text-muted-foreground leading-relaxed">{item.desc}</p>
+                  <h4 className="font-bold text-base lg:text-lg mb-2 tracking-tight group-hover:text-primary transition-colors">{item.title}</h4>
+                  <p className="text-sm lg:text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
                 </div>
               </div>
             ))}
@@ -188,15 +188,15 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
         <Separator className="bg-white/5 mb-24 lg:mb-32" />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32 items-center">
-          <div className="space-y-8 lg:space-y-12">
-             <div className="space-y-6 lg:space-y-10">
+          <div className="space-y-8 lg:space-y-10">
+             <div className="space-y-6 lg:space-y-8">
                <SplitText
                  text={activeTab === 'delivery' ? 'Надежная доставка грузов' : (activeTab === 'keramogranit' ? 'Выбор керамогранита' : (activeTab === 'contacts' ? 'Наш шоурум' : 'Ламинат и SPS-покрытия'))}
                  tag="h2"
-                 className="text-3xl lg:text-5xl font-headline leading-[1] lg:leading-[1.1] uppercase tracking-tighter"
+                 className="text-3xl lg:text-4xl font-headline leading-[1.1] uppercase tracking-tighter"
                  textAlign="left"
                />
-               <p className="text-lg lg:text-xl text-muted-foreground font-light leading-relaxed max-w-xl">
+               <p className="text-base lg:text-lg text-muted-foreground font-light leading-relaxed max-w-xl">
                  {activeTab === 'delivery' 
                    ? 'Мы берем на себя полную ответственность за ваш груз. От завода в Индии или Китае до вашего склада в России.' 
                    : (activeTab === 'keramogranit' 
@@ -207,14 +207,14 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
                </p>
              </div>
              <div className="flex flex-col sm:flex-row gap-6">
-                <Button variant="outline" className="h-16 lg:h-20 px-8 lg:px-12 rounded-none border-primary/50 text-primary hover:bg-primary hover:text-white transition-all font-bold uppercase tracking-[0.3em] text-[10px] lg:text-[11px] w-full md:w-auto">
-                  <Download className="mr-3 h-5 w-5 lg:h-6 lg:w-6" />
-                  {activeTab === 'delivery' ? 'Прайс-лист на логистику' : (activeTab === 'contacts' ? 'Карточка реквизитов' : `Скачать каталог ${activeTab === 'keramogranit' ? 'керамогранита' : ''} (PDF)`)}
+                <Button variant="outline" className="h-16 lg:h-18 px-8 lg:px-10 rounded-none border-primary/50 text-primary hover:bg-primary hover:text-white transition-all font-bold uppercase tracking-[0.3em] text-[10px] lg:text-[11px] w-full md:w-auto">
+                  <Download className="mr-3 h-5 w-5" />
+                  {activeTab === 'delivery' ? 'Прайс-лист на логистику' : (activeTab === 'contacts' ? 'Карточка реквизитов' : `Скачать каталог ${activeTab === 'keramogranit' ? 'керамогранита' : ''}`)}
                 </Button>
                 {activeTab === 'contacts' && (
                   <Button 
                     onClick={handleLearnAboutShipping}
-                    className="h-16 lg:h-20 px-8 lg:px-12 rounded-none bg-primary text-white hover:bg-primary/90 transition-all font-bold uppercase tracking-[0.3em] text-[10px] lg:text-[11px] w-full md:w-auto shadow-2xl group flex items-center justify-center"
+                    className="h-16 lg:h-18 px-8 lg:px-10 rounded-none bg-primary text-white hover:bg-primary/90 transition-all font-bold uppercase tracking-[0.3em] text-[10px] lg:text-[11px] w-full md:w-auto shadow-2xl group flex items-center justify-center"
                   >
                     <span>О логистике</span>
                     <ArrowRight className="ml-3 h-5 w-5 transition-transform group-hover:translate-x-2" />
@@ -223,16 +223,18 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
              </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-8">
-            {displayImages.length > 0 ? (
-              displayImages.map((item, idx) => (
-                <InteractiveImage key={idx} image={item.img} label={item.label} />
-              ))
+          <div className="relative">
+            {currentImages ? (
+              <InteractiveImage 
+                primaryImage={currentImages.primary} 
+                secondaryImage={currentImages.secondary} 
+                label={currentImages.label} 
+              />
             ) : (
-              <div className="aspect-square bg-card/30 border border-white/5 flex flex-col items-center justify-center text-muted-foreground relative group overflow-hidden shadow-2xl">
+              <div className="aspect-[4/3] bg-card/30 border border-white/5 flex flex-col items-center justify-center text-muted-foreground relative group overflow-hidden shadow-2xl">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                <HelpCircle className="w-16 h-16 lg:w-24 lg:h-24 mb-6 opacity-20 group-hover:scale-110 transition-transform duration-700" />
-                <span className="text-[10px] uppercase tracking-[0.5em] opacity-40 font-bold">Image is coming soon</span>
+                <HelpCircle className="w-16 h-16 lg:w-20 mb-6 opacity-20" />
+                <span className="text-[10px] uppercase tracking-[0.5em] opacity-40 font-bold">Скоро здесь появятся фото</span>
               </div>
             )}
           </div>
