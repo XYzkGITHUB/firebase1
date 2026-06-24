@@ -3,10 +3,12 @@
 
 /**
  * Firebase configuration object.
- * When deploying to Netlify, ensure these environment variables are set in the Netlify UI.
+ * To make this work in production, ensure these environment variables are set in your Netlify UI
+ * or update the values here manually from your Firebase Console:
+ * Project Settings -> General -> Your Apps -> Firebase SDK snippet -> Config
  */
 export const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "fallback-api-key",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "replace-this-with-your-real-key",
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "nextn-9002.firebaseapp.com",
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "nextn-9002",
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "nextn-9002.firebasestorage.app",

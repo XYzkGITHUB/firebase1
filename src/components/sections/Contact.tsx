@@ -86,7 +86,7 @@ export function Contact({ activeTab }: ContactProps) {
   };
 
   return (
-    <section className="py-24 md:py-32 px-4 sm:px-8 bg-card/5 overflow-hidden">
+    <section className="py-24 md:py-32 px-4 sm:px-8 bg-card/5 overflow-hidden" id="contact-form">
       <div className="max-w-[1600px] mx-auto">
         <Separator className="bg-white/5 mb-16 md:mb-32" />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
