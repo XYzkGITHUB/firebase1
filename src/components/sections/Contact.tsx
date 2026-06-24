@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -31,11 +30,11 @@ export function Contact({ activeTab }: ContactProps) {
     message: "",
   });
 
-  // Background auth - don't block the UI with this
+  // Pre-authenticate in background for faster subsequent writes
   useEffect(() => {
     if (auth && !user) {
       signInAnonymously(auth).catch(() => {
-        // Silent fail, the rules 'allow create: if true' will still work
+        // Silent fail: Firestore rules 'allow create: if true' handles unauth writes if needed
       });
     }
   }, [auth, user]);
@@ -84,7 +83,7 @@ export function Contact({ activeTab }: ContactProps) {
 
     const leadsRef = collection(db, "leads");
 
-    // NON-BLOCKING: Initiate write and handle UI feedback via .then/.catch
+    // Instant write: initiating without blocking the main thread
     addDoc(leadsRef, leadData)
       .then(() => {
         toast({
@@ -95,9 +94,7 @@ export function Contact({ activeTab }: ContactProps) {
         setIsSubmitting(false);
       })
       .catch((error: any) => {
-        console.error("Firestore Write Error:", error);
-        
-        // Emit rich error for developer feedback
+        // Emit rich error for developer feedback if security rules deny the write
         const permissionError = new FirestorePermissionError({
           path: leadsRef.path,
           operation: "create",
