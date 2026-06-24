@@ -2,7 +2,7 @@
 
 /**
  * Firebase configuration object.
- * The projectId has been updated to match your console: 'flam-next-js'
+ * Updated to match your project ID: 'flam-next-js'
  */
 export const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "AIzaSyD-placeholder-key",

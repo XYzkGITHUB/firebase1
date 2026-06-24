@@ -64,20 +64,9 @@ export function Contact({ activeTab }: ContactProps) {
     setIsSubmitting(true);
     
     try {
-      // Ensure Anonymous Auth is active
+      // Ensure Anonymous Auth is active to prevent permission errors
       if (!user) {
-        try {
-          await signInAnonymously(auth);
-        } catch (authError: any) {
-          console.error("Auth failed:", authError);
-          toast({
-            variant: "destructive",
-            title: "Authentication Failed",
-            description: "Please enable 'Anonymous Authentication' in your Firebase Console (Authentication > Sign-in method).",
-          });
-          setIsSubmitting(false);
-          return;
-        }
+        await signInAnonymously(auth);
       }
 
       const leadData = {
@@ -90,32 +79,30 @@ export function Contact({ activeTab }: ContactProps) {
 
       const leadsRef = collection(db, "leads");
 
+      // Non-blocking write: initiate the write and proceed
       addDoc(leadsRef, leadData)
         .then(() => {
           toast({
             title: "Request Received",
-            description: "Our manager will contact you shortly. Check your Firestore console!",
+            description: "Your lead has been saved to Firestore! Check your console.",
           });
           setFormData({ name: "", phone: "", message: "" });
+          setIsSubmitting(false);
         })
         .catch(async (error) => {
-          console.error("Firestore error:", error);
           const permissionError = new FirestorePermissionError({
             path: leadsRef.path,
             operation: "create",
             requestResourceData: leadData,
           });
           errorEmitter.emit("permission-error", permissionError);
-        })
-        .finally(() => {
           setIsSubmitting(false);
         });
     } catch (err: any) {
-      console.error("Unexpected error:", err);
       toast({
         variant: "destructive",
         title: "Submission Error",
-        description: "An unexpected error occurred. Check the console for details.",
+        description: "Please ensure 'Anonymous Authentication' is enabled in your Firebase Console.",
       });
       setIsSubmitting(false);
     }
