@@ -18,7 +18,7 @@
           "type": "string",
           "description": "Раздел сайта, в котором была оставлена заявка"
         },
-        "message": {
+        "description": {
           "type": "string",
           "description": "Текст сообщения или описания запроса"
         },

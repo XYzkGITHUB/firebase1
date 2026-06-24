@@ -57,7 +57,7 @@ export function Contact({ activeTab }: ContactProps) {
     const leadData = {
       name: formData.name,
       phone: formData.phone,
-      message: formData.message,
+      description: formData.message, // Map message to description in DB
       section: activeTab,
       createdAt: serverTimestamp(),
     };
