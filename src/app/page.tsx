@@ -27,29 +27,31 @@ export default function Home() {
         
         <Stats activeTab={activeTab} />
 
-        <AIAssistant />
+        {activeTab !== "delivery" && <AIAssistant />}
         
         <ProductExplorer activeTab={activeTab} />
         
         <LogisticsJourney activeTab={activeTab} />
 
-        <LogisticsAI />
+        {activeTab !== "delivery" && <LogisticsAI />}
 
-        <section className="py-24 md:py-32 px-6 bg-primary flex flex-col items-center justify-center text-center">
-           <h2 className="text-3xl md:text-6xl font-headline text-white mb-8 uppercase tracking-tighter max-w-4xl">
-             Связаться с менеджером
-           </h2>
-           <p className="text-white/80 text-lg md:text-2xl mb-12 max-w-2xl font-medium leading-relaxed">
-             Мы поможем рассчитать объем и сроки поставки для вашего объекта уже сегодня.
-           </p>
-           <button className="h-20 md:h-24 px-12 md:px-20 bg-white text-primary font-bold uppercase tracking-widest text-sm md:text-lg hover:bg-neutral-100 transition-all shadow-2xl">
-             Отправить запрос
-           </button>
-        </section>
+        {activeTab !== "delivery" && (
+          <section className="py-24 md:py-32 px-6 bg-primary flex flex-col items-center justify-center text-center">
+             <h2 className="text-3xl md:text-6xl font-headline text-white mb-8 uppercase tracking-tighter max-w-4xl">
+               Связаться с менеджером
+             </h2>
+             <p className="text-white/80 text-lg md:text-2xl mb-12 max-w-2xl font-medium leading-relaxed">
+               Мы поможем рассчитать объем и сроки поставки для вашего объекта уже сегодня.
+             </p>
+             <button className="h-20 md:h-24 px-12 md:px-20 bg-white text-primary font-bold uppercase tracking-widest text-sm md:text-lg hover:bg-neutral-100 transition-all shadow-2xl">
+               Отправить запрос
+             </button>
+          </section>
+        )}
 
         <FAQ activeTab={activeTab} />
         
-        <Contact activeTab={activeTab} />
+        {activeTab !== "delivery" && <Contact activeTab={activeTab} />}
         
         <Footer />
       </main>
