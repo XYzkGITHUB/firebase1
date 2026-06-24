@@ -42,6 +42,12 @@
       "description": "Modern luxury sanitary ware",
       "imageUrl": "https://picsum.photos/seed/bath303/800/800",
       "imageHint": "luxury bathroom"
+    },
+    {
+      "id": "aerial-map",
+      "description": "Top-down aerial view of building address",
+      "imageUrl": "https://picsum.photos/seed/map999/1600/900",
+      "imageHint": "aerial city"
     }
   ]
 }

@@ -4,6 +4,7 @@ import React from "react";
 import { Handshake, Construction, ShieldCheck, Layers, Package, TrendingUp, Factory, Globe, Clock, ShieldAlert, Phone, Mail, MapPin } from "lucide-react";
 import { ContentTab } from "@/app/page";
 import SplitText from "@/components/ui/split-text";
+import { ZoomGlobe } from "@/components/ui/zoom-globe";
 
 interface StatsProps {
   activeTab: ContentTab;
@@ -83,22 +84,22 @@ export function Stats({ activeTab }: StatsProps) {
     {
       icon: <Phone className="w-10 h-10 text-primary" />,
       title: "Номера телефонов",
-      desc: "• +7 989 919 95 41\n• +7 989 937 41 11",
+      desc: "• +7 989 919 95 41\n\n• +7 989 937 41 11",
     },
     {
       icon: <Mail className="w-10 h-10 text-primary" />,
-      title: "Электронная почта",
+      title: "Gmail",
       desc: "• irggimport@bk.ru",
     },
     {
       icon: <MapPin className="w-10 h-10 text-primary" />,
       title: "Наш адрес",
-      desc: "• Чеченская Республика\n• село Элин-Юрт\n• Надтеречный район",
+      desc: "• Чеченская Республика\n\n• Торговая улица, 185",
     },
     {
       icon: <Clock className="w-10 h-10 text-primary" />,
       title: "График работы",
-      desc: "• Круглосуточно 24/7\n• WhatsApp / Telegram",
+      desc: "• Круглосуточно 24/7\n\n• WhatsApp / Telegram",
     },
   ];
 
@@ -136,6 +137,8 @@ export function Stats({ activeTab }: StatsProps) {
             </div>
           ))}
         </div>
+
+        {activeTab === 'contacts' && <ZoomGlobe />}
       </div>
     </section>
   );
