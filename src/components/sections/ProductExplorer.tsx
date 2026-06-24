@@ -100,7 +100,7 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
   const deliveryCheck = [
     { title: "25 дней из Индии", desc: "Налаженные морские маршруты из портов Мундра и Нава-Шева." },
     { title: "35 дней из Китая", desc: "Прямые контейнерные перевозки из основных производственных хабов." },
-    { title: "Полная материальная ответственность", desc: "Мы отвечаем за каждый квадратный метр вашего груза." },
+    { title: "Полная ответственность", desc: "Мы отвечаем за каждый квадратный метр вашего груза." },
     { title: "Таможенная очистка", desc: "Профессиональное оформление всех разрешительных документов." },
     { title: "Трекинг 24/7", desc: "Вы всегда знаете, где находится ваш груз в режиме реального времени." },
   ];
@@ -170,18 +170,18 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
           <SplitText
             text={activeTab === 'delivery' ? "Что мы гарантируем при доставке" : (activeTab === 'contacts' ? "Сервис и поддержка" : "Что вы получаете, выбирая нас")}
             tag="h2"
-            className="text-2xl md:text-3xl lg:text-4xl font-headline mb-12 lg:mb-16 uppercase tracking-tighter"
+            className="text-2xl md:text-3xl font-headline mb-12 lg:mb-16 uppercase tracking-tighter"
             textAlign="left"
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 lg:gap-x-16 gap-y-12 lg:gap-y-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-12">
             {currentCheck.map((item, i) => (
-              <div key={i} className="flex items-start gap-4 lg:gap-6 group">
-                <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1 transition-colors group-hover:bg-primary group-hover:text-white">
-                  <Check className="w-6 h-6 text-primary group-hover:text-white transition-colors" />
+              <div key={i} className="flex items-start gap-4 group">
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1 transition-colors group-hover:bg-primary group-hover:text-white">
+                  <Check className="w-5 h-5 text-primary group-hover:text-white transition-colors" />
                 </div>
                 <div className="space-y-2">
-                  <h4 className="font-bold text-xl lg:text-2xl tracking-tight group-hover:text-primary transition-colors">{item.title}</h4>
-                  <p className="text-base lg:text-lg text-muted-foreground leading-relaxed">{item.desc}</p>
+                  <h4 className="font-bold text-lg md:text-xl tracking-tight group-hover:text-primary transition-colors">{item.title}</h4>
+                  <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{item.desc}</p>
                 </div>
               </div>
             ))}
@@ -199,7 +199,7 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
                  className="text-2xl md:text-4xl leading-[1.1] uppercase tracking-tighter"
                  textAlign="left"
                />
-               <p className="text-base md:text-lg text-muted-foreground font-light leading-relaxed max-w-xl">
+               <p className="text-base text-muted-foreground font-light leading-relaxed max-w-xl">
                  {activeTab === 'delivery' 
                    ? 'Мы берем на себя полную ответственность за ваш груз. От завода в Индии или Китае до вашего склада в России.' 
                    : (activeTab === 'keramogranit' 
@@ -210,14 +210,14 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
                </p>
              </div>
              <div className="flex flex-col sm:flex-row gap-6">
-                <Button variant="outline" className="h-16 lg:h-20 px-10 lg:px-12 rounded-none border-primary/50 text-primary hover:bg-primary hover:text-white transition-all font-bold uppercase tracking-[0.3em] text-xs w-full md:w-auto">
+                <Button variant="outline" className="h-16 px-10 rounded-none border-primary/50 text-primary hover:bg-primary hover:text-white transition-all font-bold uppercase tracking-[0.3em] text-xs w-full md:w-auto">
                   <Download className="mr-3 h-5 w-5" />
                   {activeTab === 'delivery' ? 'Прайс-лист' : (activeTab === 'contacts' ? 'Реквизиты' : `Каталог`)}
                 </Button>
                 {activeTab === 'contacts' && (
                   <Button 
                     onClick={handleLearnAboutShipping}
-                    className="h-16 lg:h-20 px-10 lg:px-12 rounded-none bg-primary text-white hover:bg-primary/90 transition-all font-bold uppercase tracking-[0.3em] text-xs w-full md:w-auto shadow-2xl group flex items-center justify-center"
+                    className="h-16 px-10 rounded-none bg-primary text-white hover:bg-primary/90 transition-all font-bold uppercase tracking-[0.3em] text-xs w-full md:w-auto shadow-2xl group flex items-center justify-center"
                   >
                     <span>О логистике</span>
                     <ArrowRight className="ml-3 h-5 w-5 transition-transform group-hover:translate-x-2" />
@@ -227,7 +227,7 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
           </div>
 
           <div className="relative">
-            {currentImages ? (
+            {currentImages?.primary && currentImages?.secondary ? (
               <InteractiveImage 
                 primaryImage={currentImages.primary} 
                 secondaryImage={currentImages.secondary} 
