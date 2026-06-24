@@ -2,7 +2,7 @@
 "use client";
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Download, Check, HelpCircle, Truck, ShieldCheck, MapPin, ArrowRight, Info } from "lucide-react";
+import { Download, Check, HelpCircle, Truck, MapPin, ArrowRight } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { ContentTab } from "@/app/page";
@@ -88,9 +88,9 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
 
         <Separator className="bg-white/5 mb-24 lg:mb-32" />
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32 items-center">
           <div className="space-y-8 lg:space-y-12">
-             <div className="space-y-4 lg:space-y-6">
+             <div className="space-y-6 lg:space-y-10">
                <div className="h-32 lg:h-40 cursor-default overflow-hidden">
                  <TextHoverEffect text="IRGG" />
                </div>
@@ -118,9 +118,9 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
                 {activeTab === 'contacts' && (
                   <Button 
                     onClick={handleLearnAboutShipping}
-                    className="h-16 lg:h-20 px-8 lg:px-12 rounded-none bg-primary text-white hover:bg-primary/90 transition-all font-bold uppercase tracking-[0.3em] text-[10px] lg:text-[12px] w-full md:w-auto shadow-2xl group"
+                    className="h-16 lg:h-20 px-8 lg:px-12 rounded-none bg-primary text-white hover:bg-primary/90 transition-all font-bold uppercase tracking-[0.3em] text-[10px] lg:text-[12px] w-full md:w-auto shadow-2xl group flex items-center justify-center"
                   >
-                    Узнать больше о доставке
+                    <span>О логистике</span>
                     <ArrowRight className="ml-3 h-5 w-5 transition-transform group-hover:translate-x-2" />
                   </Button>
                 )}

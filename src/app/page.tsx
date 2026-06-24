@@ -24,6 +24,9 @@ export default function Home() {
     }
   };
 
+  // Sections that should NOT be visible when the Contacts tab is active
+  const isContactsTab = activeTab === "contacts";
+
   return (
     <ClickSpark sparkColor="#C9C3BC" sparkCount={10} sparkRadius={20}>
       <main className="min-h-screen bg-background selection:bg-primary/30 overflow-x-hidden">
@@ -33,15 +36,15 @@ export default function Home() {
         
         <Stats activeTab={activeTab} />
 
-        {activeTab !== "delivery" && activeTab !== "contacts" && <AIAssistant />}
+        {!isContactsTab && activeTab !== "delivery" && <AIAssistant />}
         
         <ProductExplorer activeTab={activeTab} setActiveTab={setActiveTab} />
         
-        {(activeTab === "delivery" || activeTab === "contacts") && (
+        {!isContactsTab && activeTab === "delivery" && (
           <LogisticsJourney activeTab={activeTab} />
         )}
 
-        {activeTab !== "delivery" && activeTab !== "contacts" && (
+        {!isContactsTab && activeTab !== "delivery" && (
           <section className="py-24 md:py-32 px-6 bg-primary flex flex-col items-center justify-center text-center">
              <h2 className="text-3xl md:text-6xl font-headline text-white mb-8 uppercase tracking-tighter max-w-4xl">
                Связаться с менеджером
@@ -58,9 +61,9 @@ export default function Home() {
           </section>
         )}
 
-        <FAQ activeTab={activeTab} />
+        {!isContactsTab && <FAQ activeTab={activeTab} />}
         
-        <Contact activeTab={activeTab} />
+        {!isContactsTab && <Contact activeTab={activeTab} />}
         
         <Footer />
       </main>

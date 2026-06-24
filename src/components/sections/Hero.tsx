@@ -3,7 +3,7 @@
 import React from "react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Box, MapPin } from "lucide-react";
+import { ArrowRight, Box } from "lucide-react";
 import { ContentTab } from "@/app/page";
 import FloatingLines from "@/components/ui/floating-lines";
 import BlurText from "@/components/ui/blur-text";
@@ -123,10 +123,13 @@ export function Hero({ activeTab }: HeroProps) {
                   Связаться с менеджером
                   <ArrowRight className="ml-3 h-4 w-4 transition-transform group-hover:translate-x-2" />
                 </Button>
-                <Button variant="outline" size="lg" className="h-16 px-10 rounded-none border-white/10 hover:bg-white/5 text-[11px] font-bold uppercase tracking-[0.3em] transition-all bg-transparent backdrop-blur-sm w-full sm:w-auto">
-                  <Box className="mr-3 h-4 w-4" />
-                  Вход в трекер
-                </Button>
+                {/* Only show tracker button if NOT on contacts tab */}
+                {activeTab !== "contacts" && (
+                  <Button variant="outline" size="lg" className="h-16 px-10 rounded-none border-white/10 hover:bg-white/5 text-[11px] font-bold uppercase tracking-[0.3em] transition-all bg-transparent backdrop-blur-sm w-full sm:w-auto">
+                    <Box className="mr-3 h-4 w-4" />
+                    Вход в трекер
+                  </Button>
+                )}
               </div>
             </div>
           </div>
