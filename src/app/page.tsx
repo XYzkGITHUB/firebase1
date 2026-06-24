@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState } from "react";
 import { Navigation } from "@/components/sections/Navigation";
@@ -7,7 +6,6 @@ import { Stats } from "@/components/sections/Stats";
 import { ProductExplorer } from "@/components/sections/ProductExplorer";
 import { LogisticsJourney } from "@/components/sections/LogisticsJourney";
 import { AIAssistant } from "@/components/sections/AIAssistant";
-import { LogisticsAI } from "@/components/sections/LogisticsAI";
 import { Contact } from "@/components/sections/Contact";
 import { FAQ } from "@/components/sections/FAQ";
 import { Footer } from "@/components/sections/Footer";
@@ -32,8 +30,6 @@ export default function Home() {
         <ProductExplorer activeTab={activeTab} />
         
         <LogisticsJourney activeTab={activeTab} />
-
-        {activeTab !== "delivery" && <LogisticsAI />}
 
         {activeTab !== "delivery" && (
           <section className="py-24 md:py-32 px-6 bg-primary flex flex-col items-center justify-center text-center">
