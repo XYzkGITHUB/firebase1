@@ -8,8 +8,9 @@ import { Send, Loader2 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { ContentTab } from "@/app/page";
 import SplitText from "@/components/ui/split-text";
-import { useFirestore } from "@/firebase";
+import { useFirestore, useAuth, useUser } from "@/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { signInAnonymously } from "firebase/auth";
 import { useToast } from "@/hooks/use-toast";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
@@ -20,6 +21,8 @@ interface ContactProps {
 
 export function Contact({ activeTab }: ContactProps) {
   const db = useFirestore();
+  const auth = useAuth();
+  const { user } = useUser();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
@@ -41,7 +44,7 @@ export function Contact({ activeTab }: ContactProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!db) return;
+    if (!db || !auth) return;
     
     if (!formData.name.trim() || !formData.phone.trim()) {
       toast({
@@ -54,35 +57,50 @@ export function Contact({ activeTab }: ContactProps) {
 
     setIsSubmitting(true);
     
-    const leadData = {
-      name: formData.name,
-      phone: formData.phone,
-      description: formData.message,
-      section: activeTab,
-      createdAt: serverTimestamp(),
-    };
+    try {
+      // Ensure the user is authenticated anonymously if not already signed in
+      if (!user) {
+        await signInAnonymously(auth);
+      }
 
-    const leadsRef = collection(db, "leads");
+      const leadData = {
+        name: formData.name,
+        phone: formData.phone,
+        description: formData.message,
+        section: activeTab,
+        createdAt: serverTimestamp(),
+      };
 
-    addDoc(leadsRef, leadData)
-      .then(() => {
-        toast({
-          title: "Request Received",
-          description: "Our manager will contact you shortly.",
+      const leadsRef = collection(db, "leads");
+
+      addDoc(leadsRef, leadData)
+        .then(() => {
+          toast({
+            title: "Request Received",
+            description: "Our manager will contact you shortly.",
+          });
+          setFormData({ name: "", phone: "", message: "" });
+        })
+        .catch(async (error) => {
+          const permissionError = new FirestorePermissionError({
+            path: leadsRef.path,
+            operation: "create",
+            requestResourceData: leadData,
+          });
+          errorEmitter.emit("permission-error", permissionError);
+        })
+        .finally(() => {
+          setIsSubmitting(false);
         });
-        setFormData({ name: "", phone: "", message: "" });
-      })
-      .catch(async (error) => {
-        const permissionError = new FirestorePermissionError({
-          path: leadsRef.path,
-          operation: "create",
-          requestResourceData: leadData,
-        });
-        errorEmitter.emit("permission-error", permissionError);
-      })
-      .finally(() => {
-        setIsSubmitting(false);
+    } catch (authError: any) {
+      console.error("Auth error:", authError);
+      toast({
+        variant: "destructive",
+        title: "Connection Error",
+        description: "Could not connect to the database. Please try again.",
       });
+      setIsSubmitting(false);
+    }
   };
 
   return (
