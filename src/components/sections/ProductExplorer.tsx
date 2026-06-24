@@ -193,10 +193,10 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
                <SplitText
                  text={activeTab === 'delivery' ? 'Надежная доставка грузов' : (activeTab === 'keramogranit' ? 'Выбор керамогранита' : (activeTab === 'contacts' ? 'Наш шоурум' : 'Ламинат и SPS-покрытия'))}
                  tag="h2"
-                 className="text-3xl lg:text-4xl font-headline leading-[1.1] uppercase tracking-tighter"
+                 className="text-2xl lg:text-3xl leading-[1.1] uppercase tracking-tighter"
                  textAlign="left"
                />
-               <p className="text-base lg:text-lg text-muted-foreground font-light leading-relaxed max-w-xl">
+               <p className="text-sm lg:text-base text-muted-foreground font-light leading-relaxed max-w-xl">
                  {activeTab === 'delivery' 
                    ? 'Мы берем на себя полную ответственность за ваш груз. От завода в Индии или Китае до вашего склада в России.' 
                    : (activeTab === 'keramogranit' 
