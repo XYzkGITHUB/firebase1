@@ -82,7 +82,7 @@ export function Stats({ activeTab }: StatsProps) {
   const contactsAdv = [
     {
       icon: <Phone className="w-10 h-10 text-primary" />,
-      title: "Телефон",
+      title: "Номера телефонов",
       desc: "• +7 989 919 95 41\n\n• +7 989 937 41 11",
     },
     {
@@ -145,7 +145,7 @@ export function Stats({ activeTab }: StatsProps) {
               <div className="flex flex-col items-center gap-2">
                 <div className="h-[1px] w-24 bg-primary/40" />
                 <p className="text-muted-foreground font-light uppercase tracking-[0.4em] text-[10px] max-w-2xl text-center">
-                  Чеченская Республика, с. Элин-Юрт, Торговая, 185
+                  Чеченская Республика, с. Бено-Юрт, Торговая, 185
                 </p>
               </div>
             </div>
@@ -153,7 +153,7 @@ export function Stats({ activeTab }: StatsProps) {
             <div className="relative w-full h-[500px] mt-12 bg-card/20 border border-white/5 overflow-hidden shadow-2xl">
               <div className="absolute inset-0 grayscale invert contrast-125 opacity-70 pointer-events-auto">
                 <iframe
-                  src="https://yandex.ru/map-widget/v1/?text=%D0%A7%D0%B5%D1%87%D0%B5%D0%BD%D1%81%D0%BA%D0%B0%D1%8F%20%D1%80%D0%B5%D1%81%D0%BF%D1%83%D0%B1%D0%BB%D0%B8%D0%BA%D0%B0%2C%20%D1%81.%20%D0%AD%D0%BB%D0%B8%D0%BD-%D0%AE%D1%80%D1%82%2C%20%D1%83%D0%BB.%20%D0%A2%D0%BE%D1%80%D0%B3%D0%BE%D0%B2%D0%B0%D1%8F%2C%20185&z=16&l=map"
+                  src="https://yandex.ru/map-widget/v1/?text=%D0%A7%D0%B5%D1%87%D0%B5%D0%BD%D1%81%D0%BA%D0%B0%D1%8F%20%D1%80%D0%B5%D1%81%D0%BF%D1%83%D0%B1%D0%BB%D0%B8%D0%BA%D0%B0%2C%20%D1%81.%20%D0%91%D0%B5%D0%BD%D0%BE-%D0%AE%D1%80%D1%82%2C%20%D1%83%D0%BB.%20%D0%A2%D0%BE%D1%80%D0%B3%D0%BE%D0%B2%D0%B0%D1%8F%2C%20185&z=16&l=map"
                   width="100%"
                   height="100%"
                   frameBorder="0"

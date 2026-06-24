@@ -21,7 +21,7 @@ export function Footer() {
                 <div className="text-2xl font-headline font-bold tracking-tighter text-foreground">+7 989 937 41 11</div>
               </div>
               <div className="text-xl text-muted-foreground font-light tracking-widest lowercase">irggimport@bk.ru</div>
-              <div className="text-[11px] uppercase tracking-[0.5em] opacity-40 font-bold">Россия, Чечня, Элин-Юрт</div>
+              <div className="text-[11px] uppercase tracking-[0.5em] opacity-40 font-bold">Россия, Чечня, с. Бено-Юрт</div>
             </div>
           </div>
           
