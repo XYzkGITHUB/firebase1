@@ -17,6 +17,13 @@ interface HeroProps {
 export function Hero({ activeTab }: HeroProps) {
   const isMobile = useIsMobile();
   
+  const scrollToContact = () => {
+    const element = document.getElementById('contact-form');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   const content = {
     keramogranit: {
       title: "КЕРАМОГРАНИТ ПОД КЛЮЧ",
@@ -104,7 +111,11 @@ export function Hero({ activeTab }: HeroProps) {
               </div>
               
               <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-12 pointer-events-auto">
-                <Button size="lg" className="h-16 px-10 rounded-none font-bold group bg-primary hover:bg-primary/90 text-[11px] uppercase tracking-[0.3em] text-white shadow-2xl transition-all w-full sm:w-auto">
+                <Button 
+                  onClick={scrollToContact}
+                  size="lg" 
+                  className="h-16 px-10 rounded-none font-bold group bg-primary hover:bg-primary/90 text-[11px] uppercase tracking-[0.3em] text-white shadow-2xl transition-all w-full sm:w-auto"
+                >
                   Связаться с менеджером
                   <ArrowRight className="ml-3 h-4 w-4 transition-transform group-hover:translate-x-2" />
                 </Button>

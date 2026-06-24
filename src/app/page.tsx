@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useState } from "react";
 import { Navigation } from "@/components/sections/Navigation";
@@ -15,6 +16,13 @@ export type ContentTab = "keramogranit" | "laminate_sps" | "delivery";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<ContentTab>("keramogranit");
+
+  const scrollToContact = () => {
+    const element = document.getElementById('contact-form');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <ClickSpark sparkColor="#C9C3BC" sparkCount={10} sparkRadius={20}>
@@ -39,7 +47,10 @@ export default function Home() {
              <p className="text-white/80 text-lg md:text-2xl mb-12 max-w-2xl font-medium leading-relaxed">
                Мы поможем рассчитать объем и сроки поставки для вашего объекта уже сегодня.
              </p>
-             <button className="h-20 md:h-24 px-12 md:px-20 bg-white text-primary font-bold uppercase tracking-widest text-sm md:text-lg hover:bg-neutral-100 transition-all shadow-2xl">
+             <button 
+               onClick={scrollToContact}
+               className="h-20 md:h-24 px-12 md:px-20 bg-white text-primary font-bold uppercase tracking-widest text-sm md:text-lg hover:bg-neutral-100 transition-all shadow-2xl"
+             >
                Отправить запрос
              </button>
           </section>
@@ -47,7 +58,7 @@ export default function Home() {
 
         <FAQ activeTab={activeTab} />
         
-        {activeTab !== "delivery" && <Contact activeTab={activeTab} />}
+        <Contact activeTab={activeTab} />
         
         <Footer />
       </main>

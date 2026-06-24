@@ -97,6 +97,13 @@ export function LogisticsJourney({ activeTab }: LogisticsJourneyProps) {
     restDelta: 0.001
   });
 
+  const scrollToContact = () => {
+    const element = document.getElementById('contact-form');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section ref={containerRef} className="py-24 lg:py-40 px-6 lg:px-8 bg-background border-t border-white/5 relative overflow-hidden">
       <div className="max-w-[1200px] mx-auto">
@@ -128,7 +135,10 @@ export function LogisticsJourney({ activeTab }: LogisticsJourneyProps) {
         </div>
 
         <div className="mt-32 lg:mt-48 text-center">
-           <Button className="h-16 lg:h-20 px-10 lg:px-20 bg-primary text-white font-bold uppercase tracking-[0.4em] text-[11px] rounded-none hover:bg-primary/90 shadow-2xl transition-all w-full md:w-auto">
+           <Button 
+             onClick={scrollToContact}
+             className="h-16 lg:h-20 px-10 lg:px-20 bg-primary text-white font-bold uppercase tracking-[0.4em] text-[11px] rounded-none hover:bg-primary/90 shadow-2xl transition-all w-full md:w-auto"
+           >
              Связаться с менеджером
            </Button>
         </div>
