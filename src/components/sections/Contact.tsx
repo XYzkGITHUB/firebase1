@@ -1,24 +1,89 @@
 
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Send } from "lucide-react";
+import { Send, Loader2 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { ContentTab } from "@/app/page";
 import SplitText from "@/components/ui/split-text";
+import { useFirestore } from "@/firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { useToast } from "@/hooks/use-toast";
+import { errorEmitter } from "@/firebase/error-emitter";
+import { FirestorePermissionError } from "@/firebase/errors";
 
 interface ContactProps {
   activeTab: ContentTab;
 }
 
 export function Contact({ activeTab }: ContactProps) {
+  const db = useFirestore();
+  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    message: "",
+  });
+
   const getTitle = () => {
     if (activeTab === 'keramogranit') return 'Нужен керамогранит?';
     if (activeTab === 'laminate_sps') return 'Нужен ламинат или SPS?';
     return 'Нужна доставка груза?';
   }
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!db) return;
+    
+    if (!formData.name.trim() || !formData.phone.trim()) {
+      toast({
+        variant: "destructive",
+        title: "Ошибка",
+        description: "Пожалуйста, заполните имя и телефон.",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    const leadData = {
+      name: formData.name,
+      phone: formData.phone,
+      message: formData.message,
+      section: activeTab,
+      createdAt: serverTimestamp(),
+    };
+
+    const leadsRef = collection(db, "leads");
+
+    addDoc(leadsRef, leadData)
+      .then(() => {
+        toast({
+          title: "Заявка принята",
+          description: "Менеджер свяжется с вами в ближайшее время.",
+        });
+        setFormData({ name: "", phone: "", message: "" });
+      })
+      .catch(async (error) => {
+        const permissionError = new FirestorePermissionError({
+          path: leadsRef.path,
+          operation: "create",
+          requestResourceData: leadData,
+        });
+        errorEmitter.emit("permission-error", permissionError);
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
+  };
 
   return (
     <section className="py-24 md:py-32 px-4 sm:px-8 bg-card/5 overflow-hidden">
@@ -42,28 +107,57 @@ export function Contact({ activeTab }: ContactProps) {
           </div>
 
           <div className="p-6 sm:p-10 lg:p-16 border border-white/5 bg-card/30 backdrop-blur-3xl shadow-2xl w-full">
-            <form className="space-y-8 md:space-y-12">
+            <form className="space-y-8 md:space-y-12" onSubmit={handleSubmit}>
               <div className="space-y-4">
                 <label className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Ваше Имя</label>
-                <Input placeholder="Введите имя" className="h-14 md:h-16 bg-background/50 border-white/5 rounded-none text-base md:text-lg px-6 focus:ring-primary focus:border-primary" />
+                <Input 
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  placeholder="Введите имя" 
+                  className="h-14 md:h-16 bg-background/50 border-white/5 rounded-none text-base md:text-lg px-6 focus:ring-primary focus:border-primary" 
+                />
               </div>
               <div className="space-y-4">
                 <label className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Телефон</label>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <div className="flex items-center justify-center bg-white/5 border border-white/5 h-14 md:h-16 px-6 md:px-8 text-[12px] font-bold uppercase tracking-widest shrink-0">Russia +7</div>
-                  <Input placeholder="912 345-67-89" className="h-14 md:h-16 flex-1 bg-background/50 border-white/5 rounded-none text-base md:text-lg px-6" />
+                  <Input 
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    placeholder="912 345-67-89" 
+                    className="h-14 md:h-16 flex-1 bg-background/50 border-white/5 rounded-none text-base md:text-lg px-6" 
+                  />
                 </div>
               </div>
               <div className="space-y-4">
                 <label className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Опишите ваш запрос</label>
-                <Textarea placeholder="Тип объекта, объем, предпочтения..." className="min-h-[150px] md:min-h-[200px] bg-background/50 border-white/5 rounded-none text-base md:text-lg p-6" />
+                <Textarea 
+                  name="message"
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  placeholder="Тип объекта, объем, предпочтения..." 
+                  className="min-h-[150px] md:min-h-[200px] bg-background/50 border-white/5 rounded-none text-base md:text-lg p-6" 
+                />
               </div>
               <p className="text-[9px] md:text-[10px] text-muted-foreground uppercase tracking-[0.2em] leading-loose opacity-60">
                 Нажимая на кнопку, вы даете согласие на обработку персональных данных и соглашаетесь c политикой конфиденциальности.
               </p>
-              <Button size="lg" className="w-full h-16 md:h-20 bg-primary text-white text-[10px] md:text-[12px] font-bold uppercase tracking-[0.4em] group rounded-none shadow-2xl transition-all">
-                Отправить заявку
-                <Send className="ml-3 h-4 w-4 md:h-5 md:w-5 transition-transform group-hover:translate-x-2" />
+              <Button 
+                type="submit"
+                disabled={isSubmitting}
+                size="lg" 
+                className="w-full h-16 md:h-20 bg-primary text-white text-[10px] md:text-[12px] font-bold uppercase tracking-[0.4em] group rounded-none shadow-2xl transition-all"
+              >
+                {isSubmitting ? (
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                ) : (
+                  <>
+                    Отправить заявку
+                    <Send className="ml-3 h-4 w-4 md:h-5 md:w-5 transition-transform group-hover:translate-x-2" />
+                  </>
+                )}
               </Button>
             </form>
           </div>

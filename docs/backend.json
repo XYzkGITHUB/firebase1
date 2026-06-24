@@ -1,0 +1,49 @@
+
+{
+  "entities": {
+    "Lead": {
+      "title": "Lead",
+      "description": "Информация о потенциальном клиенте из формы обратной связи.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Имя клиента"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Номер телефона"
+        },
+        "section": {
+          "type": "string",
+          "description": "Раздел сайта, в котором была оставлена заявка"
+        },
+        "message": {
+          "type": "string",
+          "description": "Текст сообщения или описания запроса"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Время создания заявки"
+        }
+      },
+      "required": [
+        "name",
+        "phone",
+        "section"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "/leads/{leadId}": {
+      "schema": "Lead",
+      "description": "Коллекция входящих заявок от клиентов."
+    }
+  }
+}
