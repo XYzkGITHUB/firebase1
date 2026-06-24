@@ -82,23 +82,23 @@ export function Stats({ activeTab }: StatsProps) {
   const contactsAdv = [
     {
       icon: <Phone className="w-10 h-10 text-primary" />,
-      title: "+7 989 919 95 41",
-      desc: "Менеджер по работе с клиентами. Оперативная консультация по всем вопросам.",
-    },
-    {
-      icon: <Phone className="w-10 h-10 text-primary" />,
-      title: "+7 989 937 41 11",
-      desc: "Отдел логистики и внешнеэкономической деятельности.",
+      title: "Номера",
+      desc: "• +7 989 919 95 41 • +7 989 937 41 11",
     },
     {
       icon: <Mail className="w-10 h-10 text-primary" />,
-      title: "irggimport@bk.ru",
-      desc: "Электронная почта для официальных запросов и предложений.",
+      title: "Gmail",
+      desc: "• irggimport@bk.ru",
     },
     {
       icon: <MapPin className="w-10 h-10 text-primary" />,
-      title: "с. Элин-Юрт",
-      desc: "Россия, Чеченская Республика, Надтеречный район. Главный логистический центр.",
+      title: "Адрес",
+      desc: "• Россия, Чеченская Республика, с. Элин-Юрт, Надтеречный район",
+    },
+    {
+      icon: <Clock className="w-10 h-10 text-primary" />,
+      title: "Поддержка",
+      desc: "• 24/7 Мы всегда на связи в WhatsApp и Telegram для ваших запросов",
     },
   ];
 
@@ -127,8 +127,8 @@ export function Stats({ activeTab }: StatsProps) {
           {currentAdv.map((adv, idx) => (
             <div key={idx} className="relative p-12 border border-white/5 bg-card/30 hover:bg-card/50 hover:border-primary/40 transition-all duration-700 group overflow-hidden">
               <div className="mb-10 transform transition-transform group-hover:scale-110 duration-500">{adv.icon}</div>
-              <h3 className="text-2xl font-headline font-bold mb-6 text-foreground leading-tight">{adv.title}</h3>
-              <p className="text-muted-foreground text-base leading-relaxed">{adv.desc}</p>
+              <h3 className="text-2xl font-headline font-bold mb-6 text-foreground leading-tight uppercase tracking-tight">{adv.title}</h3>
+              <p className="text-muted-foreground text-base leading-relaxed font-light">{adv.desc}</p>
             </div>
           ))}
         </div>
