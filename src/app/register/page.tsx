@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
 import { UserPlus, Loader2, ArrowLeft } from "lucide-react";
+import { TypingAnimation } from "@/components/ui/typing-animation";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
@@ -18,6 +19,15 @@ export default function RegisterPage() {
   const auth = useAuth();
   const router = useRouter();
   const { toast } = useToast();
+
+  const typingTexts = [
+    "Керамогранит премиум-класса",
+    "Эксклюзивная сантехника",
+    "Прямые поставки из Индии",
+    "Ламинат и SPS коллекции",
+    "Логистика под ключ",
+    "IRGG Luxe Surface"
+  ];
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,8 +58,14 @@ export default function RegisterPage() {
         </Link>
       </div>
 
-      <Card className="w-full max-w-md glass-panel border-white/5 shadow-2xl">
-        <CardHeader className="space-y-4 text-center">
+      <Card className="w-full max-w-md glass-panel border-white/5 shadow-2xl overflow-hidden">
+        <div className="bg-primary/10 py-3 px-6 text-center border-b border-white/5">
+          <TypingAnimation 
+            texts={typingTexts} 
+            className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary"
+          />
+        </div>
+        <CardHeader className="space-y-4 text-center pt-8">
           <CardTitle className="text-4xl font-headline tracking-tighter uppercase">Регистрация</CardTitle>
           <CardDescription className="text-muted-foreground uppercase tracking-widest text-[10px]">
             Станьте партнером IRGG Luxe Surface
