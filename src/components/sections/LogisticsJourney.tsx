@@ -102,13 +102,15 @@ export function LogisticsJourney({ activeTab }: LogisticsJourneyProps) {
       <div className="max-w-[1200px] mx-auto">
         <div className="text-center mb-24 lg:mb-40 space-y-6">
           <SplitText
-            text={activeTab === 'keramogranit' ? 'Один партнер вместо десяти подрядчиков' : 'Как организована поставка'}
+            text={activeTab === 'delivery' ? 'Прозрачный процесс доставки' : (activeTab === 'keramogranit' ? 'Один партнер вместо десяти подрядчиков' : 'Как организована поставка')}
             tag="h2"
             className="text-3xl lg:text-5xl font-headline uppercase tracking-tighter"
             textAlign="center"
           />
           <p className="text-muted-foreground text-base lg:text-xl max-w-3xl mx-auto font-light leading-relaxed">
-            Мы берем на себя весь цикл ВЭД, чтобы вы получили качественный материал без лишних сложностей.
+            {activeTab === 'delivery' 
+              ? 'Отслеживаем каждый этап движения вашего груза от порта до объекта.' 
+              : 'Мы берем на себя весь цикл ВЭД, чтобы вы получили качественный материал без лишних сложностей.'}
           </p>
         </div>
 

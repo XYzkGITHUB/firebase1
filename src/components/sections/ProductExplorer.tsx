@@ -2,7 +2,7 @@
 "use client";
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Download, Check, HelpCircle } from "lucide-react";
+import { Download, Check, HelpCircle, Truck, ShieldCheck, MapPin } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { ContentTab } from "@/app/page";
@@ -28,14 +28,28 @@ export function ProductExplorer({ activeTab }: ProductExplorerProps) {
     { title: "Снижение рисков закупки", desc: "Исключаем замену и несоответствие материала." },
   ];
 
-  const currentCheck = activeTab === 'keramogranit' ? keramogranitCheck : laminateCheck;
+  const deliveryCheck = [
+    { title: "25 дней из Индии", desc: "Налаженные морские маршруты из портов Мундра и Нава-Шева." },
+    { title: "35 дней из Китая", desc: "Прямые контейнерные перевозки из основных производственных хабов." },
+    { title: "Полная материальная ответственность", desc: "Мы отвечаем за каждый квадратный метр вашего груза." },
+    { title: "Таможенная очистка", desc: "Профессиональное оформление всех разрешительных документов." },
+    { title: "Трекинг 24/7", desc: "Вы всегда знаете, где находится ваш груз в режиме реального времени." },
+  ];
+
+  const getCheck = () => {
+    if (activeTab === 'keramogranit') return keramogranitCheck;
+    if (activeTab === 'laminate_sps') return laminateCheck;
+    return deliveryCheck;
+  }
+
+  const currentCheck = getCheck();
 
   return (
     <section className="py-24 lg:py-32 px-6 lg:px-8 bg-background">
       <div className="max-w-[1600px] mx-auto">
         <div className="mb-24 lg:mb-40">
           <SplitText
-            text="Что вы получаете, выбирая нас"
+            text={activeTab === 'delivery' ? "Что мы гарантируем при доставке" : "Что вы получаете, выбирая нас"}
             tag="h2"
             className="text-3xl lg:text-5xl font-headline mb-16 lg:mb-20 uppercase tracking-tighter"
             textAlign="left"
@@ -64,25 +78,27 @@ export function ProductExplorer({ activeTab }: ProductExplorerProps) {
                  <TextHoverEffect text="IRGG" />
                </div>
                <SplitText
-                 text={activeTab === 'keramogranit' ? 'Выбор керамогранита' : 'Ламинат и SPS-покрытия'}
+                 text={activeTab === 'delivery' ? 'Надежная доставка грузов' : (activeTab === 'keramogranit' ? 'Выбор керамогранита' : 'Ламинат и SPS-покрытия')}
                  tag="h2"
                  className="text-4xl lg:text-7xl font-headline leading-[1] lg:leading-[0.9] uppercase tracking-tighter"
                  textAlign="left"
                />
                <p className="text-xl lg:text-2xl text-muted-foreground font-light leading-relaxed max-w-xl">
-                 {activeTab === 'keramogranit' 
-                   ? 'Мы поставляем керамогранит практически без ограничений по формату и дизайну под ваши требования.' 
-                   : 'Под проекты любого масштаба — от регулярных заказов до комплексных поставок.'}
+                 {activeTab === 'delivery' 
+                   ? 'Мы берем на себя полную ответственность за ваш груз. От завода в Индии или Китае до вашего склада в России.' 
+                   : (activeTab === 'keramogranit' 
+                     ? 'Мы поставляем керамогранит практически без ограничений по формату и дизайну под ваши требования.' 
+                     : 'Под проекты любого масштаба — от регулярных заказов до комплексных поставок.')}
                </p>
              </div>
              <Button variant="outline" className="h-16 lg:h-20 px-8 lg:px-12 rounded-none border-primary/50 text-primary hover:bg-primary hover:text-white transition-all font-bold uppercase tracking-[0.3em] text-[10px] lg:text-[12px] w-full md:w-auto">
                <Download className="mr-3 h-5 w-5 lg:h-6 lg:w-6" />
-               Скачать каталог {activeTab === 'keramogranit' ? 'керамогранита' : ''} (PDF)
+               {activeTab === 'delivery' ? 'Прайс-лист на логистику' : `Скачать каталог ${activeTab === 'keramogranit' ? 'керамогранита' : ''} (PDF)`}
              </Button>
           </div>
           <div className="aspect-square bg-card/30 border border-white/5 flex flex-col items-center justify-center text-muted-foreground relative group overflow-hidden shadow-2xl">
              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-             <HelpCircle className="w-16 h-16 lg:w-24 lg:h-24 mb-6 opacity-20 group-hover:scale-110 transition-transform duration-700" />
+             {activeTab === 'delivery' ? <Truck className="w-16 h-16 lg:w-24 lg:h-24 mb-6 opacity-20 group-hover:scale-110 transition-transform duration-700" /> : <HelpCircle className="w-16 h-16 lg:w-24 lg:h-24 mb-6 opacity-20 group-hover:scale-110 transition-transform duration-700" />}
              <span className="text-[10px] uppercase tracking-[0.5em] opacity-40 font-bold">Image is coming soon</span>
           </div>
         </div>

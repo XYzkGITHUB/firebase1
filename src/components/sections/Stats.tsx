@@ -1,7 +1,7 @@
 
 "use client";
 import React from "react";
-import { Handshake, Construction, ShieldCheck, Layers, Package, TrendingUp, Factory } from "lucide-react";
+import { Handshake, Construction, ShieldCheck, Layers, Package, TrendingUp, Factory, Globe, Clock, ShieldAlert } from "lucide-react";
 import { ContentTab } from "@/app/page";
 import SplitText from "@/components/ui/split-text";
 
@@ -56,14 +56,43 @@ export function Stats({ activeTab }: StatsProps) {
     },
   ];
 
-  const currentAdv = activeTab === 'keramogranit' ? keramogranitAdv : laminateAdv;
+  const deliveryAdv = [
+    {
+      icon: <Globe className="w-10 h-10 text-primary" />,
+      title: "Глобальная сеть маршрутов",
+      desc: "Оптимальные пути из Индии и Китая. Знаем все нюансы морской и авиа логистики.",
+    },
+    {
+      icon: <Clock className="w-10 h-10 text-primary" />,
+      title: "Сроки от 25 дней",
+      desc: "25 дней из Индии, 35 дней из Китая. Точное планирование и соблюдение графика.",
+    },
+    {
+      icon: <ShieldCheck className="w-10 h-10 text-primary" />,
+      title: "Бережное отношение",
+      desc: "Мы берем на себя полную ответственность за сохранность вашего груза на каждом этапе.",
+    },
+    {
+      icon: <ShieldAlert className="w-10 h-10 text-primary" />,
+      title: "Полное страхование",
+      desc: "Все грузы застрахованы. Мы минимизируем любые финансовые риски для вашего бизнеса.",
+    },
+  ];
+
+  const getAdv = () => {
+    if (activeTab === 'keramogranit') return keramogranitAdv;
+    if (activeTab === 'laminate_sps') return laminateAdv;
+    return deliveryAdv;
+  }
+
+  const currentAdv = getAdv();
 
   return (
     <section className="py-32 px-8 bg-card/10 border-y border-white/5">
       <div className="max-w-[1600px] mx-auto">
         <div className="mb-24 text-center">
           <SplitText
-            text="Наши главные преимущества"
+            text={activeTab === 'delivery' ? "Надежная логистика под ключ" : "Наши главные преимущества"}
             tag="h2"
             className="text-4xl md:text-5xl font-headline max-w-5xl mx-auto leading-tight uppercase tracking-tighter"
             textAlign="center"

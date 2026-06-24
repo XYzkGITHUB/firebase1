@@ -13,7 +13,7 @@ import { FAQ } from "@/components/sections/FAQ";
 import { Footer } from "@/components/sections/Footer";
 import ClickSpark from "@/components/ui/click-spark";
 
-export type ContentTab = "keramogranit" | "laminate_sps";
+export type ContentTab = "keramogranit" | "laminate_sps" | "delivery";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<ContentTab>("keramogranit");

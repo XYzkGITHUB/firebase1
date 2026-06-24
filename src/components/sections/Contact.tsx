@@ -14,6 +14,12 @@ interface ContactProps {
 }
 
 export function Contact({ activeTab }: ContactProps) {
+  const getTitle = () => {
+    if (activeTab === 'keramogranit') return 'Нужен керамогранит?';
+    if (activeTab === 'laminate_sps') return 'Нужен ламинат или SPS?';
+    return 'Нужна доставка груза?';
+  }
+
   return (
     <section className="py-24 md:py-32 px-4 sm:px-8 bg-card/5 overflow-hidden">
       <div className="max-w-[1600px] mx-auto">
@@ -21,7 +27,7 @@ export function Contact({ activeTab }: ContactProps) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
           <div className="space-y-6 md:space-y-10 lg:sticky lg:top-32">
             <SplitText
-              text={activeTab === 'keramogranit' ? 'Нужен керамогранит?' : 'Нужен ламинат или SPS?'}
+              text={getTitle()}
               tag="h2"
               className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-headline uppercase tracking-tighter leading-[1] md:leading-[0.9]"
               textAlign="left"
