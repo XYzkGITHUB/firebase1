@@ -43,11 +43,12 @@ export function Contact({ activeTab }: ContactProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
     if (!db || !auth) {
       toast({
         variant: "destructive",
-        title: "Connection Error",
-        description: "Firebase services are not available.",
+        title: "Configuration Error",
+        description: "Firebase services are initializing. Please try again in a moment.",
       });
       return;
     }
@@ -55,8 +56,8 @@ export function Contact({ activeTab }: ContactProps) {
     if (!formData.name.trim() || !formData.phone.trim()) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "Please fill in your name and phone number.",
+        title: "Validation Error",
+        description: "Please provide your name and phone number.",
       });
       return;
     }
@@ -64,11 +65,22 @@ export function Contact({ activeTab }: ContactProps) {
     setIsSubmitting(true);
     
     try {
-      // Ensure Anonymous Auth is active to prevent permission errors
+      // Step 1: Ensure Auth is active
       if (!user) {
-        await signInAnonymously(auth);
+        try {
+          await signInAnonymously(auth);
+        } catch (authError: any) {
+          setIsSubmitting(false);
+          toast({
+            variant: "destructive",
+            title: "Authentication Failed",
+            description: "Could not establish a secure connection. Please check if Anonymous Auth is enabled in Firebase.",
+          });
+          return;
+        }
       }
 
+      // Step 2: Prepare Data
       const leadData = {
         name: formData.name,
         phone: formData.phone,
@@ -79,12 +91,12 @@ export function Contact({ activeTab }: ContactProps) {
 
       const leadsRef = collection(db, "leads");
 
-      // Non-blocking write: initiate the write and proceed
+      // Step 3: Write to Firestore (Non-blocking)
       addDoc(leadsRef, leadData)
         .then(() => {
           toast({
-            title: "Request Received",
-            description: "Your lead has been saved to Firestore! Check your console.",
+            title: "Success",
+            description: "Your request has been sent! We will contact you shortly.",
           });
           setFormData({ name: "", phone: "", message: "" });
           setIsSubmitting(false);
@@ -98,13 +110,14 @@ export function Contact({ activeTab }: ContactProps) {
           errorEmitter.emit("permission-error", permissionError);
           setIsSubmitting(false);
         });
+
     } catch (err: any) {
+      setIsSubmitting(false);
       toast({
         variant: "destructive",
         title: "Submission Error",
-        description: "Please ensure 'Anonymous Authentication' is enabled in your Firebase Console.",
+        description: "An unexpected error occurred. Please check your internet connection.",
       });
-      setIsSubmitting(false);
     }
   };
 
