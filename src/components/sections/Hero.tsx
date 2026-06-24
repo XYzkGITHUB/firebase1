@@ -7,12 +7,16 @@ import { ArrowRight, Box } from "lucide-react";
 import { ContentTab } from "@/app/page";
 import FloatingLines from "@/components/ui/floating-lines";
 import BlurText from "@/components/ui/blur-text";
+import ShapeBlur from "@/components/ui/shape-blur";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface HeroProps {
   activeTab: ContentTab;
 }
 
 export function Hero({ activeTab }: HeroProps) {
+  const isMobile = useIsMobile();
+  
   const content = {
     keramogranit: {
       title: "КЕРАМОГРАНИТ ПОД КЛЮЧ",
@@ -28,19 +32,33 @@ export function Hero({ activeTab }: HeroProps) {
 
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-start overflow-hidden bg-background pt-32 md:pt-48 pb-40">
-      {/* Background Layer - Interactive and Matte */}
-      <div className="absolute inset-0 z-0 opacity-20 transition-opacity duration-1000">
-        <FloatingLines 
-          linesGradient={['#8B5E3C', '#C9C3BC', '#4A3728']}
-          lineCount={[10, 15, 20]}
-          lineDistance={[8, 6, 4]}
-          bendRadius={5.0}
-          bendStrength={-0.5}
-          interactive={true}
-          parallax={true}
-          animationSpeed={0.3}
-          mixBlendMode="normal"
-        />
+      {/* Background Layer */}
+      <div className="absolute inset-0 z-0 transition-opacity duration-1000">
+        {!isMobile ? (
+          <div className="w-full h-full opacity-20">
+            <FloatingLines 
+              linesGradient={['#8B5E3C', '#C9C3BC', '#4A3728']}
+              lineCount={[10, 15, 20]}
+              lineDistance={[8, 6, 4]}
+              bendRadius={5.0}
+              bendStrength={-0.5}
+              interactive={true}
+              parallax={true}
+              animationSpeed={0.3}
+              mixBlendMode="normal"
+            />
+          </div>
+        ) : (
+          <div className="w-full h-full opacity-10">
+            <ShapeBlur 
+              variation={1}
+              shapeSize={1.5}
+              roundness={0.5}
+              circleSize={0.4}
+              circleEdge={0.6}
+            />
+          </div>
+        )}
       </div>
 
       {/* Subtle Background Glow */}
@@ -50,12 +68,12 @@ export function Hero({ activeTab }: HeroProps) {
 
       {/* Content Layer */}
       <div className="z-10 w-full max-w-[1600px] px-8 flex flex-col items-center pointer-events-none">
-        <div className="relative w-full max-w-6xl py-24 px-6 md:px-16 flex flex-col items-center justify-center">
+        <div className="relative w-full max-w-6xl py-12 md:py-24 px-4 md:px-16 flex flex-col items-center justify-center">
           
           <div className="relative z-10 flex flex-col items-center w-full">
-            {/* Wrapper with pointer-events-auto for text effect */}
-            <div className="w-full h-[10rem] md:h-[14rem] flex items-center justify-center cursor-default pointer-events-auto">
-              <TextHoverEffect text="IRGG" />
+            {/* Logo with interaction disabled on mobile */}
+            <div className="w-full h-[8rem] md:h-[14rem] flex items-center justify-center cursor-default pointer-events-auto">
+              <TextHoverEffect text="IRGG" disableInteraction={isMobile} />
             </div>
             
             <div className="mt-8 text-center space-y-6 max-w-4xl">
@@ -64,9 +82,9 @@ export function Hero({ activeTab }: HeroProps) {
                   text={current.title}
                   animateBy="words"
                   direction="top"
-                  delay={20}
-                  stepDuration={0.3}
-                  className="text-4xl md:text-6xl lg:text-7xl font-headline text-foreground leading-tight uppercase tracking-tighter"
+                  delay={10}
+                  stepDuration={0.2}
+                  className="text-3xl md:text-6xl lg:text-7xl font-headline text-foreground leading-tight uppercase tracking-tighter"
                 />
               </div>
               
@@ -75,19 +93,18 @@ export function Hero({ activeTab }: HeroProps) {
                   text={current.desc}
                   animateBy="words"
                   direction="bottom"
-                  delay={15}
-                  stepDuration={0.2}
-                  className="text-base md:text-xl text-muted-foreground font-body leading-relaxed max-w-2xl mx-auto font-light opacity-90"
+                  delay={10}
+                  stepDuration={0.15}
+                  className="text-sm md:text-xl text-muted-foreground font-body leading-relaxed max-w-2xl mx-auto font-light opacity-90"
                 />
               </div>
               
-              {/* Re-enable pointer events for buttons */}
               <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-12 pointer-events-auto">
-                <Button size="lg" className="h-16 px-10 rounded-none font-bold group bg-primary hover:bg-primary/90 text-[11px] uppercase tracking-[0.3em] text-white shadow-2xl transition-all">
+                <Button size="lg" className="h-16 px-10 rounded-none font-bold group bg-primary hover:bg-primary/90 text-[11px] uppercase tracking-[0.3em] text-white shadow-2xl transition-all w-full sm:w-auto">
                   Связаться с менеджером
                   <ArrowRight className="ml-3 h-4 w-4 transition-transform group-hover:translate-x-2" />
                 </Button>
-                <Button variant="outline" size="lg" className="h-16 px-10 rounded-none border-white/10 hover:bg-white/5 text-[11px] font-bold uppercase tracking-[0.3em] transition-all bg-transparent backdrop-blur-sm">
+                <Button variant="outline" size="lg" className="h-16 px-10 rounded-none border-white/10 hover:bg-white/5 text-[11px] font-bold uppercase tracking-[0.3em] transition-all bg-transparent backdrop-blur-sm w-full sm:w-auto">
                   <Box className="mr-3 h-4 w-4" />
                   Вход в трекер
                 </Button>

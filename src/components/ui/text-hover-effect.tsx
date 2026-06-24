@@ -3,13 +3,13 @@
 import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
 
-export const TextHoverEffect = ({ text }: { text: string }) => {
+export const TextHoverEffect = ({ text, disableInteraction = false }: { text: string; disableInteraction?: boolean }) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const [cursorPos, setCursorPos] = useState({ x: 150, y: 50 });
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseMove = (e: React.MouseEvent<SVGSVGElement> | React.TouchEvent<SVGSVGElement>) => {
-    if (!svgRef.current) return;
+    if (disableInteraction || !svgRef.current) return;
     const rect = svgRef.current.getBoundingClientRect();
     
     let clientX, clientY;
@@ -36,11 +36,11 @@ export const TextHoverEffect = ({ text }: { text: string }) => {
       height="100%"
       viewBox="0 0 300 100"
       xmlns="http://www.w3.org/2000/svg"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={() => !disableInteraction && setIsHovered(true)}
+      onMouseLeave={() => !disableInteraction && setIsHovered(false)}
       onMouseMove={handleMouseMove}
-      onTouchStart={() => setIsHovered(true)}
-      onTouchEnd={() => setIsHovered(false)}
+      onTouchStart={() => !disableInteraction && setIsHovered(true)}
+      onTouchEnd={() => !disableInteraction && setIsHovered(false)}
       onTouchMove={handleMouseMove}
       className="select-none overflow-visible cursor-default max-w-full pointer-events-auto"
     >
@@ -48,17 +48,17 @@ export const TextHoverEffect = ({ text }: { text: string }) => {
         <radialGradient
           id="revealMask"
           gradientUnits="userSpaceOnUse"
-          r="120"
+          r="160"
           cx={cursorPos.x}
           cy={cursorPos.y}
         >
           <stop offset="0%" stopColor="white" />
-          <stop offset="40%" stopColor="white" stopOpacity="0.5" />
+          <stop offset="50%" stopColor="white" stopOpacity="0.4" />
           <stop offset="100%" stopColor="black" />
         </radialGradient>
         
         <mask id="textMask">
-          <rect x="0" y="0" width="300" height="100" fill="url(#revealMask)" />
+          <rect x="0" y="0" width="300" height="100" fill={disableInteraction ? "none" : "url(#revealMask)"} />
         </mask>
 
         <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -78,22 +78,24 @@ export const TextHoverEffect = ({ text }: { text: string }) => {
         {text}
       </text>
 
-      <motion.g
-        mask="url(#textMask)"
-        animate={{ opacity: isHovered ? 1 : 0 }}
-        transition={{ duration: 0.4 }}
-      >
-        <text
-          x="50%"
-          y="50%"
-          textAnchor="middle"
-          dominantBaseline="middle"
-          fill="url(#textGradient)"
-          className="font-headline text-[80px] lg:text-[100px] font-bold tracking-tighter"
+      {!disableInteraction && (
+        <motion.g
+          mask="url(#textMask)"
+          animate={{ opacity: isHovered ? 1 : 0 }}
+          transition={{ duration: 0.6 }}
         >
-          {text}
-        </text>
-      </motion.g>
+          <text
+            x="50%"
+            y="50%"
+            textAnchor="middle"
+            dominantBaseline="middle"
+            fill="url(#textGradient)"
+            className="font-headline text-[80px] lg:text-[100px] font-bold tracking-tighter"
+          >
+            {text}
+          </text>
+        </motion.g>
+      )}
     </svg>
   );
 };
