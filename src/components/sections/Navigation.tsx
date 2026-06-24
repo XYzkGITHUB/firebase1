@@ -32,6 +32,15 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Prevent scrolling when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [isMobileMenuOpen]);
+
   const navLinks = [
     { name: "Керамогранит", id: "keramogranit" as const },
     { name: "Ламинат и SPS", id: "laminate_sps" as const },
@@ -136,7 +145,7 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
           </div>
 
           <button 
-            className="xl:hidden text-foreground p-2"
+            className="xl:hidden text-foreground p-2 relative z-[120]"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
@@ -145,9 +154,11 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="fixed inset-0 top-0 w-full h-screen bg-background/98 backdrop-blur-3xl xl:hidden z-[110] animate-in fade-in slide-in-from-top-4 overflow-y-auto">
+          <div className="fixed inset-0 top-0 w-full h-[100dvh] bg-background xl:hidden z-[110] animate-in fade-in slide-in-from-top-4 overflow-y-auto">
             <div className="flex justify-end p-8">
-              <button onClick={() => setIsMobileMenuOpen(false)}><X size={32} /></button>
+              <button onClick={() => setIsMobileMenuOpen(false)} className="opacity-0 pointer-events-none">
+                <X size={32} />
+              </button>
             </div>
             <div className="flex flex-col p-12 space-y-6">
               {navLinks.map((link) => (
