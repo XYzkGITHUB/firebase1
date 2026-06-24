@@ -1,5 +1,6 @@
+
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -30,6 +31,16 @@ export function Contact({ activeTab }: ContactProps) {
     message: "",
   });
 
+  // Pre-authenticate the user on mount to speed up the first submission
+  useEffect(() => {
+    if (auth && !user) {
+      signInAnonymously(auth).catch((err) => {
+        // Silently fail, we'll try again on submit if needed
+        console.warn("Background auth failed, will retry on submit:", err);
+      });
+    }
+  }, [auth, user]);
+
   const getTitle = () => {
     if (activeTab === 'keramogranit') return 'Нужен керамогранит?';
     if (activeTab === 'laminate_sps') return 'Нужен ламинат или SPS?';
@@ -47,8 +58,8 @@ export function Contact({ activeTab }: ContactProps) {
     if (!db || !auth) {
       toast({
         variant: "destructive",
-        title: "Ошибка конфигурации",
-        description: "Сервисы Firebase инициализируются. Пожалуйста, попробуйте через секунду.",
+        title: "Ошибка",
+        description: "Сервисы еще не готовы. Пожалуйста, подождите.",
       });
       return;
     }
@@ -56,65 +67,58 @@ export function Contact({ activeTab }: ContactProps) {
     if (!formData.name.trim() || !formData.phone.trim()) {
       toast({
         variant: "destructive",
-        title: "Ошибка валидации",
-        description: "Пожалуйста, укажите ваше имя и номер телефона.",
+        title: "Ошибка",
+        description: "Заполните имя и телефон.",
       });
       return;
     }
 
     setIsSubmitting(true);
     
-    try {
-      // Step 1: Ensure Auth is active (required for security rules usually)
-      if (!user) {
-        try {
-          await signInAnonymously(auth);
-        } catch (authError: any) {
-          console.error("Auth error:", authError);
-          // We continue anyway, Firestore might allow it if rules are open, 
-          // but usually Anonymous Auth is safer.
-        }
-      }
-
-      // Step 2: Prepare Data
-      const leadData = {
-        name: formData.name,
-        phone: formData.phone,
-        description: formData.message,
-        section: activeTab,
-        createdAt: serverTimestamp(),
-      };
-
-      const leadsRef = collection(db, "leads");
-
-      // Step 3: Write to Firestore (Non-blocking)
-      addDoc(leadsRef, leadData)
-        .then(() => {
-          toast({
-            title: "Успешно",
-            description: "Ваш запрос отправлен! Мы свяжемся с вами в ближайшее время.",
-          });
-          setFormData({ name: "", phone: "", message: "" });
-          setIsSubmitting(false);
-        })
-        .catch(async (error) => {
-          const permissionError = new FirestorePermissionError({
-            path: leadsRef.path,
-            operation: "create",
-            requestResourceData: leadData,
-          });
-          errorEmitter.emit("permission-error", permissionError);
-          setIsSubmitting(false);
+    // Fallback auth check (rarely needed if useEffect succeeded)
+    if (!user) {
+      try {
+        await signInAnonymously(auth);
+      } catch (authError: any) {
+        setIsSubmitting(false);
+        toast({
+          variant: "destructive",
+          title: "Ошибка доступа",
+          description: "Не удалось авторизоваться. Проверьте интернет.",
         });
-
-    } catch (err: any) {
-      setIsSubmitting(false);
-      toast({
-        variant: "destructive",
-        title: "Ошибка отправки",
-        description: "Произошла непредвиденная ошибка. Проверьте интернет-соединение.",
-      });
+        return;
+      }
     }
+
+    const leadData = {
+      name: formData.name,
+      phone: formData.phone,
+      description: formData.message,
+      section: activeTab,
+      createdAt: serverTimestamp(),
+    };
+
+    const leadsRef = collection(db, "leads");
+
+    // Initiate write immediately without awaiting (Non-blocking)
+    addDoc(leadsRef, leadData)
+      .then(() => {
+        toast({
+          title: "Успешно",
+          description: "Ваш запрос отправлен! Мы свяжемся с вами скоро.",
+        });
+        setFormData({ name: "", phone: "", message: "" });
+        setIsSubmitting(false);
+      })
+      .catch(async (error) => {
+        const permissionError = new FirestorePermissionError({
+          path: leadsRef.path,
+          operation: "create",
+          requestResourceData: leadData,
+        });
+        errorEmitter.emit("permission-error", permissionError);
+        setIsSubmitting(false);
+      });
   };
 
   return (
@@ -130,7 +134,7 @@ export function Contact({ activeTab }: ContactProps) {
               textAlign="left"
             />
             <p className="text-lg md:text-2xl text-muted-foreground leading-relaxed font-light max-w-xl">
-              Оставьте заявку, и мы предложим решение для вашего проекта. Расскажем, какие материалы необходимы, и предоставим полный расчет.
+              Оставьте заявку, и мы предложим решение для вашего проекта.
             </p>
             <div className="space-y-4 pt-6 md:pt-10">
                <div className="text-2xl md:text-3xl font-headline font-bold text-primary tracking-tighter">+7 989 919 95 41</div>
@@ -146,41 +150,35 @@ export function Contact({ activeTab }: ContactProps) {
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  placeholder="Введите ваше имя" 
-                  className="h-14 md:h-16 bg-background/50 border-white/5 rounded-none text-base md:text-lg px-6 focus:ring-primary focus:border-primary" 
+                  placeholder="Введите имя" 
+                  className="h-14 md:h-16 bg-background/50 border-white/5 rounded-none text-base md:text-lg px-6" 
                 />
               </div>
               <div className="space-y-4">
-                <label className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Номер телефона</label>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <div className="flex items-center justify-center bg-white/5 border border-white/5 h-14 md:h-16 px-6 md:px-8 text-[12px] font-bold uppercase tracking-widest shrink-0">Россия +7</div>
-                  <Input 
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    placeholder="912 345-67-89" 
-                    className="h-14 md:h-16 flex-1 bg-background/50 border-white/5 rounded-none text-base md:text-lg px-6" 
-                  />
-                </div>
+                <label className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Телефон</label>
+                <Input 
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  placeholder="+7 (___) ___-__-__" 
+                  className="h-14 md:h-16 bg-background/50 border-white/5 rounded-none text-base md:text-lg px-6" 
+                />
               </div>
               <div className="space-y-4">
-                <label className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Описание запроса</label>
+                <label className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Запрос</label>
                 <Textarea 
                   name="message"
                   value={formData.message}
                   onChange={handleInputChange}
-                  placeholder="Тип объекта, объем, предпочтения..." 
-                  className="min-h-[150px] md:min-h-[200px] bg-background/50 border-white/5 rounded-none text-base md:text-lg p-6" 
+                  placeholder="Опишите детали..." 
+                  className="min-h-[150px] bg-background/50 border-white/5 rounded-none text-base md:text-lg p-6" 
                 />
               </div>
-              <p className="text-[9px] md:text-[10px] text-muted-foreground uppercase tracking-[0.2em] leading-loose opacity-60">
-                Нажимая на кнопку, вы даете согласие на обработку персональных данных и соглашаетесь с политикой конфиденциальности.
-              </p>
               <Button 
                 type="submit"
                 disabled={isSubmitting}
                 size="lg" 
-                className="w-full h-16 md:h-20 bg-primary text-white text-[10px] md:text-[12px] font-bold uppercase tracking-[0.4em] group rounded-none shadow-2xl transition-all"
+                className="w-full h-16 md:h-20 bg-primary text-white text-[10px] md:text-[12px] font-bold uppercase tracking-[0.4em] group rounded-none shadow-2xl"
               >
                 {isSubmitting ? (
                   <Loader2 className="h-5 w-5 animate-spin" />
