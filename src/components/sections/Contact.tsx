@@ -44,7 +44,14 @@ export function Contact({ activeTab }: ContactProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!db || !auth) return;
+    if (!db || !auth) {
+      toast({
+        variant: "destructive",
+        title: "Connection Error",
+        description: "Firebase services are not available.",
+      });
+      return;
+    }
     
     if (!formData.name.trim() || !formData.phone.trim()) {
       toast({
@@ -58,11 +65,24 @@ export function Contact({ activeTab }: ContactProps) {
     setIsSubmitting(true);
     
     try {
-      // Ensure the user is authenticated anonymously if not already signed in
+      // Step 1: Ensure Auth is active (Requires "Anonymous" enabled in Firebase Console)
       if (!user) {
-        await signInAnonymously(auth);
+        try {
+          await signInAnonymously(auth);
+        } catch (authError: any) {
+          console.error("Auth failed:", authError);
+          // If auth fails, we show a descriptive toast. Most common cause is "Anonymous provider disabled".
+          toast({
+            variant: "destructive",
+            title: "Authentication Failed",
+            description: "Please enable 'Anonymous Authentication' in your Firebase Console.",
+          });
+          setIsSubmitting(false);
+          return;
+        }
       }
 
+      // Step 2: Prepare the data
       const leadData = {
         name: formData.name,
         phone: formData.phone,
@@ -73,6 +93,7 @@ export function Contact({ activeTab }: ContactProps) {
 
       const leadsRef = collection(db, "leads");
 
+      // Step 3: Write to Firestore (Don't use await directly for optimistic UI)
       addDoc(leadsRef, leadData)
         .then(() => {
           toast({
@@ -82,6 +103,7 @@ export function Contact({ activeTab }: ContactProps) {
           setFormData({ name: "", phone: "", message: "" });
         })
         .catch(async (error) => {
+          console.error("Firestore error:", error);
           const permissionError = new FirestorePermissionError({
             path: leadsRef.path,
             operation: "create",
@@ -92,12 +114,12 @@ export function Contact({ activeTab }: ContactProps) {
         .finally(() => {
           setIsSubmitting(false);
         });
-    } catch (authError: any) {
-      console.error("Auth error:", authError);
+    } catch (err: any) {
+      console.error("Unexpected error:", err);
       toast({
         variant: "destructive",
-        title: "Connection Error",
-        description: "Could not connect to the database. Please try again.",
+        title: "Submission Error",
+        description: "An unexpected error occurred. Please check console.",
       });
       setIsSubmitting(false);
     }
