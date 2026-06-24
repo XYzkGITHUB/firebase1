@@ -2,64 +2,88 @@
 {
   "placeholderImages": [
     {
-      "id": "ceramic-tile-1",
-      "description": "Premium ceramic tile texture 1",
-      "imageUrl": "/imgs/ceramic-1.jpg",
-      "imageHint": "porcelain tile"
+      "id": "tiles-1",
+      "description": "Premium porcelain tiles display",
+      "imageUrl": "/imgs/inside-store-tiles.jpeg",
+      "imageHint": "porcelain tiles"
     },
     {
-      "id": "ceramic-tile-2",
-      "description": "Premium ceramic tile texture 2",
-      "imageUrl": "/imgs/ceramic-2.jpg",
-      "imageHint": "marble tile"
+      "id": "tiles-2",
+      "description": "Marble texture tiles",
+      "imageUrl": "/imgs/inside-store-tiles2.jpeg",
+      "imageHint": "marble texture"
     },
     {
-      "id": "ceramic-tile-3",
-      "description": "Premium ceramic tile texture 3",
-      "imageUrl": "/imgs/ceramic-3.jpg",
-      "imageHint": "stone tile"
-    },
-    {
-      "id": "construction-site",
-      "description": "Modern construction site with luxury materials",
-      "imageUrl": "/imgs/construction.jpg",
-      "imageHint": "construction site"
-    },
-    {
-      "id": "logistics-hub",
-      "description": "Global logistics terminal with containers",
-      "imageUrl": "/imgs/logistics.jpg",
-      "imageHint": "cargo containers"
+      "id": "tiles-3",
+      "description": "Ceramic collection view",
+      "imageUrl": "/imgs/inside-store-tiles3.jpeg",
+      "imageHint": "ceramic collection"
     },
     {
       "id": "laminate-1",
-      "description": "Premium wood laminate texture",
-      "imageUrl": "/imgs/laminate-1.jpg",
+      "description": "Wood laminate flooring display",
+      "imageUrl": "/imgs/inside-store-laminat.jpeg",
       "imageHint": "wood laminate"
     },
     {
+      "id": "laminate-2",
+      "description": "SPS flooring samples",
+      "imageUrl": "/imgs/inside-store-laminat2.jpeg",
+      "imageHint": "flooring samples"
+    },
+    {
       "id": "sanitary-1",
-      "description": "Modern luxury sanitary ware",
-      "imageUrl": "/imgs/sanitary-1.jpg",
+      "description": "Luxury sanitary ware section",
+      "imageUrl": "/imgs/inside-store-santehnika.jpeg",
       "imageHint": "luxury bathroom"
     },
     {
-      "id": "aerial-map",
-      "description": "Top-down aerial view of building address",
-      "imageUrl": "/imgs/map.jpg",
-      "imageHint": "aerial city"
+      "id": "store-logo-interior",
+      "description": "IRGG Logo interior view",
+      "imageUrl": "/imgs/inside-store-aplacewithIRGGlogo.jpeg",
+      "imageHint": "store interior"
     },
     {
-      "id": "store-daytime",
-      "description": "IRGG Store showroom view during the day",
-      "imageUrl": "/imgs/daylight.jpg",
+      "id": "store-day-1",
+      "description": "Showroom entrance daylight",
+      "imageUrl": "/imgs/outside-store-entrance-daylight.jpeg",
+      "imageHint": "showroom entrance"
+    },
+    {
+      "id": "store-day-far",
+      "description": "Showroom view from distance",
+      "imageUrl": "/imgs/outside-store-abitfaraway-daylight.jpeg",
       "imageHint": "showroom exterior"
     },
     {
-      "id": "store-nighttime",
-      "description": "IRGG Store showroom view at night",
-      "imageUrl": "/imgs/nighttime.jpg",
-      "imageHint": "illuminated showroom"
+      "id": "store-day-side",
+      "description": "Showroom side view daylight",
+      "imageUrl": "/imgs/outside-store-sideview-daylight.jpeg",
+      "imageHint": "building side"
+    },
+    {
+      "id": "store-day-top",
+      "description": "Showroom top view daylight",
+      "imageUrl": "/imgs/outside-store-topview-daylight.jpeg",
+      "imageHint": "building top"
+    },
+    {
+      "id": "store-night-front",
+      "description": "Showroom front view nighttime",
+      "imageUrl": "/imgs/outside-store-frontview-nighttime.jpeg",
+      "imageHint": "illuminated building"
+    },
+    {
+      "id": "store-night-side",
+      "description": "Showroom side view nighttime",
+      "imageUrl": "/imgs/outside-store-sideview-nighttime.jpeg",
+      "imageHint": "night building"
+    },
+    {
+      "id": "interior-random",
+      "description": "Showroom interior space",
+      "imageUrl": "/imgs/inside-store-random-place.jpeg",
+      "imageHint": "interior design"
     }
   ]
 }

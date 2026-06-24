@@ -1,10 +1,9 @@
 
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
-import { Download, Check, HelpCircle, Truck, MapPin, ArrowRight, Eye } from "lucide-react";
+import { Download, Check, HelpCircle, Truck, ArrowRight } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { ContentTab } from "@/app/page";
 import SplitText from "@/components/ui/split-text";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
@@ -122,8 +121,37 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
   }
 
   const currentCheck = getCheck();
-  const dayStoreImage = PlaceHolderImages.find(img => img.id === "store-daytime");
-  const nightStoreImage = PlaceHolderImages.find(img => img.id === "store-nighttime");
+
+  // Map images based on active tab
+  const getDisplayImages = () => {
+    if (activeTab === 'contacts') {
+      return [
+        { img: PlaceHolderImages.find(i => i.id === "store-day-1"), label: "Вход в шоурум" },
+        { img: PlaceHolderImages.find(i => i.id === "store-night-front"), label: "Вид ночью" }
+      ];
+    }
+    if (activeTab === 'keramogranit') {
+      return [
+        { img: PlaceHolderImages.find(i => i.id === "tiles-1"), label: "Коллекции" },
+        { img: PlaceHolderImages.find(i => i.id === "tiles-2"), label: "Текстуры" }
+      ];
+    }
+    if (activeTab === 'laminate_sps') {
+      return [
+        { img: PlaceHolderImages.find(i => i.id === "laminate-1"), label: "Ламинат" },
+        { img: PlaceHolderImages.find(i => i.id === "laminate-2"), label: "SPS покрытия" }
+      ];
+    }
+    if (activeTab === 'delivery') {
+      return [
+        { img: PlaceHolderImages.find(i => i.id === "store-day-top"), label: "Логистический хаб" },
+        { img: PlaceHolderImages.find(i => i.id === "store-day-side"), label: "Отгрузка" }
+      ];
+    }
+    return [];
+  };
+
+  const displayImages = getDisplayImages();
 
   const handleLearnAboutShipping = () => {
     if (setActiveTab) {
@@ -139,7 +167,7 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
           <SplitText
             text={activeTab === 'delivery' ? "Что мы гарантируем при доставке" : (activeTab === 'contacts' ? "Сервис и поддержка" : "Что вы получаете, выбирая нас")}
             tag="h2"
-            className="text-3xl lg:text-5xl font-headline mb-16 lg:mb-20 uppercase tracking-tighter"
+            className="text-2xl lg:text-4xl font-headline mb-16 lg:mb-20 uppercase tracking-tighter"
             textAlign="left"
           />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 lg:gap-x-16 gap-y-10 lg:gap-y-12">
@@ -162,16 +190,13 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32 items-center">
           <div className="space-y-8 lg:space-y-12">
              <div className="space-y-6 lg:space-y-10">
-               <div className="h-32 lg:h-40 cursor-default overflow-hidden">
-                 <TextHoverEffect text="IRGG" />
-               </div>
                <SplitText
                  text={activeTab === 'delivery' ? 'Надежная доставка грузов' : (activeTab === 'keramogranit' ? 'Выбор керамогранита' : (activeTab === 'contacts' ? 'Наш шоурум' : 'Ламинат и SPS-покрытия'))}
                  tag="h2"
-                 className="text-4xl lg:text-7xl font-headline leading-[1] lg:leading-[0.9] uppercase tracking-tighter"
+                 className="text-3xl lg:text-5xl font-headline leading-[1] lg:leading-[1.1] uppercase tracking-tighter"
                  textAlign="left"
                />
-               <p className="text-xl lg:text-2xl text-muted-foreground font-light leading-relaxed max-wxl">
+               <p className="text-lg lg:text-xl text-muted-foreground font-light leading-relaxed max-w-xl">
                  {activeTab === 'delivery' 
                    ? 'Мы берем на себя полную ответственность за ваш груз. От завода в Индии или Китае до вашего склада в России.' 
                    : (activeTab === 'keramogranit' 
@@ -182,14 +207,14 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
                </p>
              </div>
              <div className="flex flex-col sm:flex-row gap-6">
-                <Button variant="outline" className="h-16 lg:h-20 px-8 lg:px-12 rounded-none border-primary/50 text-primary hover:bg-primary hover:text-white transition-all font-bold uppercase tracking-[0.3em] text-[10px] lg:text-[12px] w-full md:w-auto">
+                <Button variant="outline" className="h-16 lg:h-20 px-8 lg:px-12 rounded-none border-primary/50 text-primary hover:bg-primary hover:text-white transition-all font-bold uppercase tracking-[0.3em] text-[10px] lg:text-[11px] w-full md:w-auto">
                   <Download className="mr-3 h-5 w-5 lg:h-6 lg:w-6" />
                   {activeTab === 'delivery' ? 'Прайс-лист на логистику' : (activeTab === 'contacts' ? 'Карточка реквизитов' : `Скачать каталог ${activeTab === 'keramogranit' ? 'керамогранита' : ''} (PDF)`)}
                 </Button>
                 {activeTab === 'contacts' && (
                   <Button 
                     onClick={handleLearnAboutShipping}
-                    className="h-16 lg:h-20 px-8 lg:px-12 rounded-none bg-primary text-white hover:bg-primary/90 transition-all font-bold uppercase tracking-[0.3em] text-[10px] lg:text-[12px] w-full md:w-auto shadow-2xl group flex items-center justify-center"
+                    className="h-16 lg:h-20 px-8 lg:px-12 rounded-none bg-primary text-white hover:bg-primary/90 transition-all font-bold uppercase tracking-[0.3em] text-[10px] lg:text-[11px] w-full md:w-auto shadow-2xl group flex items-center justify-center"
                   >
                     <span>О логистике</span>
                     <ArrowRight className="ml-3 h-5 w-5 transition-transform group-hover:translate-x-2" />
@@ -198,20 +223,15 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
              </div>
           </div>
 
-          <div className="space-y-8">
-            {activeTab === 'contacts' ? (
-              <div className="grid grid-cols-1 gap-8">
-                <InteractiveImage image={dayStoreImage} label="Вид днем" />
-                <InteractiveImage image={nightStoreImage} label="Вид ночью" />
-              </div>
+          <div className="grid grid-cols-1 gap-8">
+            {displayImages.length > 0 ? (
+              displayImages.map((item, idx) => (
+                <InteractiveImage key={idx} image={item.img} label={item.label} />
+              ))
             ) : (
               <div className="aspect-square bg-card/30 border border-white/5 flex flex-col items-center justify-center text-muted-foreground relative group overflow-hidden shadow-2xl">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                {activeTab === 'delivery' ? (
-                    <Truck className="w-16 h-16 lg:w-24 lg:h-24 mb-6 opacity-20 group-hover:scale-110 transition-transform duration-700" />
-                ) : (
-                  <HelpCircle className="w-16 h-16 lg:w-24 lg:h-24 mb-6 opacity-20 group-hover:scale-110 transition-transform duration-700" />
-                )}
+                <HelpCircle className="w-16 h-16 lg:w-24 lg:h-24 mb-6 opacity-20 group-hover:scale-110 transition-transform duration-700" />
                 <span className="text-[10px] uppercase tracking-[0.5em] opacity-40 font-bold">Image is coming soon</span>
               </div>
             )}
