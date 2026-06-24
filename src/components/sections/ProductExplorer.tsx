@@ -20,8 +20,8 @@ function InteractiveImage({ image, label }: { image: any; label: string }) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  const mouseXSpring = useSpring(x);
-  const mouseYSpring = useSpring(y);
+  const mouseXSpring = useSpring(x, { stiffness: 150, damping: 20 });
+  const mouseYSpring = useSpring(y, { stiffness: 150, damping: 20 });
 
   const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"]);
   const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"]);
@@ -54,17 +54,23 @@ function InteractiveImage({ image, label }: { image: any; label: string }) {
       }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative w-full aspect-[4/3] group cursor-none perspective-[1000px]"
+      className="relative w-full aspect-[4/3] group cursor-default perspective-[1000px]"
     >
       <div className="absolute inset-0 bg-primary/20 blur-3xl opacity-0 group-hover:opacity-40 transition-opacity duration-700" />
       <div className="relative w-full h-full overflow-hidden border border-white/10 bg-card/50 shadow-2xl">
-        <Image 
-          src={image?.imageUrl || "https://picsum.photos/seed/fallback/800/600"}
-          alt={label}
-          fill
-          className="object-cover transition-transform duration-700 group-hover:scale-110"
-          data-ai-hint={image?.imageHint || "store view"}
-        />
+        {image?.imageUrl ? (
+          <Image 
+            src={image.imageUrl}
+            alt={label}
+            fill
+            className="object-cover transition-transform duration-700 group-hover:scale-110"
+            data-ai-hint={image.imageHint}
+          />
+        ) : (
+          <div className="w-full h-full bg-muted flex items-center justify-center">
+             <span className="text-xs uppercase tracking-widest opacity-20">No Image</span>
+          </div>
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         <div className="absolute bottom-6 left-6 translate-z-[50px] opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
           <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-white bg-primary px-4 py-2">
@@ -160,7 +166,7 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
                  <TextHoverEffect text="IRGG" />
                </div>
                <SplitText
-                 text={activeTab === 'delivery' ? 'Надежная доставка грузов' : (activeTab === 'keramogranit' ? 'Выбор керамогранита' : (activeTab === 'contacts' ? 'Вид нашего шоурума' : 'Ламинат и SPS-покрытия'))}
+                 text={activeTab === 'delivery' ? 'Надежная доставка грузов' : (activeTab === 'keramogranit' ? 'Выбор керамогранита' : (activeTab === 'contacts' ? 'Наш шоурум' : 'Ламинат и SPS-покрытия'))}
                  tag="h2"
                  className="text-4xl lg:text-7xl font-headline leading-[1] lg:leading-[0.9] uppercase tracking-tighter"
                  textAlign="left"
@@ -195,8 +201,8 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
           <div className="space-y-8">
             {activeTab === 'contacts' ? (
               <div className="grid grid-cols-1 gap-8">
-                <InteractiveImage image={dayStoreImage} label="Дневной вид (Daytime)" />
-                <InteractiveImage image={nightStoreImage} label="Ночной вид (Nighttime)" />
+                <InteractiveImage image={dayStoreImage} label="Вид днем" />
+                <InteractiveImage image={nightStoreImage} label="Вид ночью" />
               </div>
             ) : (
               <div className="aspect-square bg-card/30 border border-white/5 flex flex-col items-center justify-center text-muted-foreground relative group overflow-hidden shadow-2xl">

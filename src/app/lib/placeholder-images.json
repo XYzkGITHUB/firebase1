@@ -51,15 +51,15 @@
     },
     {
       "id": "store-daytime",
-      "description": "IRGG Store daytime view",
-      "imageUrl": "https://picsum.photos/seed/daystore/1200/800",
-      "imageHint": "luxury storefront"
+      "description": "IRGG Store showroom view during the day",
+      "imageUrl": "/imgs/daylight.jpg",
+      "imageHint": "showroom exterior"
     },
     {
       "id": "store-nighttime",
-      "description": "IRGG Store night view",
-      "imageUrl": "https://picsum.photos/seed/nightstore/1200/800",
-      "imageHint": "illuminated shop"
+      "description": "IRGG Store showroom view at night",
+      "imageUrl": "/imgs/nighttime.jpg",
+      "imageHint": "illuminated showroom"
     }
   ]
 }
