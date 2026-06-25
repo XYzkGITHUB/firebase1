@@ -4,15 +4,15 @@ import { useEffect } from 'react';
 
 export function FaviconSetter() {
   useEffect(() => {
-    // 1. Create a data URI for the SVG favicon with correct namespace and brand color (#8B5E3C)
+    // 1. Create a data URI for the SVG favicon with inverted colors (White background, Brand colored 'R')
     const faviconUrl = `data:image/svg+xml,
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="50" fill="%238B5E3C"/>
+        <circle cx="50" cy="50" r="50" fill="white"/>
         <text x="50%" y="55%" 
               font-family="Arial, sans-serif" 
               font-weight="bold" 
               font-size="60" 
-              fill="white" 
+              fill="%238B5E3C" 
               dominant-baseline="middle" 
               text-anchor="middle">R</text>
       </svg>`;
