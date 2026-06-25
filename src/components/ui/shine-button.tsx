@@ -10,6 +10,7 @@ interface ShineButtonProps {
   onClick?: () => void;
   className?: string;
   icon?: React.ReactNode;
+  variant?: 'default' | 'outline';
 }
 
 export const ShineButton = ({
@@ -18,7 +19,8 @@ export const ShineButton = ({
   bgColor,
   onClick,
   className,
-  icon
+  icon,
+  variant = 'outline'
 }: ShineButtonProps) => {
   const sizeClasses = {
     sm: 'h-10 px-6 text-[10px]',
@@ -26,49 +28,42 @@ export const ShineButton = ({
     lg: 'h-16 px-10 text-[11px]',
   };
 
-  const defaultBg = "linear-gradient(325deg, hsl(217 100% 56%) 0%, hsl(194 100% 69%) 55%, hsl(217 100% 56%) 90%)";
+  const isOutline = variant === 'outline';
 
   return (
     <motion.button
+      initial="initial"
       whileHover="hover"
       whileTap="tap"
       onClick={onClick}
       className={cn(
-        "relative overflow-hidden font-bold uppercase tracking-[0.3em] text-white shadow-2xl transition-all flex items-center justify-center rounded-none border-none cursor-pointer group",
+        "relative overflow-hidden font-bold uppercase tracking-[0.3em] transition-all flex items-center justify-center rounded-none cursor-pointer group",
         sizeClasses[size],
+        isOutline 
+          ? "bg-transparent border border-black text-black shadow-none hover:shadow-xl" 
+          : "text-white border-none shadow-2xl",
         className
       )}
-      style={{ background: bgColor || defaultBg }}
+      style={!isOutline ? { background: bgColor || "hsl(var(--primary))" } : {}}
     >
-      {/* Dynamic Ripple Rings */}
+      {/* Dynamic Ripple Rings - Only visible on hover */}
       <motion.div
         variants={{
           hover: {
             scale: [1, 1.5],
             opacity: [0.3, 0],
-          }
+          },
+          initial: { opacity: 0 }
         }}
         transition={{
           duration: 1.2,
           repeat: Infinity,
           ease: "easeOut"
         }}
-        className="absolute inset-0 border border-white/50 pointer-events-none"
-      />
-      <motion.div
-        variants={{
-          hover: {
-            scale: [1, 1.8],
-            opacity: [0.2, 0],
-          }
-        }}
-        transition={{
-          duration: 1.2,
-          delay: 0.3,
-          repeat: Infinity,
-          ease: "easeOut"
-        }}
-        className="absolute inset-0 border border-white/30 pointer-events-none"
+        className={cn(
+          "absolute inset-0 border pointer-events-none", 
+          isOutline ? "border-black/10" : "border-white/50"
+        )}
       />
 
       <div className="relative z-10 flex items-center gap-3">
@@ -76,9 +71,12 @@ export const ShineButton = ({
         {label}
       </div>
       
-      {/* Infinite Fluid Shine - Zero Delay Loop */}
+      {/* Shine effect - now only active on hover to prevent "stuck" feeling */}
       <motion.div 
-        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none"
+        className={cn(
+          "absolute inset-0 pointer-events-none",
+          isOutline ? "bg-gradient-to-r from-transparent via-black/5 to-transparent" : "bg-gradient-to-r from-transparent via-white/40 to-transparent"
+        )}
         variants={{
           hover: {
             x: ['-200%', '200%'],
@@ -87,40 +85,19 @@ export const ShineButton = ({
               repeat: Infinity,
               ease: "linear"
             }
-          }
-        }}
-        initial={{ x: '-200%' }}
-        animate={{ x: '200%' }}
-        transition={{ 
-          duration: 2.5, 
-          repeat: Infinity, 
-          ease: "linear"
+          },
+          initial: { x: '-200%' }
         }}
         style={{ skewX: '-30deg', width: '100%' }}
       />
       
-      {/* Inner Glow Pulse */}
-      <motion.div 
-        className="absolute inset-0 bg-white/10 pointer-events-none"
-        variants={{
-          hover: {
-            opacity: [0, 0.3, 0],
-            transition: {
-              duration: 1.5,
-              repeat: Infinity
-            }
-          }
-        }}
-        initial={{ opacity: 0 }}
-      />
-      
-      {/* Hover Scale & Lift */}
+      {/* Hover Background Layer */}
       <motion.div
         variants={{
-          tap: { scale: 0.95 },
+          tap: { scale: 0.98 },
           hover: { scale: 1.02 }
         }}
-        className="absolute inset-0 z-0 bg-black/0 group-hover:bg-black/5 transition-colors"
+        className="absolute inset-0 z-0 transition-colors group-hover:bg-black/[0.02]"
       />
     </motion.button>
   );

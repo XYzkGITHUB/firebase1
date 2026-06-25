@@ -114,9 +114,10 @@ export function Hero({ activeTab }: HeroProps) {
                     label={activeTab === 'delivery' ? "Вход в трекер" : "Открыть магазин"} 
                     size="lg" 
                     icon={activeTab === 'delivery' ? <Box className="h-4 w-4" /> : <ShoppingBag className="h-4 w-4" />}
+                    variant={activeTab === 'delivery' ? 'default' : 'outline'}
                     bgColor={activeTab === 'delivery' 
                       ? "linear-gradient(325deg, hsl(217 100% 56%) 0%, hsl(194 100% 69%) 55%, hsl(217 100% 56%) 90%)" 
-                      : "linear-gradient(325deg, #8B5E3C 0%, #C9C3BC 55%, #8B5E3C 90%)"
+                      : undefined
                     }
                     onClick={activeTab === 'delivery' ? handleTrackerLogin : () => {}}
                     className="w-full sm:w-auto"
