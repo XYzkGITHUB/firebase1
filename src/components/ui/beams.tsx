@@ -1,4 +1,3 @@
-
 "use client";
 
 import { forwardRef, useImperativeHandle, useEffect, useRef, useMemo, FC, ReactNode } from 'react';
@@ -72,7 +71,7 @@ function extendMaterial<T extends THREE.Material = THREE.Material>(
     fragmentShader: frag,
     lights: true,
     fog: !!cfg.material?.fog,
-    transparent: true,
+    transparent: true
   });
 
   return mat;
@@ -184,11 +183,11 @@ const Beams: FC<BeamsProps> = ({
   beamWidth = 2,
   beamHeight = 15,
   beamNumber = 12,
-  lightColor = '#C9C3BC', // Matches secondary brand color
-  speed = 1.5,
-  noiseIntensity = 1.25,
-  scale = 0.15,
-  rotation = -10
+  lightColor = '#ffffff',
+  speed = 2,
+  noiseIntensity = 1.75,
+  scale = 0.2,
+  rotation = 0
 }) => {
   const meshRef = useRef<THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>>(null!);
 
@@ -250,16 +249,14 @@ const Beams: FC<BeamsProps> = ({
   );
 
   return (
-    <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
-      <CanvasWrapper>
-        <group rotation={[0, 0, degToRad(rotation)]}>
-          <PlaneNoise ref={meshRef} material={beamMaterial} count={beamNumber} width={beamWidth} height={beamHeight} />
-          <DirLight color={lightColor} position={[0, 3, 10]} />
-        </group>
-        <ambientLight intensity={1} />
-        <PerspectiveCamera makeDefault position={[0, 0, 20]} fov={30} />
-      </CanvasWrapper>
-    </div>
+    <CanvasWrapper>
+      <group rotation={[0, 0, degToRad(rotation)]}>
+        <PlaneNoise ref={meshRef} material={beamMaterial} count={beamNumber} width={beamWidth} height={beamHeight} />
+        <DirLight color={lightColor} position={[0, 3, 10]} />
+      </group>
+      <ambientLight intensity={1} />
+      <PerspectiveCamera makeDefault position={[0, 0, 20]} fov={30} />
+    </CanvasWrapper>
   );
 };
 

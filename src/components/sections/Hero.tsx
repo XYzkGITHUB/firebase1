@@ -1,4 +1,3 @@
-
 "use client";
 import React from "react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
@@ -52,12 +51,18 @@ export function Hero({ activeTab }: HeroProps) {
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-start overflow-hidden bg-background pt-32 md:pt-48 pb-40">
       {/* Background Layer */}
-      <Beams 
-        lightColor="#8B5E3C" 
-        beamNumber={isMobile ? 8 : 12}
-        speed={1}
-        rotation={-15}
-      />
+      <div className="absolute inset-0 z-0">
+        <Beams
+          beamWidth={3}
+          beamHeight={30}
+          beamNumber={20}
+          lightColor="#8B5E3C"
+          speed={2}
+          noiseIntensity={1.75}
+          scale={0.2}
+          rotation={30}
+        />
+      </div>
 
       {/* Subtle Background Glow */}
       <div className="absolute inset-0 z-[1] opacity-5 pointer-events-none">
