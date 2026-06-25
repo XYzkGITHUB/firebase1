@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -83,7 +82,7 @@ export function Contact({ activeTab }: ContactProps) {
   return (
     <section className="py-24 md:py-32 px-4 sm:px-8 bg-card/5 overflow-hidden" id="contact-form">
       <div className="max-w-[1600px] mx-auto">
-        <Separator className="bg-white/5 mb-16 md:mb-32" />
+        <Separator className="bg-border/20 mb-16 md:mb-32" />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
           <div className="space-y-6 md:space-y-10 lg:sticky lg:top-32">
             <SplitText
@@ -101,7 +100,7 @@ export function Contact({ activeTab }: ContactProps) {
             </div>
           </div>
 
-          <div className="p-6 sm:p-10 lg:p-16 border border-white/5 bg-card/30 backdrop-blur-3xl shadow-2xl w-full">
+          <div className="p-6 sm:p-10 lg:p-16 border border-border/50 bg-card/30 backdrop-blur-3xl shadow-xl w-full">
             <form className="space-y-8" onSubmit={handleSubmit}>
               <div className="space-y-3">
                 <label className="text-[10px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Ваше имя</label>
@@ -110,7 +109,7 @@ export function Contact({ activeTab }: ContactProps) {
                   value={formData.name}
                   onChange={handleInputChange}
                   placeholder="Введите имя" 
-                  className="h-14 bg-background/50 border-white/5 rounded-none text-base px-6" 
+                  className="h-14 bg-background/50 border-border rounded-none text-base px-6 focus:ring-primary focus:border-primary" 
                 />
               </div>
               <div className="space-y-3">
@@ -120,7 +119,7 @@ export function Contact({ activeTab }: ContactProps) {
                   value={formData.phone}
                   onChange={handleInputChange}
                   placeholder="+7 (___) ___-__-__" 
-                  className="h-14 bg-background/50 border-white/5 rounded-none text-base px-6" 
+                  className="h-14 bg-background/50 border-border rounded-none text-base px-6 focus:ring-primary focus:border-primary" 
                 />
               </div>
               <div className="space-y-3">
@@ -130,7 +129,7 @@ export function Contact({ activeTab }: ContactProps) {
                   value={formData.message}
                   onChange={handleInputChange}
                   placeholder="Опишите детали..." 
-                  className="min-h-[120px] bg-background/50 border-white/5 rounded-none text-base p-6" 
+                  className="min-h-[120px] bg-background/50 border-border rounded-none text-base p-6 focus:ring-primary focus:border-primary" 
                 />
               </div>
               <Button 
