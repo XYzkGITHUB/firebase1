@@ -3,7 +3,6 @@
 import React from "react";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
 
 export function Footer() {
   return (
@@ -39,15 +38,12 @@ export function Footer() {
           <div className="lg:col-span-4 space-y-10">
             <h4 className="font-bold text-[11px] uppercase tracking-[0.5em] text-foreground opacity-60">Партнеры и менеджмент</h4>
             <div className="space-y-6">
-              <div className="p-8 border border-white/5 bg-card/20 text-center text-muted-foreground font-headline italic text-2xl tracking-tighter">Tile Time</div>
-              <div className="p-8 border border-white/5 bg-card/20 text-center text-muted-foreground font-headline italic text-2xl tracking-tighter">Lima Ceramica</div>
+              <div className="p-8 border border-foreground/10 bg-card/20 text-center text-muted-foreground font-headline italic text-2xl tracking-tighter">Tile Time</div>
+              <div className="p-8 border border-foreground/10 bg-card/20 text-center text-muted-foreground font-headline italic text-2xl tracking-tighter">Lima Ceramica</div>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed font-light pt-6">
               Свяжитесь с нами напрямую или оставьте заявку — мы разберем запрос и предложим оптимальное решение.
             </p>
-            <Button size="lg" className="w-full h-20 bg-white/5 hover:bg-white/10 text-white font-bold uppercase tracking-[0.3em] border border-white/10 rounded-none text-[10px] shadow-xl">
-              Связаться с менеджером
-            </Button>
           </div>
         </div>
 
