@@ -9,6 +9,8 @@ import FloatingLines from "@/components/ui/floating-lines";
 import BlurText from "@/components/ui/blur-text";
 import ShapeBlur from "@/components/ui/shape-blur";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { ShineButton } from "@/components/ui/shine-button";
+import { useRouter } from "next/navigation";
 
 interface HeroProps {
   activeTab: ContentTab;
@@ -16,12 +18,17 @@ interface HeroProps {
 
 export function Hero({ activeTab }: HeroProps) {
   const isMobile = useIsMobile();
+  const router = useRouter();
   
   const scrollToContact = () => {
     const element = document.getElementById('contact-form');
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+
+  const handleTrackerLogin = () => {
+    router.push("/login");
   };
 
   const content = {
@@ -99,7 +106,7 @@ export function Hero({ activeTab }: HeroProps) {
                   direction="top"
                   delay={10}
                   stepDuration={0.2}
-                  className="text-3xl md:text-6xl lg:text-7xl font-headline text-foreground leading-tight uppercase tracking-tighter"
+                  className="text-3xl md:text-5xl lg:text-7xl font-headline text-foreground leading-tight uppercase tracking-tighter"
                 />
               </div>
               
@@ -110,7 +117,7 @@ export function Hero({ activeTab }: HeroProps) {
                   direction="bottom"
                   delay={10}
                   stepDuration={0.15}
-                  className="text-sm md:text-xl text-muted-foreground font-body leading-relaxed max-w-2xl mx-auto font-light opacity-90"
+                  className="text-sm md:text-base text-muted-foreground font-body leading-relaxed max-w-2xl mx-auto font-light opacity-90"
                 />
               </div>
               
@@ -123,12 +130,17 @@ export function Hero({ activeTab }: HeroProps) {
                   Связаться с менеджером
                   <ArrowRight className="ml-3 h-4 w-4 transition-transform group-hover:translate-x-2" />
                 </Button>
-                {/* Only show tracker button if NOT on contacts tab */}
+                
+                {/* Tracker Shine Button */}
                 {activeTab !== "contacts" && (
-                  <Button variant="outline" size="lg" className="h-16 px-10 rounded-none border-white/10 hover:bg-white/5 text-[11px] font-bold uppercase tracking-[0.3em] transition-all bg-transparent backdrop-blur-sm w-full sm:w-auto">
-                    <Box className="mr-3 h-4 w-4" />
-                    Вход в трекер
-                  </Button>
+                  <ShineButton 
+                    label="Вход в трекер" 
+                    size="lg" 
+                    icon={<Box className="h-4 w-4" />}
+                    bgColor="linear-gradient(325deg, hsl(217 100% 56%) 0%, hsl(194 100% 69%) 55%, hsl(217 100% 56%) 90%)" 
+                    onClick={handleTrackerLogin}
+                    className="w-full sm:w-auto"
+                  />
                 )}
               </div>
             </div>
