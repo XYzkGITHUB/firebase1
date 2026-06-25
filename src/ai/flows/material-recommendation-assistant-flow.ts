@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview Provides a Genkit flow for recommending ceramic tiles, laminate, and sanitary ware
@@ -58,7 +59,7 @@ const prompt = ai.definePrompt({
   name: 'materialRecommendationAssistantPrompt',
   input: { schema: MaterialRecommendationAssistantInputSchema },
   output: { schema: MaterialRecommendationAssistantOutputSchema },
-  prompt: `You are an expert interior designer and material specialist for RION Luxe Surface.
+  prompt: `You are an expert interior designer and material specialist for RION.
 
 Your task is to analyze the provided project description and recommend suitable materials from the following RION product categories:
 - Керамогранит (keramogranit)
