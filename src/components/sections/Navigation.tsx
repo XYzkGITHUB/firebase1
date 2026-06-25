@@ -103,7 +103,15 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
               >
                 {link.name}
                 {activeTab === link.id && (
-                  <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-primary rounded-full" />
+                  <motion.div
+                    layoutId="nav-indicator"
+                    className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-primary rounded-full"
+                    transition={{
+                      type: "spring",
+                      stiffness: 380,
+                      damping: 30
+                    }}
+                  />
                 )}
               </button>
             ))}
