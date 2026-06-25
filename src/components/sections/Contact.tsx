@@ -1,6 +1,6 @@
 
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,9 +8,8 @@ import { Loader2 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { ContentTab } from "@/app/page";
 import SplitText from "@/components/ui/split-text";
-import { useFirestore, useAuth, useUser } from "@/firebase";
+import { useFirestore } from "@/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { signInAnonymously } from "firebase/auth";
 import { useToast } from "@/hooks/use-toast";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
@@ -21,8 +20,6 @@ interface ContactProps {
 
 export function Contact({ activeTab }: ContactProps) {
   const db = useFirestore();
-  const auth = useAuth();
-  const { user } = useUser();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
@@ -30,12 +27,6 @@ export function Contact({ activeTab }: ContactProps) {
     phone: "",
     message: "",
   });
-
-  useEffect(() => {
-    if (auth && !user) {
-      signInAnonymously(auth).catch(() => {});
-    }
-  }, [auth, user]);
 
   const getTitle = () => {
     if (activeTab === 'keramogranit') return 'Нужен керамогранит?';

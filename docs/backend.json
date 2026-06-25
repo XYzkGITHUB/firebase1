@@ -37,14 +37,13 @@
   },
   "auth": {
     "providers": [
-      "anonymous",
       "email_password"
     ]
   },
   "firestore": {
     "/leads/{leadId}": {
       "schema": "Lead",
-      "description": "Collection of incoming leads from clients."
+      "description": "Collection of incoming leads from clients. Allows public creation of documents."
     }
   }
 }
