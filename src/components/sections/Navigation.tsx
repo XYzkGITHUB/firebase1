@@ -10,6 +10,7 @@ import { ContentTab } from "@/app/page";
 import { useUser, useAuth } from "@/firebase";
 import { signOut } from "firebase/auth";
 import { LuxuryLoader } from "@/components/ui/luxury-loader";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface NavigationProps {
   activeTab: ContentTab;
@@ -73,7 +74,7 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
       <nav className={cn(
         "fixed top-0 left-0 w-full z-[100] transition-all duration-500 py-6 px-6 lg:py-8 lg:px-12",
         isScrolled 
-          ? "bg-background/95 backdrop-blur-2xl border-b border-white/10 shadow-2xl" 
+          ? "bg-background border-b border-white/10 shadow-2xl" 
           : "bg-transparent"
       )}>
         <div className="max-w-[1800px] mx-auto flex items-center justify-between">
