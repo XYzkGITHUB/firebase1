@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" className="dark">
+    <html lang="ru">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -25,7 +25,8 @@ export default function RootLayout({
           __html: `
             (function() {
               const theme = localStorage.getItem('theme');
-              if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+              // Only add dark if explicitly saved as dark. Otherwise default to light (no class).
+              if (theme === 'dark') {
                 document.documentElement.classList.add('dark');
               } else {
                 document.documentElement.classList.remove('dark');

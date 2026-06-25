@@ -34,9 +34,11 @@ export const ToggleTheme = ({
     ...props
 }: ToggleThemeProps) => {
     const [isDark, setIsDark] = useState(false)
+    const [mounted, setMounted] = useState(false)
     const buttonRef = useRef<HTMLButtonElement>(null)
 
     useEffect(() => {
+        setMounted(true)
         const updateTheme = () => {
             setIsDark(document.documentElement.classList.contains("dark"))
         }
@@ -291,13 +293,15 @@ export const ToggleTheme = ({
 
     }, [isDark, duration, animationType])
 
+    if (!mounted) return null;
+
     return (
         <>
             <button
                 ref={buttonRef}
                 onClick={toggleTheme}
                 className={cn(
-                    "p-3 rounded-full transition-all duration-500 border border-white/10 glass-panel shadow-2xl",
+                    "p-3 rounded-full transition-all duration-500 border border-border glass-panel shadow-2xl bg-background",
                     isDark ? "hover:text-amber-400" : "hover:text-primary",
                     className
                 )}
