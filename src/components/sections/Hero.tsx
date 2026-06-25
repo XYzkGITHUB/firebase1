@@ -5,9 +5,8 @@ import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Box } from "lucide-react";
 import { ContentTab } from "@/app/page";
-import FloatingLines from "@/components/ui/floating-lines";
+import Beams from "@/components/ui/beams";
 import BlurText from "@/components/ui/blur-text";
-import ShapeBlur from "@/components/ui/shape-blur";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ShineButton } from "@/components/ui/shine-button";
 
@@ -53,36 +52,15 @@ export function Hero({ activeTab }: HeroProps) {
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-start overflow-hidden bg-background pt-32 md:pt-48 pb-40">
       {/* Background Layer */}
-      <div className="absolute inset-0 z-0 transition-opacity duration-1000">
-        {!isMobile ? (
-          <div className="w-full h-full opacity-20">
-            <FloatingLines 
-              linesGradient={['#8B5E3C', '#C9C3BC', '#4A3728']}
-              lineCount={[10, 15, 20]}
-              lineDistance={[8, 6, 4]}
-              bendRadius={5.0}
-              bendStrength={-0.5}
-              interactive={true}
-              parallax={true}
-              animationSpeed={0.3}
-              mixBlendMode="normal"
-            />
-          </div>
-        ) : (
-          <div className="w-full h-full opacity-10">
-            <ShapeBlur 
-              variation={1}
-              shapeSize={1.5}
-              roundness={0.5}
-              circleSize={0.4}
-              circleEdge={0.6}
-            />
-          </div>
-        )}
-      </div>
+      <Beams 
+        lightColor="#8B5E3C" 
+        beamNumber={isMobile ? 8 : 12}
+        speed={1}
+        rotation={-15}
+      />
 
       {/* Subtle Background Glow */}
-      <div className="absolute inset-0 z-0 opacity-5 pointer-events-none">
+      <div className="absolute inset-0 z-[1] opacity-5 pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-primary blur-[200px] rounded-full" />
       </div>
 
