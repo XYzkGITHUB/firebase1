@@ -38,7 +38,7 @@ export function Footer() {
             <h4 className="font-bold text-[11px] uppercase tracking-[0.5em] text-foreground opacity-60">Партнеры и менеджмент</h4>
             <div className="space-y-6">
               <div className="p-8 border border-foreground/10 bg-card/20 text-center text-muted-foreground font-headline italic text-2xl tracking-tighter">Tile Time</div>
-              <div className="p-8 border border-foreground/10 bg-card/20 text-center text-muted-foreground font-headline italic text-2xl tracking-tighter">Lima Ceramica</div>
+              <div className="p-8 border border-foreground/10 bg-card/20 text-center text-muted-foreground font-headline italic text-2xl tracking-tighter">Invest Ceramic</div>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed font-light pt-6">
               Свяжитесь с нами напрямую или оставьте заявку — мы разберем запрос и предложим оптимальное решение.
