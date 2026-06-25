@@ -1,12 +1,14 @@
+
 "use client";
 import React from "react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Box, ShoppingBag } from "lucide-react";
+import { ArrowRight, Box, ShoppingBag, Star } from "lucide-react";
 import { ContentTab } from "@/app/page";
 import BlurText from "@/components/ui/blur-text";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ShineButton } from "@/components/ui/shine-button";
+import NumberTicker from "@/components/ui/number-ticker";
 
 interface HeroProps {
   activeTab: ContentTab;
@@ -98,6 +100,34 @@ export function Hero({ activeTab }: HeroProps) {
                   className="text-base text-muted-foreground font-body leading-relaxed max-w-2xl mx-auto font-light"
                 />
               </div>
+
+              {/* Decorative Rating for About Us */}
+              {activeTab === 'contacts' && (
+                <div className="flex flex-col items-center gap-4 pt-6 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+                  <div className="flex items-center gap-3">
+                    <div className="flex gap-1">
+                      {[1, 2, 3, 4].map((star) => (
+                        <Star key={star} className="w-5 h-5 fill-primary text-primary" />
+                      ))}
+                      <div className="relative w-5 h-5">
+                         <Star className="absolute inset-0 w-5 h-5 text-primary opacity-20" />
+                         <div className="absolute inset-0 overflow-hidden w-[60%]">
+                           <Star className="w-5 h-5 fill-primary text-primary" />
+                         </div>
+                      </div>
+                    </div>
+                    <div className="flex items-baseline gap-1">
+                      <NumberTicker 
+                        value={4.6} 
+                        decimalPlaces={1} 
+                        className="text-3xl font-headline font-bold text-foreground"
+                      />
+                      <span className="text-lg text-muted-foreground font-light">/ 5</span>
+                    </div>
+                  </div>
+                  <span className="text-[9px] uppercase tracking-[0.4em] font-bold text-muted-foreground opacity-40">Рейтинг доверия партнеров</span>
+                </div>
+              )}
               
               <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-12 pointer-events-auto">
                 <Button 
