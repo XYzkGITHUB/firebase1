@@ -1,4 +1,3 @@
-
 import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
@@ -10,7 +9,7 @@ export const metadata: Metadata = {
   title: 'IRGG Luxe Surface | Керамогранит и Сантехника',
   description: 'Международные поставки строительных материалов под ключ. Керамогранит, ламинат, сантехника.',
   icons: {
-    icon: `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="%232563EB"/><text x="50%" y="55%" font-family="Arial, sans-serif" font-weight="bold" font-size="60" fill="white" dominant-baseline="middle" text-anchor="middle">R</text></svg>`,
+    icon: `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="%238B5E3C"/><text x="50%" y="55%" font-family="Arial, sans-serif" font-weight="bold" font-size="60" fill="white" dominant-baseline="middle" text-anchor="middle">R</text></svg>`,
   },
 };
 
