@@ -30,7 +30,7 @@ export function Footer() {
               <li><Link href="#" className="text-muted-foreground hover:text-primary transition-all text-sm uppercase tracking-[0.3em] font-bold">Ламинат и SPS</Link></li>
               <li><Link href="#" className="text-muted-foreground hover:text-primary transition-all text-sm uppercase tracking-[0.3em] font-bold">Сантехника</Link></li>
               <li><Link href="#" className="text-muted-foreground hover:text-primary transition-all text-sm uppercase tracking-[0.3em] font-bold">Таможня и Склад</Link></li>
-              <li><Link href="#" className="text-muted-foreground hover:text-primary transition-all text-sm uppercase tracking-[0.3em] font-bold">Контакты</Link></li>
+              <li><Link href="#" className="text-muted-foreground hover:text-primary transition-all text-sm uppercase tracking-[0.3em] font-bold">О нас</Link></li>
             </ul>
           </div>
 
