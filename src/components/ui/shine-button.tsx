@@ -31,28 +31,44 @@ export const ShineButton = ({
   return (
     <motion.button
       whileHover="hover"
+      whileTap="tap"
       onClick={onClick}
       className={cn(
-        "relative overflow-hidden font-bold uppercase tracking-[0.3em] text-white shadow-2xl transition-all active:scale-[0.98] flex items-center justify-center rounded-none border-none cursor-pointer",
+        "relative overflow-hidden font-bold uppercase tracking-[0.3em] text-white shadow-2xl transition-all flex items-center justify-center rounded-none border-none cursor-pointer group",
         sizeClasses[size],
         className
       )}
       style={{ background: bgColor || defaultBg }}
     >
-      {/* Outer Ripple Effect */}
+      {/* Dynamic Ripple Rings */}
       <motion.div
         variants={{
           hover: {
-            scale: [1, 1.2],
-            opacity: [0.5, 0],
+            scale: [1, 1.5],
+            opacity: [0.3, 0],
           }
         }}
         transition={{
-          duration: 0.8,
+          duration: 1.2,
           repeat: Infinity,
           ease: "easeOut"
         }}
-        className="absolute inset-0 border-2 border-blue-400/50 pointer-events-none"
+        className="absolute inset-0 border border-white/50 pointer-events-none"
+      />
+      <motion.div
+        variants={{
+          hover: {
+            scale: [1, 1.8],
+            opacity: [0.2, 0],
+          }
+        }}
+        transition={{
+          duration: 1.2,
+          delay: 0.3,
+          repeat: Infinity,
+          ease: "easeOut"
+        }}
+        className="absolute inset-0 border border-white/30 pointer-events-none"
       />
 
       <div className="relative z-10 flex items-center gap-3">
@@ -60,14 +76,14 @@ export const ShineButton = ({
         {label}
       </div>
       
-      {/* Fluid Shine Effect - Speeds up on hover */}
+      {/* Infinite Fluid Shine - Zero Delay Loop */}
       <motion.div 
-        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent pointer-events-none"
+        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none"
         variants={{
           hover: {
             x: ['-200%', '200%'],
             transition: {
-              duration: 1.5,
+              duration: 1.2,
               repeat: Infinity,
               ease: "linear"
             }
@@ -76,27 +92,35 @@ export const ShineButton = ({
         initial={{ x: '-200%' }}
         animate={{ x: '200%' }}
         transition={{ 
-          duration: 3, 
+          duration: 2.5, 
           repeat: Infinity, 
-          ease: "linear",
-          repeatDelay: 0.5
+          ease: "linear"
         }}
-        style={{ skewX: '-25deg' }}
+        style={{ skewX: '-30deg', width: '100%' }}
       />
       
-      {/* Background Pulse Glow */}
+      {/* Inner Glow Pulse */}
       <motion.div 
-        className="absolute inset-0 bg-white/20 pointer-events-none"
+        className="absolute inset-0 bg-white/10 pointer-events-none"
         variants={{
           hover: {
-            opacity: [0, 0.4, 0],
+            opacity: [0, 0.3, 0],
             transition: {
-              duration: 1,
+              duration: 1.5,
               repeat: Infinity
             }
           }
         }}
         initial={{ opacity: 0 }}
+      />
+      
+      {/* Hover Scale & Lift */}
+      <motion.div
+        variants={{
+          tap: { scale: 0.95 },
+          hover: { scale: 1.02 }
+        }}
+        className="absolute inset-0 z-0 bg-black/0 group-hover:bg-black/5 transition-colors"
       />
     </motion.button>
   );
