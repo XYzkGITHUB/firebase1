@@ -2,7 +2,7 @@
 import React from "react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Box } from "lucide-react";
+import { ArrowRight, Box, ShoppingBag } from "lucide-react";
 import { ContentTab } from "@/app/page";
 import BlurText from "@/components/ui/blur-text";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -111,11 +111,14 @@ export function Hero({ activeTab }: HeroProps) {
                 
                 {activeTab !== "contacts" && (
                   <ShineButton 
-                    label="Вход в трекер" 
+                    label={activeTab === 'delivery' ? "Вход в трекер" : "Открыть магазин"} 
                     size="lg" 
-                    icon={<Box className="h-4 w-4" />}
-                    bgColor="linear-gradient(325deg, hsl(217 100% 56%) 0%, hsl(194 100% 69%) 55%, hsl(217 100% 56%) 90%)" 
-                    onClick={handleTrackerLogin}
+                    icon={activeTab === 'delivery' ? <Box className="h-4 w-4" /> : <ShoppingBag className="h-4 w-4" />}
+                    bgColor={activeTab === 'delivery' 
+                      ? "linear-gradient(325deg, hsl(217 100% 56%) 0%, hsl(194 100% 69%) 55%, hsl(217 100% 56%) 90%)" 
+                      : "linear-gradient(325deg, #8B5E3C 0%, #C9C3BC 55%, #8B5E3C 90%)"
+                    }
+                    onClick={activeTab === 'delivery' ? handleTrackerLogin : () => {}}
                     className="w-full sm:w-auto"
                   />
                 )}
