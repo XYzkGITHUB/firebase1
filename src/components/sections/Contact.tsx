@@ -18,6 +18,10 @@ interface ContactProps {
   activeTab: ContentTab;
 }
 
+/**
+ * Contact form component for RION.
+ * Handles lead generation without requiring user authentication.
+ */
 export function Contact({ activeTab }: ContactProps) {
   const db = useFirestore();
   const { toast } = useToast();
@@ -54,6 +58,7 @@ export function Contact({ activeTab }: ContactProps) {
     };
 
     const leadsRef = collection(db, "leads");
+    // Directly add the document. Security Rules allow public 'create'.
     addDoc(leadsRef, leadData)
       .then(() => {
         toast({ title: "Успешно", description: "Ваш запрос отправлен!" });
