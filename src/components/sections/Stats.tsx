@@ -1,3 +1,4 @@
+
 "use client";
 import React from "react";
 import { Handshake, Construction, ShieldCheck, Layers, Package, TrendingUp, Factory, Globe, Clock, ShieldAlert, Phone, Mail } from "lucide-react";
@@ -90,11 +91,6 @@ export function Stats({ activeTab }: StatsProps) {
       title: "Gmail",
       desc: "• irggimport@bk.ru",
     },
-    {
-      icon: <Clock className="w-10 h-10 text-primary" />,
-      title: "График работы",
-      desc: "• Круглосуточно 24/7\n\n• WhatsApp / Telegram",
-    },
   ];
 
   const getAdv = () => {
@@ -119,7 +115,7 @@ export function Stats({ activeTab }: StatsProps) {
           />
         </div>
         
-        <div className={`grid grid-cols-1 md:grid-cols-2 ${isContacts ? 'lg:grid-cols-3' : 'lg:grid-cols-4'} gap-8`}>
+        <div className={`grid grid-cols-1 md:grid-cols-2 ${isContacts ? 'lg:grid-cols-2 max-w-4xl mx-auto' : 'lg:grid-cols-4'} gap-8`}>
           {currentAdv.map((adv, idx) => (
             <BorderGlow key={idx} borderRadius={8} className="border-[0.5px] border-foreground/5 shadow-sm">
               <div className="p-12 h-full bg-card/20 hover:bg-card/30 transition-all duration-700 group overflow-hidden">
