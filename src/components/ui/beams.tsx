@@ -183,7 +183,7 @@ const Beams: FC<BeamsProps> = ({
   beamWidth = 2,
   beamHeight = 15,
   beamNumber = 12,
-  lightColor = '#ffffff',
+  lightColor = '#8B5E3C',
   speed = 2,
   noiseIntensity = 1.75,
   scale = 0.2,
@@ -235,7 +235,6 @@ const Beams: FC<BeamsProps> = ({
         },
         material: { fog: true },
         uniforms: {
-          // Changed from #000000 to transparent/light beige compatible
           diffuse: new THREE.Color(...hexToNormalizedRGB('#FAF9F8')),
           time: { shared: true, mixed: true, linked: true, value: 0 },
           roughness: 0.3,
