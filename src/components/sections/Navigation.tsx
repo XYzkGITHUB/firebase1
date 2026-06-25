@@ -45,7 +45,7 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
     { name: "Ламинат и SPS", id: "laminate_sps" as const },
     { name: "Сантехника", id: "sanitary" },
     { name: "Таможня", id: "delivery" as const },
-    { name: "Наши контакты", id: "contacts" as const },
+    { name: "О нас", id: "contacts" as const },
   ];
 
   const handleNavClick = (id: string) => {

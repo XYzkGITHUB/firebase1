@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState } from "react";
 import { Handshake, Construction, ShieldCheck, Layers, Package, TrendingUp, Factory, Globe, Clock, ShieldAlert, Phone, Mail, MapPin, ChevronDown, ChevronUp } from "lucide-react";
@@ -99,7 +98,7 @@ export function Stats({ activeTab }: StatsProps) {
       <div className="max-w-[1600px] mx-auto">
         <div className="mb-24 text-center">
           <SplitText
-            text={activeTab === 'delivery' ? "Надежная логистика под ключ" : (isContacts ? "Свяжитесь с нами" : "Наши главные преимущества")}
+            text={activeTab === 'delivery' ? "Надежная логистика под ключ" : (isContacts ? "О компании RION" : "Наши главные преимущества")}
             tag="h2"
             className="text-4xl md:text-5xl font-headline max-w-5xl mx-auto leading-tight tracking-tighter"
             textAlign="center"
