@@ -1,10 +1,10 @@
+
 "use client";
 import React from "react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Box } from "lucide-react";
 import { ContentTab } from "@/app/page";
-import Beams from "@/components/ui/beams";
 import BlurText from "@/components/ui/blur-text";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ShineButton } from "@/components/ui/shine-button";
@@ -50,18 +50,16 @@ export function Hero({ activeTab }: HeroProps) {
 
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-start overflow-hidden bg-background pt-32 md:pt-48 pb-40">
-      {/* Background Layer */}
-      <div className="absolute inset-0 z-0">
-        <Beams
-          beamWidth={3}
-          beamHeight={30}
-          beamNumber={20}
-          lightColor="#8B5E3C"
-          speed={2}
-          noiseIntensity={1.75}
-          scale={0.2}
-          rotation={30}
+      {/* Tile Grid Background Layer */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div 
+          className="absolute inset-0 opacity-[0.08] dark:opacity-[0.15]" 
+          style={{ 
+            backgroundImage: `linear-gradient(to right, hsl(var(--primary)) 1px, transparent 1px), linear-gradient(to bottom, hsl(var(--primary)) 1px, transparent 1px)`,
+            backgroundSize: '100px 100px'
+          }} 
         />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
       </div>
 
       {/* Subtle Background Glow */}
@@ -106,7 +104,7 @@ export function Hero({ activeTab }: HeroProps) {
                 <Button 
                   onClick={scrollToContact}
                   size="lg" 
-                  className="h-16 px-10 rounded-none font-bold group bg-primary hover:bg-primary/90 text-[11px] uppercase tracking-[0.3em] text-white shadow-2xl transition-all w-full sm:w-auto"
+                  className="h-16 px-10 rounded-none font-bold group bg-primary text-white hover:bg-primary/90 uppercase tracking-[0.3em] text-[10px] shadow-2xl transition-all w-full sm:w-auto"
                 >
                   Связаться с менеджером
                   <ArrowRight className="ml-3 h-4 w-4 transition-transform group-hover:translate-x-2" />
