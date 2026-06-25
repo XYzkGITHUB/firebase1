@@ -44,6 +44,16 @@ export default function RegisterPage() {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Validation: Check for space in full name to ensure last name is provided
+    if (!name.trim().includes(" ")) {
+      toast({
+        variant: "destructive",
+        title: "Ошибка",
+        description: "Please add your last name!",
+      });
+      return;
+    }
+
     if (password !== confirmPassword) {
       toast({
         variant: "destructive",
@@ -110,7 +120,7 @@ export default function RegisterPage() {
         <CardContent>
           <form onSubmit={handleRegister} className="space-y-4">
             <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Имя</label>
+              <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Полное имя</label>
               <Input 
                 type="text" 
                 placeholder="Иван Иванов" 
