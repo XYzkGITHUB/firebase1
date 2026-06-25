@@ -44,12 +44,11 @@ export default function RegisterPage() {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validation: Check for space in full name to ensure last name is provided
     if (!name.trim().includes(" ")) {
       toast({
         variant: "destructive",
         title: "Ошибка",
-        description: "Please add your last name!",
+        description: "Пожалуйста, укажите фамилию!",
       });
       return;
     }
@@ -67,7 +66,6 @@ export default function RegisterPage() {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       
-      // Update the user's display name
       if (userCredential.user) {
         await updateProfile(userCredential.user, {
           displayName: name

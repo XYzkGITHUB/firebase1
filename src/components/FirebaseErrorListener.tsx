@@ -9,14 +9,12 @@ export function FirebaseErrorListener() {
 
   useEffect(() => {
     const handlePermissionError = (error: any) => {
-      // In development, we want to see the full error in the console
-      // The Next.js error overlay will catch uncaught errors, but we can also toast it
       console.error(error);
       
       toast({
         variant: "destructive",
-        title: "Security Rule Error",
-        description: `Permission denied at ${error.context?.path}. Check your security rules.`,
+        title: "Ошибка правил безопасности",
+        description: `Доступ запрещен в ${error.context?.path}. Проверьте правила безопасности.`,
       });
     };
 
