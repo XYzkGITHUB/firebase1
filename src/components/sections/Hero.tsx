@@ -10,7 +10,6 @@ import BlurText from "@/components/ui/blur-text";
 import ShapeBlur from "@/components/ui/shape-blur";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ShineButton } from "@/components/ui/shine-button";
-import { useRouter } from "next/navigation";
 
 interface HeroProps {
   activeTab: ContentTab;
@@ -18,7 +17,6 @@ interface HeroProps {
 
 export function Hero({ activeTab }: HeroProps) {
   const isMobile = useIsMobile();
-  const router = useRouter();
   
   const scrollToContact = () => {
     const element = document.getElementById('contact-form');
@@ -28,7 +26,7 @@ export function Hero({ activeTab }: HeroProps) {
   };
 
   const handleTrackerLogin = () => {
-    router.push("/login");
+    window.location.href = "https://irgg.ru/";
   };
 
   const content = {
@@ -93,7 +91,7 @@ export function Hero({ activeTab }: HeroProps) {
         <div className="relative w-full max-w-6xl py-12 md:py-24 px-4 md:px-16 flex flex-col items-center justify-center">
           
           <div className="relative z-10 flex flex-col items-center w-full">
-            {/* Logo with interaction disabled on mobile */}
+            {/* Logo */}
             <div className="w-full h-[8rem] md:h-[14rem] flex items-center justify-center cursor-default pointer-events-auto">
               <TextHoverEffect text="IRGG" disableInteraction={isMobile} />
             </div>
@@ -117,7 +115,7 @@ export function Hero({ activeTab }: HeroProps) {
                   direction="bottom"
                   delay={10}
                   stepDuration={0.15}
-                  className="text-sm md:text-base text-muted-foreground font-body leading-relaxed max-w-2xl mx-auto font-light opacity-90"
+                  className="text-base text-muted-foreground font-body leading-relaxed max-w-2xl mx-auto font-light"
                 />
               </div>
               
@@ -131,7 +129,6 @@ export function Hero({ activeTab }: HeroProps) {
                   <ArrowRight className="ml-3 h-4 w-4 transition-transform group-hover:translate-x-2" />
                 </Button>
                 
-                {/* Tracker Shine Button */}
                 {activeTab !== "contacts" && (
                   <ShineButton 
                     label="Вход в трекер" 
