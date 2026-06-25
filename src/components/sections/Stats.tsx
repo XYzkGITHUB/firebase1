@@ -1,7 +1,7 @@
 
 "use client";
 import React, { useState } from "react";
-import { Handshake, Construction, ShieldCheck, Layers, Package, TrendingUp, Factory, Globe, Clock, ShieldAlert, Phone, Mail, MapPin, ChevronDown, ChevronUp } from "lucide-react";
+import { Handshake, Construction, ShieldCheck, Layers, Package, TrendingUp, Factory, Globe, Clock, ShieldAlert, Phone, Mail, MapPin, ChevronDown, ChevronUp, Droplets, Bath } from "lucide-react";
 import { ContentTab } from "@/app/page";
 import SplitText from "@/components/ui/split-text";
 import { BorderGlow } from "@/components/ui/border-glow";
@@ -61,6 +61,29 @@ export function Stats({ activeTab }: StatsProps) {
     },
   ];
 
+  const sanitaryAdv = [
+    {
+      icon: <Bath className="w-10 h-10 text-primary" />,
+      title: "Мировые бренды",
+      desc: "Прямые поставки сантехники от ведущих европейских и азиатских производителей.",
+    },
+    {
+      icon: <Droplets className="w-10 h-10 text-primary" />,
+      title: "Комплексные решения",
+      desc: "Подбор полной комплектации санузлов: от смесителей до дизайнерских ванн.",
+    },
+    {
+      icon: <ShieldCheck className="w-10 h-10 text-primary" />,
+      title: "Гарантия качества",
+      desc: "Сертифицированная продукция с официальной гарантией от производителя.",
+    },
+    {
+      icon: <TrendingUp className="w-10 h-10 text-primary" />,
+      title: "Актуальный дизайн",
+      desc: "Регулярное обновление коллекций в соответствии с мировыми трендами интерьера.",
+    },
+  ];
+
   const deliveryAdv = [
     {
       icon: <Globe className="w-10 h-10 text-primary" />,
@@ -87,6 +110,7 @@ export function Stats({ activeTab }: StatsProps) {
   const getAdv = () => {
     if (activeTab === 'keramogranit') return keramogranitAdv;
     if (activeTab === 'laminate_sps') return laminateAdv;
+    if (activeTab === 'sanitary') return sanitaryAdv;
     if (activeTab === 'delivery') return deliveryAdv;
     return [];
   }
@@ -108,7 +132,6 @@ export function Stats({ activeTab }: StatsProps) {
         
         {isContacts ? (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            {/* Left Column: Direct Contacts */}
             <BorderGlow borderRadius={8} className="border-[0.5px] border-foreground/5 shadow-sm">
               <div className="p-12 h-full bg-card/20 flex flex-col gap-10">
                 <div className="space-y-8">
@@ -136,7 +159,6 @@ export function Stats({ activeTab }: StatsProps) {
               </div>
             </BorderGlow>
 
-            {/* Right Column: Legal Address (Expandable) */}
             <BorderGlow borderRadius={8} className="border-[0.5px] border-foreground/5 shadow-sm">
               <div className="p-12 h-full bg-card/20 flex flex-col">
                 <div className="flex items-start gap-6 mb-8">

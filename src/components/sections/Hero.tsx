@@ -37,6 +37,10 @@ export function Hero({ activeTab }: HeroProps) {
       title: "ЛАМИНАТ И SPS",
       desc: "Стабильные поставки напрямую с фабрик Китая и Индии."
     },
+    sanitary: {
+      title: "ЭКСКЛЮЗИВНАЯ САНТЕХНИКА",
+      desc: "Прямые поставки санфаянса и мебели для ванных комнат от ведущих мировых брендов."
+    },
     delivery: {
       title: "ЛОГИСТИКА БЕЗ ГРАНИЦ",
       desc: "Бережная доставка ваших материалов из Индии (25 дней) и Китая (35 дней) с полной страховкой."
@@ -51,7 +55,6 @@ export function Hero({ activeTab }: HeroProps) {
 
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-start overflow-hidden bg-background pt-32 md:pt-48 pb-40">
-      {/* Tile Grid Background Layer */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div 
           className="absolute inset-0 opacity-[0.08] dark:opacity-[0.15]" 
@@ -63,17 +66,14 @@ export function Hero({ activeTab }: HeroProps) {
         <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
       </div>
 
-      {/* Subtle Background Glow */}
       <div className="absolute inset-0 z-[1] opacity-5 pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-primary blur-[200px] rounded-full" />
       </div>
 
-      {/* Content Layer */}
       <div className="z-10 w-full max-w-[1600px] px-8 flex flex-col items-center pointer-events-none">
         <div className="relative w-full max-w-6xl py-12 md:py-24 px-4 md:px-16 flex flex-col items-center justify-center">
           
           <div className="relative z-10 flex flex-col items-center w-full">
-            {/* Logo */}
             <div className="w-full h-[8rem] md:h-[14rem] flex items-center justify-center cursor-default pointer-events-auto">
               <TextHoverEffect text="RION" disableInteraction={isMobile} />
             </div>
@@ -101,7 +101,6 @@ export function Hero({ activeTab }: HeroProps) {
                 />
               </div>
 
-              {/* Decorative Rating for About Us */}
               {activeTab === 'contacts' && (
                 <div className="flex flex-col items-center gap-4 pt-6 animate-in fade-in slide-in-from-bottom-4 duration-1000">
                   <div className="flex items-center gap-3">

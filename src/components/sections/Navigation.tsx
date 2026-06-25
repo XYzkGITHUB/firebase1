@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
@@ -43,13 +44,16 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
   const navLinks = [
     { name: "Керамогранит", id: "keramogranit" as const },
     { name: "Ламинат и SPS", id: "laminate_sps" as const },
-    { name: "Сантехника", id: "sanitary" },
+    { name: "Сантехника", id: "sanitary" as const },
     { name: "Таможня", id: "delivery" as const },
     { name: "О нас", id: "contacts" as const },
   ];
 
   const handleNavClick = (id: string) => {
-    if (id === "keramogranit" || id === "laminate_sps" || id === "delivery" || id === "contacts") {
+    // Scroll to top instantly to prevent layout jump during layoutId animation
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    
+    if (["keramogranit", "laminate_sps", "sanitary", "delivery", "contacts"].includes(id)) {
       setActiveTab(id as ContentTab);
     }
     setIsMobileMenuOpen(false);
@@ -81,6 +85,7 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
             href="/" 
             onClick={(e) => {
               e.preventDefault();
+              window.scrollTo({ top: 0, behavior: 'instant' });
               setActiveTab("keramogranit");
               router.push("/");
             }}
@@ -108,8 +113,9 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
                     className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-primary rounded-full"
                     transition={{
                       type: "spring",
-                      stiffness: 380,
-                      damping: 30
+                      stiffness: 500,
+                      damping: 35,
+                      mass: 1
                     }}
                   />
                 )}

@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -24,7 +25,6 @@ function InteractiveImage({ primaryImage, secondaryImage, label }: { primaryImag
       onMouseLeave={() => setIsHovered(false)}
       className="relative w-full aspect-[4/3] group cursor-default overflow-hidden border-[0.5px] border-foreground/10 bg-card shadow-lg"
     >
-      {/* Primary Image (Base Layer) */}
       <div className="absolute inset-0">
         {primaryImage?.imageUrl && (
           <Image 
@@ -39,7 +39,6 @@ function InteractiveImage({ primaryImage, secondaryImage, label }: { primaryImag
         )}
       </div>
       
-      {/* Secondary Image (Hover Layer) */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: isHovered ? 1 : 0 }}
@@ -58,7 +57,6 @@ function InteractiveImage({ primaryImage, secondaryImage, label }: { primaryImag
         )}
       </motion.div>
 
-      {/* Label Overlay */}
       <div className="absolute bottom-6 left-6 z-20 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
         <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-white bg-primary px-4 py-2 shadow-xl">
           {label}
@@ -84,6 +82,13 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
     { title: "Снижение рисков закупки", desc: "Исключаем замену и несоответствие материала." },
   ];
 
+  const sanitaryCheck = [
+    { title: "Премиальный фаянс", desc: "Унитазы, раковины и ванны из качественных материалов." },
+    { title: "Дизайнерская фурнитура", desc: "Смесители и аксессуары с современными покрытиями." },
+    { title: "Мебель для ванных", desc: "Влагостойкие решения для хранения в любом стиле." },
+    { title: "Индивидуальный подбор", desc: "Комплектация объектов согласно спецификации дизайн-проекта." },
+  ];
+
   const deliveryCheck = [
     { title: "25 дней из Индии", desc: "Налаженные морские маршруты из портов Мундра и Нава-Шева." },
     { title: "35 дней из Китая", desc: "Прямые контейнерные перевозки из основных производственных хабов." },
@@ -103,6 +108,7 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
   const getCheck = () => {
     if (activeTab === 'keramogranit') return keramogranitCheck;
     if (activeTab === 'laminate_sps') return laminateCheck;
+    if (activeTab === 'sanitary') return sanitaryCheck;
     if (activeTab === 'delivery') return deliveryCheck;
     return contactsCheck;
   }
@@ -129,6 +135,13 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
         primary: PlaceHolderImages.find(i => i.id === "laminat-primary"),
         secondary: PlaceHolderImages.find(i => i.id === "laminat-secondary"),
         label: "Ламинат и SPS"
+      };
+    }
+    if (activeTab === 'sanitary') {
+      return {
+        primary: PlaceHolderImages.find(i => i.id === "sanitary-primary"),
+        secondary: PlaceHolderImages.find(i => i.id === "sanitary-secondary"),
+        label: "Сантехника"
       };
     }
     if (activeTab === 'delivery') {
@@ -183,7 +196,7 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
           <div className="space-y-10">
              <div className="space-y-6">
                <SplitText
-                 text={activeTab === 'delivery' ? 'Надежная доставка грузов' : (activeTab === 'keramogranit' ? 'Выбор керамогранита' : (activeTab === 'contacts' ? 'Наш шоурум' : 'Ламинат и SPS-покрытия'))}
+                 text={activeTab === 'delivery' ? 'Надежная доставка грузов' : (activeTab === 'keramogranit' ? 'Выбор керамогранита' : (activeTab === 'contacts' ? 'Наш шоурум' : (activeTab === 'sanitary' ? 'Сантехника' : 'Ламинат и SPS-покрытия')))}
                  tag="h2"
                  className="text-3xl md:text-5xl leading-[1.1] uppercase tracking-tighter"
                  textAlign="left"
@@ -195,7 +208,9 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
                      ? 'Мы поставляем керамогранит практически без ограничений по формату и дизайну под ваши требования.' 
                      : (activeTab === 'contacts' 
                        ? 'Посетите наш шоурум в Бено-Юрт, чтобы лично оценить качество материалов и получить консультацию.' 
-                       : 'Под проекты любого масштаба — от регулярных заказов до комплексных поставок.'))}
+                       : (activeTab === 'sanitary' 
+                          ? 'Комплектуем объекты сантехникой любого уровня сложности, обеспечивая идеальный баланс эстетики и функциональности.'
+                          : 'Под проекты любого масштаба — от регулярных заказов до комплексных поставок.')))}
                </p>
              </div>
              <div className="flex flex-col sm:flex-row gap-6">

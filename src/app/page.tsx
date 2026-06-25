@@ -12,7 +12,7 @@ import { FAQ } from "@/components/sections/FAQ";
 import { Footer } from "@/components/sections/Footer";
 import { motion, AnimatePresence } from "framer-motion";
 
-export type ContentTab = "keramogranit" | "laminate_sps" | "delivery" | "contacts";
+export type ContentTab = "keramogranit" | "laminate_sps" | "sanitary" | "delivery" | "contacts";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<ContentTab>("keramogranit");
@@ -31,7 +31,6 @@ export default function Home() {
     <main className="min-h-screen bg-background selection:bg-primary/30 overflow-x-hidden">
       <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />
       
-      {/* Hero and Stats are mostly stable but their content changes */}
       <Hero activeTab={activeTab} />
       
       <Stats activeTab={activeTab} />
@@ -56,7 +55,7 @@ export default function Home() {
           )}
 
           {/* Section: Call to Action - hidden on delivery and contacts */}
-          {!isContactsTab && !isDeliveryTab && (
+          {!isContactsTab && !isDeliveryTab && (activeTab !== "sanitary") && (
             <section className="py-24 md:py-32 px-6 bg-primary flex flex-col items-center justify-center text-center">
                <h2 className="text-3xl md:text-6xl font-headline text-white mb-8 uppercase tracking-tighter max-w-4xl">
                  Связаться с менеджером
