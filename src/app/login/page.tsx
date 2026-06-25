@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -35,7 +34,7 @@ export default function LoginPage() {
     setIsLoading(true);
     setTimeout(() => {
       router.push("/");
-    }, 500);
+    }, 300);
   };
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -49,7 +48,7 @@ export default function LoginPage() {
           description: "Добро пожаловать в IRGG Luxe Surface.",
         });
         router.push("/");
-      }, 500);
+      }, 300);
     } catch (error: any) {
       toast({
         variant: "destructive",
@@ -73,8 +72,8 @@ export default function LoginPage() {
         </button>
       </div>
 
-      <Card className="w-full max-w-md glass-panel border-white/5 shadow-2xl overflow-hidden">
-        <div className="bg-primary/10 py-3 px-6 text-center border-b border-white/5">
+      <Card className="w-full max-w-md glass-panel border-border shadow-2xl overflow-hidden">
+        <div className="bg-primary/10 py-3 px-6 text-center border-b border-border">
           <TypingAnimation 
             texts={typingTexts} 
             className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary"
@@ -95,7 +94,7 @@ export default function LoginPage() {
                 placeholder="email@example.com" 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="bg-background/50 border-white/5 h-12"
+                className="bg-background/50 border-border h-12"
                 required
               />
             </div>
@@ -106,7 +105,7 @@ export default function LoginPage() {
                 placeholder="••••••••" 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="bg-background/50 border-white/5 h-12"
+                className="bg-background/50 border-border h-12"
                 required
               />
             </div>

@@ -60,7 +60,7 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
     setIsMobileMenuOpen(false);
     setTimeout(() => {
       router.push(path);
-    }, 500);
+    }, 300);
   };
 
   const handleSignOut = () => {
