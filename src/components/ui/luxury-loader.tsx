@@ -55,11 +55,11 @@ export function LuxuryLoader({ isVisible }: LuxuryLoaderProps) {
       
       <div style={containerStyle}>
         {/* Background Layer */}
-        <span>IRGG</span>
+        <span>RION</span>
         
         {/* Animated Progress Layer */}
         <div style={overlayStyle}>
-          IRGG
+          RION
         </div>
       </div>
     </div>

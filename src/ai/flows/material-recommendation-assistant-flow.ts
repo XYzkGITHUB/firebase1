@@ -58,9 +58,9 @@ const prompt = ai.definePrompt({
   name: 'materialRecommendationAssistantPrompt',
   input: { schema: MaterialRecommendationAssistantInputSchema },
   output: { schema: MaterialRecommendationAssistantOutputSchema },
-  prompt: `You are an expert interior designer and material specialist for IRGG Luxe Surface.
+  prompt: `You are an expert interior designer and material specialist for RION Luxe Surface.
 
-Your task is to analyze the provided project description and recommend suitable materials from the following IRGG product categories:
+Your task is to analyze the provided project description and recommend suitable materials from the following RION product categories:
 - Керамогранит (keramogranit)
 - Ламинат и SPS (laminate_sps)
 - Сантехника (sanitary_ware)

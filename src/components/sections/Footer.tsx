@@ -1,4 +1,3 @@
-
 "use client";
 import React from "react";
 import Link from "next/link";
@@ -10,7 +9,7 @@ export function Footer() {
       <div className="max-w-[1600px] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-24 mb-32">
           <div className="lg:col-span-5 space-y-12">
-            <h3 className="text-5xl font-headline font-bold text-primary tracking-tighter">IRGG</h3>
+            <h3 className="text-5xl font-headline font-bold text-primary tracking-tighter">RION</h3>
             <p className="text-xl text-muted-foreground leading-relaxed max-w-md font-light">
               Международные поставки строительных материалов под ключ. Качество, проверенное временем.
             </p>
@@ -50,7 +49,7 @@ export function Footer() {
         <Separator className="bg-white/5 mb-16" />
         
         <div className="flex flex-col md:flex-row items-center justify-between gap-8 text-[10px] text-muted-foreground font-bold uppercase tracking-[0.4em]">
-          <div>© 2026 IRGG. From Elin Yurt. Все права защищены.</div>
+          <div>© 2026 RION. From Elin Yurt. Все права защищены.</div>
           <div className="flex gap-16">
             <Link href="#" className="hover:text-foreground transition-colors">Политика</Link>
             <Link href="#" className="hover:text-foreground transition-colors">Оферта</Link>

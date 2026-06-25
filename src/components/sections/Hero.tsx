@@ -1,4 +1,3 @@
-
 "use client";
 import React from "react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
@@ -74,7 +73,7 @@ export function Hero({ activeTab }: HeroProps) {
           <div className="relative z-10 flex flex-col items-center w-full">
             {/* Logo */}
             <div className="w-full h-[8rem] md:h-[14rem] flex items-center justify-center cursor-default pointer-events-auto">
-              <TextHoverEffect text="IRGG" disableInteraction={isMobile} />
+              <TextHoverEffect text="RION" disableInteraction={isMobile} />
             </div>
             
             <div className="mt-8 text-center space-y-6 max-w-4xl">

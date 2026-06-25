@@ -86,7 +86,7 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
             }}
             className="text-3xl lg:text-4xl font-headline font-bold text-foreground tracking-tighter hover:text-primary transition-all shrink-0 mr-[50px]"
           >
-            IRGG
+            RION
           </Link>
 
           <div className="hidden xl:flex items-center gap-10">

@@ -26,7 +26,7 @@ export default function RegisterPage() {
     "Прямые поставки из Индии",
     "Ламинат и SPS коллекции",
     "Логистика под ключ",
-    "IRGG Luxe Surface"
+    "RION Luxe Surface"
   ];
 
   const handleBackToSite = (e: React.MouseEvent) => {
@@ -45,7 +45,7 @@ export default function RegisterPage() {
       setTimeout(() => {
         toast({
           title: "Регистрация успешна",
-          description: "Добро пожаловать в команду IRGG.",
+          description: "Добро пожаловать в команду RION.",
         });
         router.push("/");
       }, 300);
@@ -82,7 +82,7 @@ export default function RegisterPage() {
         <CardHeader className="space-y-4 text-center pt-8">
           <CardTitle className="text-4xl font-headline tracking-tighter uppercase">Регистрация</CardTitle>
           <CardDescription className="text-muted-foreground uppercase tracking-widest text-[10px]">
-            Станьте партнером IRGG Luxe Surface
+            Станьте партнером RION Luxe Surface
           </CardDescription>
         </CardHeader>
         <CardContent>

@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState } from "react";
 import { createYookassaPayment } from "@/app/actions/yookassa";
@@ -27,7 +26,7 @@ export function PaymentModule() {
 
     setIsLoading(true);
     try {
-      const result = await createYookassaPayment(numAmount, "Оплата услуг IRGG Luxe Surface");
+      const result = await createYookassaPayment(numAmount, "Оплата услуг RION Luxe Surface");
       // Redirect the user to YooKassa
       window.location.href = result.confirmationUrl;
     } catch (error: any) {
@@ -63,7 +62,7 @@ export function PaymentModule() {
               <CreditCard className="text-primary" /> Платежный шлюз
             </CardTitle>
             <CardDescription className="text-center text-[10px] uppercase tracking-[0.2em] font-bold opacity-60">
-              IRGG Global Logistics & Materials
+              RION Global Logistics & Materials
             </CardDescription>
           </CardHeader>
           <CardContent className="p-8 md:p-12 space-y-8">
