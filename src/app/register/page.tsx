@@ -26,7 +26,7 @@ export default function RegisterPage() {
     "Прямые поставки из Индии",
     "Ламинат и SPS коллекции",
     "Логистика под ключ",
-    "RION Luxe Surface"
+    "RION"
   ];
 
   const handleBackToSite = (e: React.MouseEvent) => {
@@ -82,7 +82,7 @@ export default function RegisterPage() {
         <CardHeader className="space-y-4 text-center pt-8">
           <CardTitle className="text-4xl font-headline tracking-tighter uppercase">Регистрация</CardTitle>
           <CardDescription className="text-muted-foreground uppercase tracking-widest text-[10px]">
-            Станьте партнером RION Luxe Surface
+            Станьте партнером RION
           </CardDescription>
         </CardHeader>
         <CardContent>

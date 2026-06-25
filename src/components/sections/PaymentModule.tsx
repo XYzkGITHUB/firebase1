@@ -26,7 +26,7 @@ export function PaymentModule() {
 
     setIsLoading(true);
     try {
-      const result = await createYookassaPayment(numAmount, "Оплата услуг RION Luxe Surface");
+      const result = await createYookassaPayment(numAmount, "Оплата услуг RION");
       // Redirect the user to YooKassa
       window.location.href = result.confirmationUrl;
     } catch (error: any) {

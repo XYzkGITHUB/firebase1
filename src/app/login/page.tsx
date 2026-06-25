@@ -26,7 +26,7 @@ export default function LoginPage() {
     "Прямые поставки из Индии",
     "Ламинат и SPS коллекции",
     "Логистика под ключ",
-    "RION Luxe Surface"
+    "RION"
   ];
 
   const handleBackToSite = (e: React.MouseEvent) => {
@@ -45,7 +45,7 @@ export default function LoginPage() {
       setTimeout(() => {
         toast({
           title: "Успешный вход",
-          description: "Добро пожаловать в RION Luxe Surface.",
+          description: "Добро пожаловать в RION.",
         });
         router.push("/");
       }, 300);
