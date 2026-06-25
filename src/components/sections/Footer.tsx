@@ -26,11 +26,11 @@ export function Footer() {
           <div className="lg:col-span-3 space-y-10">
             <h4 className="font-bold text-[11px] uppercase tracking-[0.5em] text-foreground opacity-60">Навигация</h4>
             <ul className="space-y-6">
-              <li><Link href="#" className="text-muted-foreground hover:text-primary transition-all text-sm uppercase tracking-[0.3em] font-bold">Керамогранит</Link></li>
-              <li><Link href="#" className="text-muted-foreground hover:text-primary transition-all text-sm uppercase tracking-[0.3em] font-bold">Ламинат и SPS</Link></li>
-              <li><Link href="#" className="text-muted-foreground hover:text-primary transition-all text-sm uppercase tracking-[0.3em] font-bold">Сантехника</Link></li>
-              <li><Link href="#" className="text-muted-foreground hover:text-primary transition-all text-sm uppercase tracking-[0.3em] font-bold">Таможня и Склад</Link></li>
-              <li><Link href="#" className="text-muted-foreground hover:text-primary transition-all text-sm uppercase tracking-[0.3em] font-bold">О нас</Link></li>
+              <li><Link href="/" className="text-muted-foreground hover:text-primary transition-all text-sm uppercase tracking-[0.3em] font-bold">Керамогранит</Link></li>
+              <li><Link href="/" className="text-muted-foreground hover:text-primary transition-all text-sm uppercase tracking-[0.3em] font-bold">Ламинат и SPS</Link></li>
+              <li><Link href="/" className="text-muted-foreground hover:text-primary transition-all text-sm uppercase tracking-[0.3em] font-bold">Сантехника</Link></li>
+              <li><Link href="/" className="text-muted-foreground hover:text-primary transition-all text-sm uppercase tracking-[0.3em] font-bold">Таможня и Склад</Link></li>
+              <li><Link href="/" className="text-muted-foreground hover:text-primary transition-all text-sm uppercase tracking-[0.3em] font-bold">О нас</Link></li>
             </ul>
           </div>
 
@@ -51,8 +51,7 @@ export function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-8 text-[10px] text-muted-foreground font-bold uppercase tracking-[0.4em]">
           <div>© 2026 RION. From Elin Yurt. Все права защищены.</div>
           <div className="flex gap-16">
-            <Link href="#" className="hover:text-foreground transition-colors">Политика</Link>
-            <Link href="#" className="hover:text-foreground transition-colors">Оферта</Link>
+            <Link href="/policy" className="hover:text-foreground transition-colors">Политика</Link>
           </div>
         </div>
       </div>
