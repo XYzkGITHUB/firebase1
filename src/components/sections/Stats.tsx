@@ -1,4 +1,3 @@
-
 "use client";
 import React from "react";
 import { Handshake, Construction, ShieldCheck, Layers, Package, TrendingUp, Factory, Globe, Clock, ShieldAlert, Phone, Mail } from "lucide-react";
@@ -109,7 +108,7 @@ export function Stats({ activeTab }: StatsProps) {
   const isContacts = activeTab === 'contacts';
 
   return (
-    <section className="py-32 px-8 bg-card/10 border-y border-white/5">
+    <section className="py-32 px-8 bg-card/10 border-y border-border">
       <div className="max-w-[1600px] mx-auto">
         <div className="mb-24 text-center">
           <SplitText
@@ -120,10 +119,10 @@ export function Stats({ activeTab }: StatsProps) {
           />
         </div>
         
-        <div className={`grid grid-cols-1 md:grid-cols-2 ${isContacts ? 'lg:grid-cols-3' : 'lg:grid-cols-4'} gap-12`}>
+        <div className={`grid grid-cols-1 md:grid-cols-2 ${isContacts ? 'lg:grid-cols-3' : 'lg:grid-cols-4'} gap-8`}>
           {currentAdv.map((adv, idx) => (
-            <BorderGlow key={idx} borderRadius={0}>
-              <div className="p-12 h-full hover:bg-card/20 transition-all duration-700 group overflow-hidden">
+            <BorderGlow key={idx} borderRadius={8} className="border-[0.5px] border-foreground/5 shadow-sm">
+              <div className="p-12 h-full bg-card/20 hover:bg-card/30 transition-all duration-700 group overflow-hidden">
                 <div className="mb-10 transform transition-transform group-hover:scale-110 duration-500">{adv.icon}</div>
                 <h3 className="text-2xl font-headline font-bold mb-6 text-foreground leading-tight tracking-tight">
                   {adv.title}
@@ -153,7 +152,7 @@ export function Stats({ activeTab }: StatsProps) {
               </div>
             </div>
             
-            <div className="relative w-full h-[500px] mt-12 bg-card/20 border border-white/5 overflow-hidden shadow-2xl">
+            <div className="relative w-full h-[500px] mt-12 bg-card/20 border border-border overflow-hidden shadow-2xl">
               <div className="absolute inset-0 pointer-events-auto">
                 <iframe
                   src="https://yandex.ru/map-widget/v1/?text=%D0%A7%D0%B5%D1%87%D0%B5%D0%BD%D1%81%D0%BA%D0%B0%D1%8F%20%D1%80%D0%B5%D1%81%D0%BF%D1%83%D0%B1%D0%BB%D0%B8%D0%BA%D0%B0%2C%20%D1%81.%20%D0%91%D0%B5%D0%BD%D0%BE-%D0%AE%D1%80%D1%82%2C%20%D1%83%D0%BB.%20%D0%A2%D0%BE%D1%80%D0%B3%D0%BE%D0%B2%D0%B0%D1%8F%2C%20185&z=16&l=map"
@@ -164,7 +163,7 @@ export function Stats({ activeTab }: StatsProps) {
                   className="w-full h-full grayscale opacity-70 contrast-125"
                 ></iframe>
               </div>
-              <div className="absolute inset-0 pointer-events-none border border-white/5 shadow-[inset_0_0_100px_rgba(0,0,0,0.5)]"></div>
+              <div className="absolute inset-0 pointer-events-none border border-border shadow-[inset_0_0_100px_rgba(0,0,0,0.5)]"></div>
             </div>
           </div>
         )}

@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -23,7 +22,7 @@ function InteractiveImage({ primaryImage, secondaryImage, label }: { primaryImag
     <motion.div 
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="relative w-full aspect-[4/3] group cursor-default overflow-hidden border border-white/10 bg-card shadow-2xl"
+      className="relative w-full aspect-[4/3] group cursor-default overflow-hidden border-[0.5px] border-foreground/10 bg-card shadow-lg"
     >
       {/* Primary Image (Base Layer) */}
       <div className="absolute inset-0">
@@ -34,7 +33,6 @@ function InteractiveImage({ primaryImage, secondaryImage, label }: { primaryImag
             fill
             unoptimized
             className="object-cover transition-transform duration-700 group-hover:scale-105"
-            data-ai-hint={primaryImage.imageHint}
             sizes="(max-width: 768px) 100vw, 50vw"
             priority
           />
@@ -55,7 +53,6 @@ function InteractiveImage({ primaryImage, secondaryImage, label }: { primaryImag
             fill
             unoptimized
             className="object-cover"
-            data-ai-hint={secondaryImage.imageHint}
             sizes="(max-width: 768px) 100vw, 50vw"
           />
         )}
@@ -160,19 +157,19 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
           <SplitText
             text={activeTab === 'delivery' ? "Что мы гарантируем при доставке" : (activeTab === 'contacts' ? "Сервис и поддержка" : "Что вы получаете, выбирая нас")}
             tag="h2"
-            className="text-2xl md:text-3xl font-headline mb-12 lg:mb-16 uppercase tracking-tighter"
+            className="text-2xl md:text-4xl font-headline mb-12 lg:mb-16 uppercase tracking-tighter"
             textAlign="left"
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {currentCheck.map((item, i) => (
-              <BorderGlow key={i} borderRadius={4} glowColor="26 40 39" colors={['#8B5E3C', '#C9C3BC', '#4A3728']}>
-                <div className="flex items-start gap-4 p-8 h-full group">
-                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1 transition-colors group-hover:bg-primary group-hover:text-white">
+              <BorderGlow key={i} borderRadius={8} glowColor="26 40 39" colors={['#8B5E3C', '#C9C3BC', '#4A3728']} className="border-[0.5px] border-foreground/5">
+                <div className="flex flex-col gap-4 p-8 h-full group bg-card/40">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 transition-colors group-hover:bg-primary group-hover:text-white">
                     <Check className="w-5 h-5 text-primary group-hover:text-white transition-colors" />
                   </div>
-                  <div className="space-y-3">
-                    <h4 className="font-bold text-lg tracking-tight group-hover:text-primary transition-colors uppercase">{item.title}</h4>
-                    <p className="text-sm text-muted-foreground leading-relaxed font-light">{item.desc}</p>
+                  <div className="space-y-2">
+                    <h4 className="font-bold text-xl tracking-tight group-hover:text-primary transition-colors uppercase">{item.title}</h4>
+                    <p className="text-base text-muted-foreground leading-relaxed font-light">{item.desc}</p>
                   </div>
                 </div>
               </BorderGlow>
@@ -180,7 +177,7 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
           </div>
         </div>
 
-        <Separator className="bg-white/5 mb-20 lg:mb-24" />
+        <Separator className="bg-border/50 mb-20 lg:mb-24" />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           <div className="space-y-10">
@@ -188,10 +185,10 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
                <SplitText
                  text={activeTab === 'delivery' ? 'Надежная доставка грузов' : (activeTab === 'keramogranit' ? 'Выбор керамогранита' : (activeTab === 'contacts' ? 'Наш шоурум' : 'Ламинат и SPS-покрытия'))}
                  tag="h2"
-                 className="text-2xl md:text-3xl leading-[1.1] uppercase tracking-tighter"
+                 className="text-3xl md:text-5xl leading-[1.1] uppercase tracking-tighter"
                  textAlign="left"
                />
-               <p className="text-base text-muted-foreground font-light leading-relaxed max-w-xl">
+               <p className="text-lg text-muted-foreground font-light leading-relaxed max-w-xl">
                  {activeTab === 'delivery' 
                    ? 'Мы берем на себя полную ответственность за ваш груз. От завода в Индии или Китае до вашего склада в России.' 
                    : (activeTab === 'keramogranit' 
@@ -202,14 +199,14 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
                </p>
              </div>
              <div className="flex flex-col sm:flex-row gap-6">
-                <Button variant="outline" className="h-16 px-10 rounded-none border-primary/50 text-primary hover:bg-primary hover:text-white transition-all font-bold uppercase tracking-[0.3em] text-[10px] w-full md:w-auto">
+                <Button variant="outline" className="h-16 px-10 rounded-none border-foreground/20 hover:bg-foreground/5 font-bold uppercase tracking-[0.3em] text-[10px] w-full md:w-auto">
                   <Download className="mr-3 h-5 w-5" />
                   {activeTab === 'delivery' ? 'Прайс-лист' : (activeTab === 'contacts' ? 'Реквизиты' : `Каталог`)}
                 </Button>
                 {activeTab === 'contacts' && (
                   <Button 
                     onClick={handleLearnAboutShipping}
-                    className="h-16 px-10 rounded-none bg-primary text-white hover:bg-primary/90 transition-all font-bold uppercase tracking-[0.3em] text-[10px] w-full md:w-auto shadow-2xl group flex items-center justify-center"
+                    className="h-16 px-10 rounded-none bg-primary text-white hover:bg-primary/90 transition-all font-bold uppercase tracking-[0.3em] text-[10px] w-full md:w-auto shadow-xl group flex items-center justify-center"
                   >
                     <span>О логистике</span>
                     <ArrowRight className="ml-3 h-5 w-5 transition-transform group-hover:translate-x-2" />
@@ -220,7 +217,7 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
 
           <div className="relative">
             {currentImages?.primary && currentImages?.secondary ? (
-              <BorderGlow borderRadius={4} glowRadius={60} className="border-none" colors={['#8B5E3C', '#C9C3BC', '#4A3728']}>
+              <BorderGlow borderRadius={8} glowRadius={60} className="border-none shadow-2xl" colors={['#8B5E3C', '#C9C3BC', '#4A3728']}>
                 <InteractiveImage 
                   primaryImage={currentImages.primary} 
                   secondaryImage={currentImages.secondary} 
@@ -228,7 +225,7 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
                 />
               </BorderGlow>
             ) : (
-              <div className="aspect-[4/3] bg-card border border-white/5 flex flex-col items-center justify-center text-muted-foreground relative group overflow-hidden shadow-2xl">
+              <div className="aspect-[4/3] bg-card border border-border flex flex-col items-center justify-center text-muted-foreground relative group overflow-hidden shadow-lg">
                 <HelpCircle className="w-16 h-16 mb-4 opacity-20" />
                 <span className="text-[10px] uppercase tracking-[0.5em] opacity-40 font-bold">Фото загружаются</span>
               </div>

@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
@@ -74,7 +73,7 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
       <nav className={cn(
         "fixed top-0 left-0 w-full z-[100] transition-all duration-500 py-6 px-6 lg:py-8 lg:px-12",
         isScrolled 
-          ? "bg-background border-b border-white/10 shadow-2xl" 
+          ? "bg-background/80 backdrop-blur-md border-b border-border shadow-sm" 
           : "bg-transparent"
       )}>
         <div className="max-w-[1800px] mx-auto flex items-center justify-between">
@@ -119,7 +118,7 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
                   <Button 
                     onClick={handleSignOut}
                     variant="ghost" 
-                    className="text-[10px] font-bold text-white hover:bg-white/10 uppercase tracking-[0.2em] rounded-none px-4 h-14 ml-[20px] bg-transparent"
+                    className="text-[10px] font-bold uppercase tracking-[0.2em] rounded-none px-4 h-14 ml-[20px]"
                   >
                     <LogOut className="mr-2 h-4 w-4" /> Выйти
                   </Button>
@@ -129,7 +128,7 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
                 <Button 
                   onClick={() => handleAuthNavigation("/login")}
                   variant="outline" 
-                  className="text-[11px] font-bold text-white border-white hover:bg-white/10 uppercase tracking-[0.2em] rounded-none px-8 h-14 ml-[50px] bg-transparent"
+                  className="text-[11px] font-bold border-foreground/20 hover:bg-foreground/5 uppercase tracking-[0.2em] rounded-none px-8 h-14 ml-[50px]"
                 >
                   <User className="mr-2 h-4 w-4" /> Войти
                 </Button>
@@ -171,7 +170,7 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
                     key={link.id} 
                     onClick={() => handleNavClick(link.id)}
                     className={cn(
-                      "text-2xl font-bold py-6 border-b border-white/5 text-left uppercase tracking-tighter",
+                      "text-2xl font-bold py-6 border-b border-border text-left uppercase tracking-tighter",
                       activeTab === link.id ? "text-primary" : "text-foreground"
                     )}
                   >
@@ -182,14 +181,14 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
                   {user && !user.isAnonymous ? (
                     <>
                       <div className="text-center py-4 text-muted-foreground text-xs uppercase tracking-widest">{user.email}</div>
-                      <Button onClick={handleSignOut} variant="outline" className="h-16 rounded-none border-white text-white uppercase tracking-widest text-xs">Выйти</Button>
+                      <Button onClick={handleSignOut} variant="outline" className="h-16 rounded-none border-foreground text-foreground uppercase tracking-widest text-xs">Выйти</Button>
                     </>
                   ) : (
                     <>
                       <Button 
                         onClick={() => handleAuthNavigation("/login")}
                         variant="outline" 
-                        className="w-full h-16 rounded-none border-white text-white uppercase tracking-widest text-xs"
+                        className="w-full h-16 rounded-none border-foreground/20 text-foreground uppercase tracking-widest text-xs"
                       >
                         Войти
                       </Button>
