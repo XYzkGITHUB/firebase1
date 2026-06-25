@@ -5,6 +5,29 @@
 
 @layer base {
   :root {
+    --background: 30 20% 98%;
+    --foreground: 30 10% 10%;
+    --card: 30 20% 95%;
+    --card-foreground: 30 10% 10%;
+    --popover: 30 20% 98%;
+    --popover-foreground: 30 10% 10%;
+    --primary: 26 40% 39%;
+    --primary-foreground: 32 8% 98%;
+    --secondary: 30 10% 90%;
+    --secondary-foreground: 30 10% 10%;
+    --muted: 30 10% 90%;
+    --muted-foreground: 30 10% 40%;
+    --accent: 26 40% 39%;
+    --accent-foreground: 32 8% 98%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 30 10% 85%;
+    --input: 30 10% 85%;
+    --ring: 26 40% 39%;
+    --radius: 0.25rem;
+  }
+
+  .dark {
     --background: 30 7% 7%;
     --foreground: 32 8% 76%;
     --card: 30 7% 10%;
@@ -24,7 +47,6 @@
     --border: 32 8% 20%;
     --input: 32 8% 20%;
     --ring: 26 40% 39%;
-    --radius: 0.25rem;
   }
 }
 
@@ -34,6 +56,7 @@
   }
   html, body {
     @apply overflow-x-hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
   body {
     @apply bg-background text-foreground font-body antialiased selection:bg-primary selection:text-white;
@@ -60,4 +83,9 @@
 }
 ::-webkit-scrollbar-thumb {
   @apply bg-muted-foreground/20 hover:bg-muted-foreground/40 transition-colors;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.5s;
 }
