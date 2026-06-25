@@ -22,36 +22,23 @@ export default function PolicyPage() {
         </Link>
 
         <SplitText
-          text="Политика использования"
+          text="Политика"
           tag="h1"
           className="text-4xl md:text-6xl font-headline mb-16 uppercase tracking-tighter"
           textAlign="left"
         />
 
-        <div className="space-y-12 text-foreground/80 leading-relaxed font-light text-lg">
-          <div className="space-y-4">
-            <h2 className="text-xl font-headline font-bold text-primary uppercase tracking-widest">Интеллектуальная собственность</h2>
-            <p className="font-medium text-foreground">
-              Пожалуйста, обратите внимание, что все изображения и контент на этом сайте являются собственностью RION. Мы очень ценим ваш интерес, но просим вас, пожалуйста, не использовать наши материалы в сторонних проектах без предварительного согласования. Большое спасибо за понимание и уважение к нашему труду!
-            </p>
-          </div>
-
-          <div className="space-y-4">
-            <h2 className="text-xl font-headline font-bold text-primary uppercase tracking-widest">Использование сайта</h2>
-            <p>
-              Информация на сайте предоставлена для вашего ознакомления. Пожалуйста, учитывайте, что мы стараемся обновлять данные вовремя, но иногда можем вносить изменения. Спасибо, что следите за нашими обновлениями!
-            </p>
-          </div>
-
-          <div className="space-y-4">
-            <h2 className="text-xl font-headline font-bold text-primary uppercase tracking-widest">Конфиденциальность</h2>
-            <p>
-              Пожалуйста, будьте уверены — мы защищаем ваши данные любой ценой. Любая информация, которую вы нам доверяете, находится под надежной защитой и никогда не передается третьим лицам. Спасибо большое за ваше доверие!
-            </p>
-          </div>
+        <div className="space-y-8 text-foreground/80 leading-relaxed font-light text-lg">
+          <p className="font-medium text-foreground">
+            Мы защищаем ваши данные любой ценой. Ваши данные в полной безопасности.
+          </p>
+          
+          <p>
+            Спасибо за понимание!
+          </p>
           
           <div className="pt-16 border-t border-border/20 text-[10px] uppercase tracking-[0.4em] font-bold text-muted-foreground">
-            © 2026 RION. Все права защищены.
+            © 2026 RION.
           </div>
         </div>
       </section>
