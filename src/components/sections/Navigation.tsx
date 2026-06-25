@@ -32,7 +32,6 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Prevent scrolling when mobile menu is open
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = 'hidden';
@@ -45,7 +44,7 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
     { name: "Керамогранит", id: "keramogranit" as const },
     { name: "Ламинат и SPS", id: "laminate_sps" as const },
     { name: "Сантехника", id: "sanitary" },
-    { name: "Таможня", id: "customs" },
+    { name: "Таможня", id: "delivery" as const },
     { name: "Наши контакты", id: "contacts" as const },
   ];
 
@@ -74,7 +73,7 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
       <nav className={cn(
         "fixed top-0 left-0 w-full z-[100] transition-all duration-500 py-6 px-6 lg:py-8 lg:px-12",
         isScrolled 
-          ? "bg-white/[0.05] backdrop-blur-2xl border-b border-white/10 shadow-2xl" 
+          ? "bg-background/95 backdrop-blur-2xl border-b border-white/10 shadow-2xl" 
           : "bg-transparent"
       )}>
         <div className="max-w-[1800px] mx-auto flex items-center justify-between">
@@ -90,7 +89,6 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
             IRGG
           </Link>
 
-          {/* Desktop Links */}
           <div className="hidden xl:flex items-center gap-10">
             {navLinks.map((link) => (
               <button 
@@ -153,53 +151,60 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
         </div>
 
         {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="fixed inset-0 top-0 w-full h-[100dvh] bg-background xl:hidden z-[110] animate-in fade-in slide-in-from-top-4 overflow-y-auto">
-            <div className="flex justify-end p-8">
-              <button onClick={() => setIsMobileMenuOpen(false)} className="opacity-0 pointer-events-none">
-                <X size={32} />
-              </button>
-            </div>
-            <div className="flex flex-col p-12 space-y-6">
-              {navLinks.map((link) => (
-                <button 
-                  key={link.id} 
-                  onClick={() => handleNavClick(link.id)}
-                  className={cn(
-                    "text-2xl font-bold py-4 border-b border-white/5 text-left uppercase tracking-tighter",
-                    activeTab === link.id ? "text-primary" : "text-foreground"
-                  )}
-                >
-                  {link.name}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div 
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="fixed inset-0 w-full h-[100dvh] bg-background xl:hidden z-[110] overflow-y-auto"
+            >
+              <div className="flex justify-end p-8">
+                <button onClick={() => setIsMobileMenuOpen(false)} className="opacity-0 pointer-events-none">
+                  <X size={32} />
                 </button>
-              ))}
-              <div className="pt-8 flex flex-col gap-4">
-                {user && !user.isAnonymous ? (
-                  <>
-                    <div className="text-center py-4 text-muted-foreground text-xs uppercase tracking-widest">{user.email}</div>
-                    <Button onClick={handleSignOut} variant="outline" className="h-16 rounded-none border-white text-white uppercase tracking-widest text-xs">Выйти</Button>
-                  </>
-                ) : (
-                  <>
-                    <Button 
-                      onClick={() => handleAuthNavigation("/login")}
-                      variant="outline" 
-                      className="w-full h-16 rounded-none border-white text-white uppercase tracking-widest text-xs"
-                    >
-                      Войти
-                    </Button>
-                    <Button 
-                      onClick={() => handleAuthNavigation("/register")}
-                      className="w-full h-16 rounded-none bg-primary text-white uppercase tracking-widest text-xs"
-                    >
-                      Регистрация
-                    </Button>
-                  </>
-                )}
               </div>
-            </div>
-          </div>
-        )}
+              <div className="flex flex-col p-12 space-y-6">
+                {navLinks.map((link) => (
+                  <button 
+                    key={link.id} 
+                    onClick={() => handleNavClick(link.id)}
+                    className={cn(
+                      "text-2xl font-bold py-6 border-b border-white/5 text-left uppercase tracking-tighter",
+                      activeTab === link.id ? "text-primary" : "text-foreground"
+                    )}
+                  >
+                    {link.name}
+                  </button>
+                ))}
+                <div className="pt-8 flex flex-col gap-4">
+                  {user && !user.isAnonymous ? (
+                    <>
+                      <div className="text-center py-4 text-muted-foreground text-xs uppercase tracking-widest">{user.email}</div>
+                      <Button onClick={handleSignOut} variant="outline" className="h-16 rounded-none border-white text-white uppercase tracking-widest text-xs">Выйти</Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button 
+                        onClick={() => handleAuthNavigation("/login")}
+                        variant="outline" 
+                        className="w-full h-16 rounded-none border-white text-white uppercase tracking-widest text-xs"
+                      >
+                        Войти
+                      </Button>
+                      <Button 
+                        onClick={() => handleAuthNavigation("/register")}
+                        className="w-full h-16 rounded-none bg-primary text-white uppercase tracking-widest text-xs"
+                      >
+                        Регистрация
+                      </Button>
+                    </>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
     </>
   );

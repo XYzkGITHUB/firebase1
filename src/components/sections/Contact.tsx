@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -30,12 +31,9 @@ export function Contact({ activeTab }: ContactProps) {
     message: "",
   });
 
-  // Pre-authenticate in background for faster subsequent writes
   useEffect(() => {
     if (auth && !user) {
-      signInAnonymously(auth).catch(() => {
-        // Silent fail: Firestore rules 'allow create: if true' handles unauth writes if needed
-      });
+      signInAnonymously(auth).catch(() => {});
     }
   }, [auth, user]);
 
@@ -52,27 +50,10 @@ export function Contact({ activeTab }: ContactProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!db) {
-      toast({
-        variant: "destructive",
-        title: "Ошибка",
-        description: "Сервисы еще не готовы. Проверьте интернет.",
-      });
-      return;
-    }
-    
-    if (!formData.name.trim() || !formData.phone.trim()) {
-      toast({
-        variant: "destructive",
-        title: "Ошибка",
-        description: "Заполните имя и телефон.",
-      });
-      return;
-    }
+    if (!db) return;
+    if (!formData.name.trim() || !formData.phone.trim()) return;
 
     setIsSubmitting(true);
-
     const leadData = {
       name: formData.name,
       phone: formData.phone,
@@ -82,31 +63,19 @@ export function Contact({ activeTab }: ContactProps) {
     };
 
     const leadsRef = collection(db, "leads");
-
-    // Instant write: initiating without blocking the main thread
     addDoc(leadsRef, leadData)
       .then(() => {
-        toast({
-          title: "Успешно",
-          description: "Ваш запрос отправлен! Мы свяжемся с вами скоро.",
-        });
+        toast({ title: "Успешно", description: "Ваш запрос отправлен!" });
         setFormData({ name: "", phone: "", message: "" });
         setIsSubmitting(false);
       })
       .catch((error: any) => {
-        // Emit rich error for developer feedback if security rules deny the write
         const permissionError = new FirestorePermissionError({
           path: leadsRef.path,
           operation: "create",
           requestResourceData: leadData,
         });
         errorEmitter.emit("permission-error", permissionError);
-
-        toast({
-          variant: "destructive",
-          title: "Ошибка отправки",
-          description: "Не удалось отправить данные. Проверьте правила доступа в консоли Firebase.",
-        });
         setIsSubmitting(false);
       });
   };
@@ -120,64 +89,56 @@ export function Contact({ activeTab }: ContactProps) {
             <SplitText
               text={getTitle()}
               tag="h2"
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-headline uppercase tracking-tighter leading-[1] md:leading-[0.9]"
+              className="text-3xl md:text-4xl font-headline uppercase tracking-tighter leading-tight"
               textAlign="left"
             />
-            <p className="text-lg md:text-2xl text-muted-foreground leading-relaxed font-light max-w-xl">
+            <p className="text-base md:text-lg text-muted-foreground leading-relaxed font-light max-w-xl">
               Оставьте заявку, и мы предложим решение для вашего проекта.
             </p>
             <div className="space-y-4 pt-6 md:pt-10">
                <div className="text-2xl md:text-3xl font-headline font-bold text-primary tracking-tighter">+7 989 919 95 41</div>
-               <div className="text-lg md:text-xl text-muted-foreground font-light uppercase tracking-widest">irggimport@bk.ru</div>
+               <div className="text-lg text-muted-foreground font-light uppercase tracking-widest">irggimport@bk.ru</div>
             </div>
           </div>
 
           <div className="p-6 sm:p-10 lg:p-16 border border-white/5 bg-card/30 backdrop-blur-3xl shadow-2xl w-full">
-            <form className="space-y-8 md:space-y-12" onSubmit={handleSubmit}>
-              <div className="space-y-4">
-                <label className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Ваше имя</label>
+            <form className="space-y-8" onSubmit={handleSubmit}>
+              <div className="space-y-3">
+                <label className="text-[10px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Ваше имя</label>
                 <Input 
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
                   placeholder="Введите имя" 
-                  className="h-14 md:h-16 bg-background/50 border-white/5 rounded-none text-base md:text-lg px-6" 
+                  className="h-14 bg-background/50 border-white/5 rounded-none text-base px-6" 
                 />
               </div>
-              <div className="space-y-4">
-                <label className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Телефон</label>
+              <div className="space-y-3">
+                <label className="text-[10px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Телефон</label>
                 <Input 
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
                   placeholder="+7 (___) ___-__-__" 
-                  className="h-14 md:h-16 bg-background/50 border-white/5 rounded-none text-base md:text-lg px-6" 
+                  className="h-14 bg-background/50 border-white/5 rounded-none text-base px-6" 
                 />
               </div>
-              <div className="space-y-4">
-                <label className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Запрос</label>
+              <div className="space-y-3">
+                <label className="text-[10px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Запрос</label>
                 <Textarea 
                   name="message"
                   value={formData.message}
                   onChange={handleInputChange}
                   placeholder="Опишите детали..." 
-                  className="min-h-[150px] bg-background/50 border-white/5 rounded-none text-base md:text-lg p-6" 
+                  className="min-h-[120px] bg-background/50 border-white/5 rounded-none text-base p-6" 
                 />
               </div>
               <Button 
                 type="submit"
                 disabled={isSubmitting}
-                size="lg" 
-                className="w-full h-16 md:h-20 bg-primary text-white text-[10px] md:text-[12px] font-bold uppercase tracking-[0.4em] group rounded-none shadow-2xl"
+                className="w-full h-16 bg-primary text-white text-[10px] font-bold uppercase tracking-[0.4em] group rounded-none shadow-2xl"
               >
-                {isSubmitting ? (
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                ) : (
-                  <>
-                    Отправить запрос
-                    <Send className="ml-3 h-4 w-4 md:h-5 md:w-5 transition-transform group-hover:translate-x-2" />
-                  </>
-                )}
+                {isSubmitting ? <Loader2 className="h-5 w-5 animate-spin" /> : "Отправить запрос"}
               </Button>
             </form>
           </div>

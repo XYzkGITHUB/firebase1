@@ -173,19 +173,19 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
           <SplitText
             text={activeTab === 'delivery' ? "Что мы гарантируем при доставке" : (activeTab === 'contacts' ? "Сервис и поддержка" : "Что вы получаете, выбирая нас")}
             tag="h2"
-            className="text-3xl md:text-5xl font-headline mb-12 lg:mb-16 uppercase tracking-tighter"
+            className="text-3xl md:text-4xl font-headline mb-12 lg:mb-16 uppercase tracking-tighter"
             textAlign="left"
           />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8">
             {currentCheck.map((item, i) => (
-              <BorderGlow key={i} borderRadius={0}>
-                <div className="flex items-start gap-4 p-6 h-full group">
+              <BorderGlow key={i} borderRadius={0} glowColor="26 40 39" colors={['#8B5E3C', '#C9C3BC', '#4A3728']}>
+                <div className="flex items-start gap-4 p-8 h-full group">
                   <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1 transition-colors group-hover:bg-primary group-hover:text-white">
                     <Check className="w-5 h-5 text-primary group-hover:text-white transition-colors" />
                   </div>
-                  <div className="space-y-2">
-                    <h4 className="font-bold text-xl tracking-tight group-hover:text-primary transition-colors">{item.title}</h4>
-                    <p className="text-base text-muted-foreground leading-relaxed">{item.desc}</p>
+                  <div className="space-y-3">
+                    <h4 className="font-bold text-xl tracking-tight group-hover:text-primary transition-colors uppercase">{item.title}</h4>
+                    <p className="text-base text-muted-foreground leading-relaxed font-light">{item.desc}</p>
                   </div>
                 </div>
               </BorderGlow>
@@ -201,10 +201,10 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
                <SplitText
                  text={activeTab === 'delivery' ? 'Надежная доставка грузов' : (activeTab === 'keramogranit' ? 'Выбор керамогранита' : (activeTab === 'contacts' ? 'Наш шоурум' : 'Ламинат и SPS-покрытия'))}
                  tag="h2"
-                 className="text-4xl md:text-6xl leading-[1.1] uppercase tracking-tighter"
+                 className="text-3xl md:text-4xl leading-[1.1] uppercase tracking-tighter"
                  textAlign="left"
                />
-               <p className="text-lg text-muted-foreground font-light leading-relaxed max-w-xl">
+               <p className="text-base text-muted-foreground font-light leading-relaxed max-w-xl">
                  {activeTab === 'delivery' 
                    ? 'Мы берем на себя полную ответственность за ваш груз. От завода в Индии или Китае до вашего склада в России.' 
                    : (activeTab === 'keramogranit' 
@@ -233,7 +233,7 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
 
           <div className="relative">
             {currentImages?.primary && currentImages?.secondary ? (
-              <BorderGlow borderRadius={0} glowRadius={60} className="border-none">
+              <BorderGlow borderRadius={0} glowRadius={60} className="border-none" colors={['#8B5E3C', '#C9C3BC', '#4A3728']}>
                 <InteractiveImage 
                   primaryImage={currentImages.primary} 
                   secondaryImage={currentImages.secondary} 
