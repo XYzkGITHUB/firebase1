@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -9,6 +8,7 @@ import SplitText from "@/components/ui/split-text";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import { BorderGlow } from "@/components/ui/border-glow";
 
 interface ProductExplorerProps {
   activeTab: ContentTab;
@@ -172,20 +172,22 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
           <SplitText
             text={activeTab === 'delivery' ? "Что мы гарантируем при доставке" : (activeTab === 'contacts' ? "Сервис и поддержка" : "Что вы получаете, выбирая нас")}
             tag="h2"
-            className="text-2xl md:text-4xl font-headline mb-12 lg:mb-16 uppercase tracking-tighter"
+            className="text-3xl md:text-5xl font-headline mb-12 lg:mb-16 uppercase tracking-tighter"
             textAlign="left"
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8">
             {currentCheck.map((item, i) => (
-              <div key={i} className="flex items-start gap-4 group">
-                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1 transition-colors group-hover:bg-primary group-hover:text-white">
-                  <Check className="w-5 h-5 text-primary group-hover:text-white transition-colors" />
+              <BorderGlow key={i} borderRadius={0}>
+                <div className="flex items-start gap-4 p-6 h-full group">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1 transition-colors group-hover:bg-primary group-hover:text-white">
+                    <Check className="w-5 h-5 text-primary group-hover:text-white transition-colors" />
+                  </div>
+                  <div className="space-y-2">
+                    <h4 className="font-bold text-xl tracking-tight group-hover:text-primary transition-colors">{item.title}</h4>
+                    <p className="text-base text-muted-foreground leading-relaxed">{item.desc}</p>
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <h4 className="font-bold text-xl tracking-tight group-hover:text-primary transition-colors">{item.title}</h4>
-                  <p className="text-base text-muted-foreground leading-relaxed">{item.desc}</p>
-                </div>
-              </div>
+              </BorderGlow>
             ))}
           </div>
         </div>
@@ -198,7 +200,7 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
                <SplitText
                  text={activeTab === 'delivery' ? 'Надежная доставка грузов' : (activeTab === 'keramogranit' ? 'Выбор керамогранита' : (activeTab === 'contacts' ? 'Наш шоурум' : 'Ламинат и SPS-покрытия'))}
                  tag="h2"
-                 className="text-2xl md:text-4xl leading-[1.1] uppercase tracking-tighter"
+                 className="text-4xl md:text-6xl leading-[1.1] uppercase tracking-tighter"
                  textAlign="left"
                />
                <p className="text-lg text-muted-foreground font-light leading-relaxed max-w-xl">
@@ -230,11 +232,13 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
 
           <div className="relative">
             {currentImages?.primary && currentImages?.secondary ? (
-              <InteractiveImage 
-                primaryImage={currentImages.primary} 
-                secondaryImage={currentImages.secondary} 
-                label={currentImages.label} 
-              />
+              <BorderGlow borderRadius={0} glowRadius={60} className="border-none">
+                <InteractiveImage 
+                  primaryImage={currentImages.primary} 
+                  secondaryImage={currentImages.secondary} 
+                  label={currentImages.label} 
+                />
+              </BorderGlow>
             ) : (
               <div className="aspect-[4/3] bg-card/30 border border-white/5 flex flex-col items-center justify-center text-muted-foreground relative group overflow-hidden shadow-2xl">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
