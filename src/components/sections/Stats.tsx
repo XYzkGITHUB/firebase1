@@ -1,16 +1,20 @@
 
 "use client";
-import React from "react";
-import { Handshake, Construction, ShieldCheck, Layers, Package, TrendingUp, Factory, Globe, Clock, ShieldAlert, Phone, Mail } from "lucide-react";
+import React, { useState } from "react";
+import { Handshake, Construction, ShieldCheck, Layers, Package, TrendingUp, Factory, Globe, Clock, ShieldAlert, Phone, Mail, MapPin, ChevronDown, ChevronUp } from "lucide-react";
 import { ContentTab } from "@/app/page";
 import SplitText from "@/components/ui/split-text";
 import { BorderGlow } from "@/components/ui/border-glow";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 interface StatsProps {
   activeTab: ContentTab;
 }
 
 export function Stats({ activeTab }: StatsProps) {
+  const [isAddressExpanded, setIsAddressExpanded] = useState(false);
+
   const keramogranitAdv = [
     {
       icon: <Layers className="w-10 h-10 text-primary" />,
@@ -80,24 +84,11 @@ export function Stats({ activeTab }: StatsProps) {
     },
   ];
 
-  const contactsAdv = [
-    {
-      icon: <Phone className="w-10 h-10 text-primary" />,
-      title: "Номера телефонов",
-      desc: "• +7 989 919 95 41\n\n• +7 989 937 41 11",
-    },
-    {
-      icon: <Mail className="w-10 h-10 text-primary" />,
-      title: "Gmail",
-      desc: "• irggimport@bk.ru",
-    },
-  ];
-
   const getAdv = () => {
     if (activeTab === 'keramogranit') return keramogranitAdv;
     if (activeTab === 'laminate_sps') return laminateAdv;
     if (activeTab === 'delivery') return deliveryAdv;
-    return contactsAdv;
+    return [];
   }
 
   const currentAdv = getAdv();
@@ -108,28 +99,98 @@ export function Stats({ activeTab }: StatsProps) {
       <div className="max-w-[1600px] mx-auto">
         <div className="mb-24 text-center">
           <SplitText
-            text={activeTab === 'delivery' ? "Надежная логистика под ключ" : (isContacts ? "Как с нами связаться" : "Наши главные преимущества")}
+            text={activeTab === 'delivery' ? "Надежная логистика под ключ" : (isContacts ? "Свяжитесь с нами" : "Наши главные преимущества")}
             tag="h2"
             className="text-4xl md:text-5xl font-headline max-w-5xl mx-auto leading-tight tracking-tighter"
             textAlign="center"
           />
         </div>
         
-        <div className={`grid grid-cols-1 md:grid-cols-2 ${isContacts ? 'lg:grid-cols-2 max-w-4xl mx-auto' : 'lg:grid-cols-4'} gap-8`}>
-          {currentAdv.map((adv, idx) => (
-            <BorderGlow key={idx} borderRadius={8} className="border-[0.5px] border-foreground/5 shadow-sm">
-              <div className="p-12 h-full bg-card/20 hover:bg-card/30 transition-all duration-700 group overflow-hidden">
-                <div className="mb-10 transform transition-transform group-hover:scale-110 duration-500">{adv.icon}</div>
-                <h3 className="text-2xl font-headline font-bold mb-6 text-foreground leading-tight tracking-tight">
-                  {adv.title}
-                </h3>
-                <p className="text-muted-foreground text-base leading-relaxed font-light whitespace-pre-line">
-                  {adv.desc}
-                </p>
+        {isContacts ? (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            {/* Left Column: Direct Contacts */}
+            <BorderGlow borderRadius={8} className="border-[0.5px] border-foreground/5 shadow-sm">
+              <div className="p-12 h-full bg-card/20 flex flex-col gap-10">
+                <div className="space-y-8">
+                  <div className="flex items-start gap-6">
+                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                      <Phone className="w-6 h-6 text-primary" />
+                    </div>
+                    <div>
+                      <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground mb-2">Телефоны</h4>
+                      <div className="text-xl md:text-2xl font-headline font-bold text-foreground">+7 989 919 95 41</div>
+                      <div className="text-xl md:text-2xl font-headline font-bold text-foreground">+7 989 937 41 11</div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-6">
+                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                      <Mail className="w-6 h-6 text-primary" />
+                    </div>
+                    <div>
+                      <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground mb-2">Email</h4>
+                      <div className="text-xl md:text-2xl font-headline font-bold text-foreground lowercase">irggimport@bk.ru</div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </BorderGlow>
-          ))}
-        </div>
+
+            {/* Right Column: Legal Address (Expandable) */}
+            <BorderGlow borderRadius={8} className="border-[0.5px] border-foreground/5 shadow-sm">
+              <div className="p-12 h-full bg-card/20 flex flex-col">
+                <div className="flex items-start gap-6 mb-8">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                    <MapPin className="w-6 h-6 text-primary" />
+                  </div>
+                  <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground pt-4">Юридический адрес</h4>
+                </div>
+
+                <div className="relative flex-1">
+                  <div 
+                    className={cn(
+                      "transition-all duration-500 ease-in-out overflow-hidden",
+                      isAddressExpanded ? "max-h-[500px]" : "max-h-[60px]"
+                    )}
+                  >
+                    <p className="text-lg md:text-xl font-headline font-medium leading-relaxed text-foreground">
+                      364029, Чеченская респ г. Грозный ул. имени Магомеда Яхъяевича Узуева (байсангуровский р-н), д 2/17, офис 41
+                    </p>
+                  </div>
+                  
+                  {!isAddressExpanded && (
+                    <div className="absolute bottom-0 left-0 w-full h-12 bg-gradient-to-t from-card/80 to-transparent pointer-events-none" />
+                  )}
+                </div>
+
+                <Button 
+                  variant="ghost" 
+                  onClick={() => setIsAddressExpanded(!isAddressExpanded)}
+                  className="mt-6 self-start text-[10px] font-bold uppercase tracking-widest gap-2 hover:bg-primary/5 h-10 px-4"
+                >
+                  {isAddressExpanded ? "Свернуть" : "Развернуть"}
+                  {isAddressExpanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                </Button>
+              </div>
+            </BorderGlow>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {currentAdv.map((adv, idx) => (
+              <BorderGlow key={idx} borderRadius={8} className="border-[0.5px] border-foreground/5 shadow-sm">
+                <div className="p-12 h-full bg-card/20 hover:bg-card/30 transition-all duration-700 group overflow-hidden">
+                  <div className="mb-10 transform transition-transform group-hover:scale-110 duration-500">{adv.icon}</div>
+                  <h3 className="text-2xl font-headline font-bold mb-6 text-foreground leading-tight tracking-tight">
+                    {adv.title}
+                  </h3>
+                  <p className="text-muted-foreground text-base leading-relaxed font-light whitespace-pre-line">
+                    {adv.desc}
+                  </p>
+                </div>
+              </BorderGlow>
+            ))}
+          </div>
+        )}
 
         {isContacts && (
           <div className="mt-40 animate-in fade-in slide-in-from-bottom-10 duration-1000">
