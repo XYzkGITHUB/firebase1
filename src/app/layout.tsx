@@ -4,6 +4,7 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { FirebaseClientProvider } from "@/firebase/client-provider";
 import { ToggleTheme } from "@/components/ui/toggle-theme";
+import { FaviconSetter } from "@/components/ui/favicon-setter";
 
 export const metadata: Metadata = {
   title: 'IRGG Luxe Surface | Керамогранит и Сантехника',
@@ -36,6 +37,7 @@ export default function RootLayout({
         }} />
       </head>
       <body className="font-body antialiased overflow-x-hidden">
+        <FaviconSetter />
         <FirebaseClientProvider>
           {children}
           <div className="fixed bottom-8 left-8 z-[100]">
