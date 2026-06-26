@@ -34,26 +34,8 @@ export default function RegisterPage() {
     "RION"
   ];
 
-  const handleBackToSite = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setTimeout(() => {
-      router.push("/");
-    }, 300);
-  };
-
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!name.trim().includes(" ")) {
-      toast({
-        variant: "destructive",
-        title: "Ошибка",
-        description: "Пожалуйста, укажите фамилию!",
-      });
-      return;
-    }
-
     if (password !== confirmPassword) {
       toast({
         variant: "destructive",
@@ -66,20 +48,14 @@ export default function RegisterPage() {
     setIsLoading(true);
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      
       if (userCredential.user) {
-        await updateProfile(userCredential.user, {
-          displayName: name
-        });
+        await updateProfile(userCredential.user, { displayName: name });
       }
-
-      setTimeout(() => {
-        toast({
-          title: "Регистрация успешна",
-          description: `Добро пожаловать, ${name}!`,
-        });
-        router.push("/");
-      }, 300);
+      toast({
+        title: "Регистрация успешна",
+        description: `Добро пожаловать, ${name}!`,
+      });
+      router.push("/");
     } catch (error: any) {
       toast({
         variant: "destructive",
@@ -95,12 +71,12 @@ export default function RegisterPage() {
       <LuxuryLoader isVisible={isLoading} />
 
       <div className="absolute top-8 left-8">
-        <button 
-          onClick={handleBackToSite}
-          className="flex items-center text-muted-foreground hover:text-primary transition-colors gap-2 uppercase tracking-widest text-[10px] font-bold bg-transparent border-none cursor-pointer"
+        <Link 
+          href="/" 
+          className="flex items-center text-muted-foreground hover:text-primary transition-colors gap-2 uppercase tracking-widest text-[10px] font-bold"
         >
           <ArrowLeft size={16} /> Назад на сайт
-        </button>
+        </Link>
       </div>
 
       <Card className="w-full max-w-md glass-panel border-border shadow-2xl overflow-hidden">
@@ -155,7 +131,7 @@ export default function RegisterPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
                 >
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
@@ -175,7 +151,7 @@ export default function RegisterPage() {
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
                 >
                   {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>

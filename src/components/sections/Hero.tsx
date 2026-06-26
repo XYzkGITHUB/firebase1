@@ -3,7 +3,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Box, ShoppingBag, Grid3X3, Layers, Bath, Lightbulb, Layout, Filter, Trash2, ArrowLeft, Star } from "lucide-react";
+import { ArrowRight, Box, ShoppingBag, Grid3X3, Layers, Bath, Lightbulb, Layout, Filter, Trash2, ArrowLeft } from "lucide-react";
 import { ContentTab } from "@/app/page";
 import { cn } from "@/lib/utils";
 import BlurText from "@/components/ui/blur-text";
@@ -43,7 +43,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
   const [selectedCats, setSelectedCats] = useState<string[]>([]);
   const [showFilterMenu, setShowFilterMenu] = useState(false);
   
-  // Animation state
+  // Star Animation State
   const count = useMotionValue(0);
   const rounded = useTransform(count, (latest) => latest.toFixed(1));
   const [starsFill, setStarsFill] = useState(0);
@@ -59,11 +59,13 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
     }
 
     if (activeTab === 'contacts' && !isStoreOpen && !animationPlayed) {
+      // 1. Animate the number from 0 to 4.6 over 2 seconds
       const numberAnimation = animate(count, 4.6, {
         duration: 2,
         ease: "easeOut",
       });
 
+      // 2. Animate the star fill from 0 to 92% synchronously
       const starAnimation = animate(0, 92, {
         duration: 2,
         ease: "easeOut",
@@ -96,7 +98,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
       setIsStoreOpen(false);
     } else {
       setIsStoreOpen(true);
-      setSelectedCats([]);
+      setSelectedCats([]); // Reset filters to show everything at once
     }
   };
 
@@ -108,7 +110,6 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
     
     if (names.length === 1) return names[0];
     if (names.length === 2) return `${names[0]} & ${names[1]}`;
-    if (names.length === 3) return `${names[0]}, ${names[1]} & ${names[2]}`;
     return "Коллекции RION";
   }, [selectedCats]);
 
@@ -118,11 +119,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
     );
   };
 
-  const clearFilters = () => {
-    setSelectedCats([]);
-  };
-
-  const content = {
+  const currentContent = {
     keramogranit: {
       title: "КЕРАМОГРАНИТ ПОД КЛЮЧ",
       desc: "Подбираем материал от производителей по всему миру и доставляем на объект точно в срок."
@@ -143,16 +140,11 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
       title: "БОЛЬШЕ О RION",
       desc: "Чеченская Республика, с. Бено-Юрт. Мы всегда на связи для решения ваших задач."
     }
-  };
-
-  const current = content[activeTab] || content.keramogranit;
+  }[activeTab];
 
   // Generate 5 stars
   const stars = Array.from({ length: 5 }, (_, i) => {
-    // Percentage for this specific star
-    // Since starsFill is 0-92 for total 5 stars, we scale it to 0-500 conceptually for individual star logic
-    const totalProgress = (starsFill / 92) * 4.6; 
-    const fillPercentage = Math.max(0, Math.min(100, (totalProgress - i) * 100));
+    const fillPercentage = Math.max(0, Math.min(100, starsFill - i * 20) * 5); // scaled to 20% increments
 
     return (
       <svg
@@ -198,7 +190,6 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5 }}
             className="z-10 w-full max-w-[1600px] px-8 flex flex-col items-center"
           >
             <div className="relative w-full max-w-6xl py-12 md:py-24 px-4 md:px-16 flex flex-col items-center justify-center">
@@ -210,22 +201,18 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
                 <div className="mt-8 text-center space-y-6 max-w-4xl">
                   <div className="min-h-[100px] flex items-center justify-center">
                     <BlurText 
-                      text={current.title}
+                      text={currentContent.title}
                       animateBy="words"
                       direction="top"
-                      delay={10}
-                      stepDuration={0.2}
                       className="text-3xl md:text-5xl lg:text-7xl font-headline text-foreground leading-tight uppercase tracking-tighter"
                     />
                   </div>
                   
                   <div className="min-h-[60px]">
                     <BlurText 
-                      text={current.desc}
+                      text={currentContent.desc}
                       animateBy="words"
                       direction="bottom"
-                      delay={10}
-                      stepDuration={0.15}
                       className="text-base text-muted-foreground font-body leading-relaxed max-w-2xl mx-auto font-light"
                     />
                   </div>
@@ -261,7 +248,6 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
                           <ShineButton 
                             label="Вход в трекер" 
                             size="lg" 
-                            icon={<Box className="h-4 w-4" />}
                             bgColor="linear-gradient(325deg, hsl(217 100% 56%) 0%, hsl(194 100% 69%) 55%, hsl(217 100% 56%) 90%)" 
                             onClick={handleTrackerLogin}
                             className="w-full sm:w-auto"
@@ -270,7 +256,6 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
                           <ShineButton 
                             label="Открыть магазин" 
                             size="lg" 
-                            icon={<ShoppingBag className="h-4 w-4" />}
                             variant="outline"
                             onClick={toggleStore}
                             className="w-full sm:w-auto"
@@ -289,7 +274,6 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 1.02 }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="z-[110] fixed inset-0 bg-background/95 backdrop-blur-3xl flex flex-col"
           >
             <div className="flex justify-between items-center px-8 py-6 border-b border-white/10 bg-background/50">
@@ -299,16 +283,12 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
               >
                 <ArrowLeft size={16} /> Назад
               </button>
-              <div />
+              <div /> {/* Removed X button on top right */}
             </div>
 
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="flex-1 flex flex-col h-full overflow-hidden"
-            >
+            <div className="flex-1 flex flex-col h-full overflow-hidden">
               <div className="p-8 border-b border-white/10 bg-background/50 flex flex-col md:flex-row items-center justify-between gap-6">
-                <div className="text-center md:text-left">
+                <div>
                   <h2 className="text-3xl md:text-5xl font-headline uppercase tracking-tighter text-foreground">
                     {storeTitle}
                   </h2>
@@ -346,7 +326,6 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
                               )}
                             >
                               {cat.name}
-                              {selectedCats.includes(cat.id) && <Box size={12} />}
                             </button>
                           ))}
                         </motion.div>
@@ -358,7 +337,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
                     <Button 
                       variant="ghost" 
                       className="h-14 px-8 rounded-none uppercase tracking-[0.2em] text-[10px] font-bold text-muted-foreground hover:text-primary"
-                      onClick={clearFilters}
+                      onClick={() => setSelectedCats([])}
                     >
                       <Trash2 className="mr-2 h-4 w-4" />
                       Очистить
@@ -385,10 +364,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
                           {mockProducts
                             .filter(p => p.cat === cat.id)
                             .map(prod => (
-                              <div 
-                                key={prod.id} 
-                                className="glass-panel p-6 border-white/5 hover:bg-foreground/5 transition-all group"
-                              >
+                              <div key={prod.id} className="glass-panel p-6 border-white/5 hover:bg-foreground/5 transition-all group">
                                 <div className="aspect-square bg-muted/20 mb-6 flex items-center justify-center relative overflow-hidden">
                                   {cat.icon}
                                   <div className="absolute bottom-4 right-4">
@@ -397,7 +373,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
                                 </div>
                                 <h4 className="text-lg font-bold uppercase tracking-tight mb-2 group-hover:text-primary transition-colors">{prod.name}</h4>
                                 <p className="text-primary font-headline font-bold text-xl">{prod.price}</p>
-                                <Button className="w-full mt-6 rounded-none bg-primary/10 text-primary hover:bg-primary hover:text-white border border-primary/20 transition-all font-bold uppercase tracking-widest text-[10px] h-12">
+                                <Button className="w-full mt-6 rounded-none bg-primary/10 text-primary hover:bg-primary hover:text-white border border-primary/20 font-bold uppercase tracking-widest text-[10px] h-12">
                                   Подробнее
                                 </Button>
                               </div>
@@ -407,7 +383,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
                     ))}
                 </div>
               </ScrollArea>
-            </motion.div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

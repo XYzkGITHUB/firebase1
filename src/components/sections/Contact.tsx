@@ -18,10 +18,6 @@ interface ContactProps {
   activeTab: ContentTab;
 }
 
-/**
- * Contact form component for RION.
- * Handles feedback, bug reports, and general inquiries in Russian.
- */
 export function Contact({ activeTab }: ContactProps) {
   const db = useFirestore();
   const { toast } = useToast();
@@ -31,10 +27,6 @@ export function Contact({ activeTab }: ContactProps) {
     phone: "",
     message: "",
   });
-
-  const getTitle = () => {
-    return "Не нашли то, что искали? Хотите оставить отзыв или нашли ошибку?";
-  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -81,7 +73,7 @@ export function Contact({ activeTab }: ContactProps) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
           <div className="space-y-6 md:space-y-10 lg:sticky lg:top-32">
             <SplitText
-              text={getTitle()}
+              text="Не нашли то, что искали? Хотите оставить отзыв или нашли ошибку?"
               tag="h2"
               className="text-3xl md:text-4xl font-headline uppercase tracking-tighter leading-tight"
               textAlign="left"
@@ -104,7 +96,7 @@ export function Contact({ activeTab }: ContactProps) {
                   value={formData.name}
                   onChange={handleInputChange}
                   placeholder="Введите ваше имя" 
-                  className="h-14 bg-background/50 border-foreground/10 rounded-none text-base px-6 focus:ring-primary focus:border-primary" 
+                  className="h-14 bg-background/50 border-foreground/10 rounded-none text-base px-6" 
                 />
               </div>
               <div className="space-y-3">
@@ -114,7 +106,7 @@ export function Contact({ activeTab }: ContactProps) {
                   value={formData.phone}
                   onChange={handleInputChange}
                   placeholder="+7 (___) ___-__-__" 
-                  className="h-14 bg-background/50 border-foreground/10 rounded-none text-base px-6 focus:ring-primary focus:border-primary" 
+                  className="h-14 bg-background/50 border-foreground/10 rounded-none text-base px-6" 
                 />
               </div>
               <div className="space-y-3">
@@ -124,7 +116,7 @@ export function Contact({ activeTab }: ContactProps) {
                   value={formData.message}
                   onChange={handleInputChange}
                   placeholder="Опишите вашу проблему или предложение..." 
-                  className="min-h-[120px] bg-background/50 border-foreground/10 rounded-none text-base p-6 focus:ring-primary focus:border-primary" 
+                  className="min-h-[120px] bg-background/50 border-foreground/10 rounded-none text-base p-6" 
                 />
               </div>
               <Button 
