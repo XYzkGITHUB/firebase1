@@ -134,38 +134,6 @@ export function Stats({ activeTab }: StatsProps) {
         
         {isContacts ? (
           <div className="max-w-6xl mx-auto">
-            {/* Анимированный рейтинг, который был удален */}
-            <div className="flex flex-col items-center justify-center mb-24 animate-in fade-in slide-in-from-bottom-4 duration-1000">
-              <div className="flex items-center gap-6 mb-4">
-                <div className="flex gap-1">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <motion.div
-                      key={star}
-                      initial={{ scale: 0, opacity: 0, rotate: -45 }}
-                      animate={{ scale: 1, opacity: 1, rotate: 0 }}
-                      transition={{ 
-                        delay: star * 0.15, 
-                        type: "spring", 
-                        stiffness: 260, 
-                        damping: 20 
-                      }}
-                    >
-                      <Star 
-                        className={cn(
-                          "w-10 h-10 md:w-16 md:h-16",
-                          star <= 4 ? "fill-primary text-primary" : "text-primary/20"
-                        )} 
-                      />
-                    </motion.div>
-                  ))}
-                </div>
-                <div className="text-6xl md:text-8xl font-headline font-bold text-primary tabular-nums">
-                  <NumberTicker value={4.6} decimalPlaces={1} />
-                </div>
-              </div>
-              <p className="text-[11px] uppercase tracking-[0.5em] font-bold text-muted-foreground opacity-60">Средний рейтинг удовлетворенности клиентов</p>
-            </div>
-
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <BorderGlow borderRadius={8} className="border-[0.5px] border-foreground/5 shadow-sm">
                 <div className="p-12 h-full bg-card/20 flex flex-col gap-10">
