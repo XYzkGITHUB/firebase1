@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Box, ShoppingBag, Star, Grid3X3, Layers, Bath, LampCeiling, Square } from "lucide-react";
+import { ArrowRight, Box, ShoppingBag, Star, Grid3X3, Layers, Bath, Lightbulb, Layout } from "lucide-react";
 import { ContentTab } from "@/app/page";
 import BlurText from "@/components/ui/blur-text";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -16,7 +16,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { motion, AnimatePresence } from "framer-motion";
-import { TypingAnimation } from "@/components/ui/typing-animation";
 
 interface HeroProps {
   activeTab: ContentTab;
@@ -64,8 +63,8 @@ export function Hero({ activeTab }: HeroProps) {
     { name: "Керамогранит", icon: <Grid3X3 className="w-6 h-6" /> },
     { name: "Ламинат", icon: <Layers className="w-6 h-6" /> },
     { name: "Сантехника", icon: <Bath className="w-6 h-6" /> },
-    { name: "Люстры", icon: <LampCeiling className="w-6 h-6" /> },
-    { name: "Ковры", icon: <Square className="w-6 h-6" /> },
+    { name: "Люстры", icon: <Lightbulb className="w-6 h-6" /> },
+    { name: "Ковры", icon: <Layout className="w-6 h-6" /> },
   ];
 
   const current = content[activeTab] || content.keramogranit;
@@ -183,9 +182,7 @@ export function Hero({ activeTab }: HeroProps) {
                           <div className="p-8 md:p-12">
                             <DialogHeader className="mb-10 text-center">
                               <DialogTitle className="text-3xl md:text-5xl font-headline uppercase tracking-tighter mb-4 h-[1.2em] flex items-center justify-center">
-                                <TypingAnimation typeSpeed={20} showCursor={true} blinkCursor={true}>
-                                  Куда вы хотите перейти?
-                                </TypingAnimation>
+                                Куда вы хотите перейти?
                               </DialogTitle>
                               <p className="text-muted-foreground uppercase tracking-widest text-[10px] font-bold opacity-60">
                                 Выберите интересующую категорию материалов RION
@@ -205,7 +202,7 @@ export function Hero({ activeTab }: HeroProps) {
                                       stiffness: 260,
                                       damping: 20
                                     }}
-                                    className="flex items-center gap-6 p-6 border-2 border-foreground/15 bg-card/40 text-left relative overflow-hidden rounded-none shadow-sm cursor-pointer"
+                                    className="flex items-center gap-6 p-6 border-2 border-foreground/15 bg-card/40 text-left relative overflow-hidden rounded-none shadow-sm cursor-pointer transition-colors hover:bg-foreground/5"
                                     onClick={() => setIsStoreOpen(false)}
                                   >
                                     <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
