@@ -153,7 +153,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
     contacts: { title: "БОЛЬШЕ О RION", desc: "Чеченская Республика, с. Бено-Юрт. Мы всегда на связи для решения ваших задач." }
   }[activeTab];
 
-  // Star Generator logic based on provided snippet
+  // Star Generator using Framer Motion logic
   const stars = Array.from({ length: 5 }, (_, i) => {
     const fillPercentage = Math.max(0, Math.min(100, (starsFill - i * 20) * 5));
     return (
