@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useState, useMemo, useEffect } from "react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
@@ -282,9 +283,9 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 1.02 }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="z-50 fixed inset-0 bg-background/95 backdrop-blur-3xl flex flex-col"
+            className="z-[110] fixed inset-0 bg-background/95 backdrop-blur-3xl flex flex-col"
           >
-            <div className="flex justify-between items-center px-8 py-6 border-b border-white/10">
+            <div className="flex justify-between items-center px-8 py-6 border-b border-white/10 bg-background/50">
               <button 
                 onClick={toggleStore}
                 className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground hover:text-primary transition-colors"
@@ -413,3 +414,4 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
     </section>
   );
 }
+
