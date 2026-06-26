@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useState } from "react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
@@ -182,7 +183,7 @@ export function Hero({ activeTab }: HeroProps) {
                         <DialogContent className="sm:max-w-2xl bg-background/95 backdrop-blur-xl border-white/10 p-0 overflow-hidden rounded-none cursor-none">
                           <TargetCursor 
                             spinDuration={2}
-                            hideDefaultCursor
+                            hideDefaultCursor={false}
                             parallaxOn
                             hoverDuration={0.2}
                             cursorColor="#ffffff"
