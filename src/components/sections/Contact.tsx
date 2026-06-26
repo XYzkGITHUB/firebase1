@@ -20,7 +20,7 @@ interface ContactProps {
 
 /**
  * Contact form component for RION.
- * Handles lead generation without requiring user authentication.
+ * Handles feedback, bug reports, and general inquiries.
  */
 export function Contact({ activeTab }: ContactProps) {
   const db = useFirestore();
@@ -33,10 +33,7 @@ export function Contact({ activeTab }: ContactProps) {
   });
 
   const getTitle = () => {
-    if (activeTab === 'keramogranit') return 'Нужен керамогранит?';
-    if (activeTab === 'laminate_sps') return 'Нужен ламинат или SPS?';
-    if (activeTab === 'contacts') return 'Есть вопросы по сотрудничеству?';
-    return 'Нужна доставка груза?';
+    return "Didn't get what you wanted? Wanted to leave feedback? Any bugs?";
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -55,14 +52,14 @@ export function Contact({ activeTab }: ContactProps) {
       phone: formData.phone,
       description: formData.message,
       section: activeTab,
+      type: "feedback_or_bug",
       createdAt: serverTimestamp(),
     };
 
     const leadsRef = collection(db, "leads");
-    // Directly add the document. Security Rules allow public 'create'.
     addDoc(leadsRef, leadData)
       .then(() => {
-        toast({ title: "Успешно", description: "Ваш запрос отправлен!" });
+        toast({ title: "Sent", description: "Thank you for your feedback!" });
         setFormData({ name: "", phone: "", message: "" });
         setIsSubmitting(false);
       })
@@ -90,7 +87,7 @@ export function Contact({ activeTab }: ContactProps) {
               textAlign="left"
             />
             <p className="text-base md:text-lg text-muted-foreground leading-relaxed font-light max-w-xl">
-              Оставьте заявку, и мы предложим решение для вашего проекта.
+              We value your experience. Whether you found a bug, have a suggestion, or simply didn't find the material you were looking for—let us know.
             </p>
             <div className="space-y-4 pt-6 md:pt-10">
                <div className="text-2xl md:text-3xl font-headline font-bold text-primary tracking-tighter">+7 989 919 95 41</div>
@@ -101,17 +98,17 @@ export function Contact({ activeTab }: ContactProps) {
           <div className="p-6 sm:p-10 lg:p-16 border border-foreground/10 bg-card/30 backdrop-blur-3xl shadow-xl w-full">
             <form className="space-y-8" onSubmit={handleSubmit}>
               <div className="space-y-3">
-                <label className="text-[10px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Ваше имя</label>
+                <label className="text-[10px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Your Name</label>
                 <Input 
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  placeholder="Введите имя" 
+                  placeholder="Enter your name" 
                   className="h-14 bg-background/50 border-foreground/10 rounded-none text-base px-6 focus:ring-primary focus:border-primary" 
                 />
               </div>
               <div className="space-y-3">
-                <label className="text-[10px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Телефон</label>
+                <label className="text-[10px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Contact Phone</label>
                 <Input 
                   name="phone"
                   value={formData.phone}
@@ -121,12 +118,12 @@ export function Contact({ activeTab }: ContactProps) {
                 />
               </div>
               <div className="space-y-3">
-                <label className="text-[10px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Запрос</label>
+                <label className="text-[10px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Message / Bug Report</label>
                 <Textarea 
                   name="message"
                   value={formData.message}
                   onChange={handleInputChange}
-                  placeholder="Опишите детали..." 
+                  placeholder="Tell us what's on your mind..." 
                   className="min-h-[120px] bg-background/50 border-foreground/10 rounded-none text-base p-6 focus:ring-primary focus:border-primary" 
                 />
               </div>
@@ -135,7 +132,7 @@ export function Contact({ activeTab }: ContactProps) {
                 disabled={isSubmitting}
                 className="w-full h-16 bg-primary text-white text-[10px] font-bold uppercase tracking-[0.4em] group rounded-none shadow-2xl"
               >
-                {isSubmitting ? <Loader2 className="h-5 w-5 animate-spin" /> : "Отправить запрос"}
+                {isSubmitting ? <Loader2 className="h-5 w-5 animate-spin" /> : "Send Feedback"}
               </Button>
             </form>
           </div>
