@@ -52,6 +52,9 @@
 @layer base {
   * {
     @apply border-border;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    hyphens: none;
   }
   html, body {
     @apply overflow-x-hidden;

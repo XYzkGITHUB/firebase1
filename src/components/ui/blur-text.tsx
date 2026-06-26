@@ -29,7 +29,7 @@ interface BlurTextProps {
 
 const BlurText = ({
   text = '',
-  delay = 100, // Reduced from 200
+  delay = 100,
   className = '',
   animateBy = 'words',
   direction = 'top',
@@ -39,11 +39,11 @@ const BlurText = ({
   animationTo,
   easing = t => t,
   onAnimationComplete,
-  stepDuration = 0.3 // Reduced from 0.35
+  stepDuration = 0.3
 }: BlurTextProps) => {
-  const elements = animateBy === 'words' ? text.split(' ') : text.split('');
+  const words = useMemo(() => text.split(' '), [text]);
   const [inView, setInView] = useState(false);
-  const ref = useRef<HTMLParagraphElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!ref.current) return;
@@ -85,30 +85,56 @@ const BlurText = ({
   const totalDuration = stepDuration * (stepCount - 1);
   const times = Array.from({ length: stepCount }, (_, i) => (stepCount === 1 ? 0 : i / (stepCount - 1)));
 
+  let charGlobalIndex = 0;
+
   return (
     <div ref={ref} className={className} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-      {elements.map((segment, index) => {
-        const animateKeyframes = buildKeyframes(fromSnapshot, toSnapshots);
+      {words.map((word, wordIndex) => {
+        if (animateBy === 'words') {
+          const animateKeyframes = buildKeyframes(fromSnapshot, toSnapshots);
+          return (
+            <motion.span
+              key={wordIndex}
+              className="inline-block will-change-[transform,filter,opacity] whitespace-nowrap mr-[0.25em]"
+              initial={fromSnapshot}
+              animate={inView ? animateKeyframes : fromSnapshot}
+              transition={{
+                duration: totalDuration,
+                times,
+                delay: (wordIndex * delay) / 1000,
+                ease: easing
+              }}
+              onAnimationComplete={wordIndex === words.length - 1 ? onAnimationComplete : undefined}
+            >
+              {word}
+            </motion.span>
+          );
+        }
 
-        const spanTransition: any = {
-          duration: totalDuration,
-          times,
-          delay: (index * delay) / 1000
-        };
-        spanTransition.ease = easing;
-
+        // Animate by letters but keep them inside word containers to prevent breaks
         return (
-          <motion.span
-            className="inline-block will-change-[transform,filter,opacity]"
-            key={index}
-            initial={fromSnapshot}
-            animate={inView ? animateKeyframes : fromSnapshot}
-            transition={spanTransition}
-            onAnimationComplete={index === elements.length - 1 ? onAnimationComplete : undefined}
-          >
-            {segment === ' ' ? '\u00A0' : segment}
-            {animateBy === 'words' && index < elements.length - 1 && '\u00A0'}
-          </motion.span>
+          <span key={wordIndex} className="inline-block whitespace-nowrap mr-[0.25em]">
+            {word.split('').map((char, charIndex) => {
+              const animateKeyframes = buildKeyframes(fromSnapshot, toSnapshots);
+              const currentIndex = charGlobalIndex++;
+              return (
+                <motion.span
+                  key={charIndex}
+                  className="inline-block will-change-[transform,filter,opacity]"
+                  initial={fromSnapshot}
+                  animate={inView ? animateKeyframes : fromSnapshot}
+                  transition={{
+                    duration: totalDuration,
+                    times,
+                    delay: (currentIndex * delay) / 1000,
+                    ease: easing
+                  }}
+                >
+                  {char}
+                </motion.span>
+              );
+            })}
+          </span>
         );
       })}
     </div>

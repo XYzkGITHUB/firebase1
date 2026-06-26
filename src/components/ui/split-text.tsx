@@ -25,14 +25,14 @@ interface SplitTextProps {
 const SplitText = ({
   text,
   className = '',
-  delay = 30, // Reduced from 50
-  duration = 0.8, // Reduced from 1.25
+  delay = 30,
+  duration = 0.8,
   ease = 'power3.out',
   splitType = 'chars',
   from = { opacity: 0, y: 40 },
   to = { opacity: 1, y: 0 },
   threshold = 0.1,
-  rootMargin = '-50px', // Adjusted for faster trigger
+  rootMargin = '-50px',
   textAlign = 'center',
   tag = 'p',
   onLetterAnimationComplete
@@ -65,21 +65,39 @@ const SplitText = ({
       const startPct = (1 - threshold) * 100;
       const start = `top ${startPct}%`;
 
-      // Simplified character splitting for compatibility and performance
-      const content = el.innerText;
+      const originalContent = el.innerText;
       el.innerHTML = '';
       
-      const items = splitType === 'chars' ? content.split('') : content.split(' ');
-      const nodes = items.map((char: string) => {
-        const span = document.createElement('span');
-        span.style.display = 'inline-block';
-        span.style.whiteSpace = char === ' ' ? 'pre' : 'normal';
-        span.innerText = char;
-        el.appendChild(span);
-        if (splitType === 'words') {
-            el.appendChild(document.createTextNode(' '));
+      const words = originalContent.split(' ');
+      const nodes: HTMLElement[] = [];
+
+      words.forEach((word: string, wordIdx: number) => {
+        // Create a wrapper for the word to prevent mid-word breaks
+        const wordWrapper = document.createElement('span');
+        wordWrapper.style.display = 'inline-block';
+        wordWrapper.style.whiteSpace = 'nowrap';
+        
+        if (splitType === 'chars') {
+          const chars = word.split('');
+          chars.forEach((char: string) => {
+            const charSpan = document.createElement('span');
+            charSpan.style.display = 'inline-block';
+            charSpan.innerText = char;
+            wordWrapper.appendChild(charSpan);
+            nodes.push(charSpan);
+          });
+        } else {
+          // splitType === 'words' or 'lines'
+          wordWrapper.innerText = word;
+          nodes.push(wordWrapper);
         }
-        return span;
+        
+        el.appendChild(wordWrapper);
+        
+        // Add space after the word if it's not the last one
+        if (wordIdx < words.length - 1) {
+          el.appendChild(document.createTextNode(' '));
+        }
       });
 
       gsap.fromTo(
@@ -103,7 +121,7 @@ const SplitText = ({
       );
     },
     {
-      dependencies: [text, fontsLoaded, delay, duration],
+      dependencies: [text, fontsLoaded, delay, duration, splitType],
       scope: ref
     }
   );
