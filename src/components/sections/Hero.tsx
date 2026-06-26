@@ -1,14 +1,22 @@
 
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Box, ShoppingBag, Star } from "lucide-react";
+import { ArrowRight, Box, ShoppingBag, Star, Grid3X3, Layers, Bath, LampCeiling, Square, X } from "lucide-react";
 import { ContentTab } from "@/app/page";
 import BlurText from "@/components/ui/blur-text";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ShineButton } from "@/components/ui/shine-button";
 import NumberTicker from "@/components/ui/number-ticker";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface HeroProps {
   activeTab: ContentTab;
@@ -16,6 +24,7 @@ interface HeroProps {
 
 export function Hero({ activeTab }: HeroProps) {
   const isMobile = useIsMobile();
+  const [isStoreOpen, setIsStoreOpen] = useState(false);
   
   const scrollToContact = () => {
     const element = document.getElementById('contact-form');
@@ -50,6 +59,14 @@ export function Hero({ activeTab }: HeroProps) {
       desc: "Чеченская Республика, с. Бено-Юрт. Мы всегда на связи для решения ваших задач."
     }
   };
+
+  const categories = [
+    { name: "Керамогранит", icon: <Grid3X3 className="w-6 h-6" />, color: "from-amber-500/10 to-transparent" },
+    { name: "Ламинат", icon: <Layers className="w-6 h-6" />, color: "from-blue-500/10 to-transparent" },
+    { name: "Сантехника", icon: <Bath className="w-6 h-6" />, color: "from-cyan-500/10 to-transparent" },
+    { name: "Люстры", icon: <LampCeiling className="w-6 h-6" />, color: "from-yellow-500/10 to-transparent" },
+    { name: "Ковры", icon: <Square className="w-6 h-6" />, color: "from-rose-500/10 to-transparent" },
+  ];
 
   const current = content[activeTab] || content.keramogranit;
 
@@ -139,18 +156,86 @@ export function Hero({ activeTab }: HeroProps) {
                 </Button>
                 
                 {activeTab !== "contacts" && (
-                  <ShineButton 
-                    label={activeTab === 'delivery' ? "Вход в трекер" : "Открыть магазин"} 
-                    size="lg" 
-                    icon={activeTab === 'delivery' ? <Box className="h-4 w-4" /> : <ShoppingBag className="h-4 w-4" />}
-                    variant={activeTab === 'delivery' ? 'default' : 'outline'}
-                    bgColor={activeTab === 'delivery' 
-                      ? "linear-gradient(325deg, hsl(217 100% 56%) 0%, hsl(194 100% 69%) 55%, hsl(217 100% 56%) 90%)" 
-                      : undefined
-                    }
-                    onClick={activeTab === 'delivery' ? handleTrackerLogin : () => {}}
-                    className="w-full sm:w-auto"
-                  />
+                  <>
+                    {activeTab === 'delivery' ? (
+                      <ShineButton 
+                        label="Вход в трекер" 
+                        size="lg" 
+                        icon={<Box className="h-4 w-4" />}
+                        bgColor="linear-gradient(325deg, hsl(217 100% 56%) 0%, hsl(194 100% 69%) 55%, hsl(217 100% 56%) 90%)" 
+                        onClick={handleTrackerLogin}
+                        className="w-full sm:w-auto"
+                      />
+                    ) : (
+                      <Dialog open={isStoreOpen} onOpenChange={setIsStoreOpen}>
+                        <DialogTrigger asChild>
+                          <div>
+                            <ShineButton 
+                              label="Открыть магазин" 
+                              size="lg" 
+                              icon={<ShoppingBag className="h-4 w-4" />}
+                              variant="outline"
+                              className="w-full sm:w-auto"
+                            />
+                          </div>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-2xl bg-background/95 backdrop-blur-xl border-white/10 p-0 overflow-hidden rounded-none">
+                          <div className="p-8 md:p-12">
+                            <DialogHeader className="mb-10 text-center">
+                              <DialogTitle className="text-3xl md:text-5xl font-headline uppercase tracking-tighter mb-4">
+                                Куда вы хотите перейти?
+                              </DialogTitle>
+                              <p className="text-muted-foreground uppercase tracking-widest text-[10px] font-bold opacity-60">
+                                Выберите интересующую категорию материалов RION
+                              </p>
+                            </DialogHeader>
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <AnimatePresence>
+                                {categories.map((cat, idx) => (
+                                  <motion.button
+                                    key={cat.name}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ 
+                                      delay: idx * 0.1,
+                                      type: "spring",
+                                      stiffness: 260,
+                                      damping: 20
+                                    }}
+                                    whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.05)" }}
+                                    whileTap={{ scale: 0.98 }}
+                                    className={`flex items-center gap-6 p-6 border border-white/5 bg-white/5 text-left group transition-all relative overflow-hidden`}
+                                    onClick={() => setIsStoreOpen(false)}
+                                  >
+                                    <div className={`absolute inset-0 bg-gradient-to-br ${cat.color} opacity-0 group-hover:opacity-100 transition-opacity`} />
+                                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-all">
+                                      {cat.icon}
+                                    </div>
+                                    <div className="relative z-10">
+                                      <div className="font-headline text-xl font-bold uppercase tracking-tight group-hover:text-primary transition-colors">
+                                        {cat.name}
+                                      </div>
+                                      <div className="text-[9px] uppercase tracking-[0.3em] text-muted-foreground mt-1 font-bold group-hover:text-foreground transition-colors">
+                                        Смотреть каталог
+                                      </div>
+                                    </div>
+                                  </motion.button>
+                                ))}
+                              </AnimatePresence>
+                            </div>
+
+                            <button 
+                              onClick={() => setIsStoreOpen(false)}
+                              className="absolute top-6 right-6 p-2 text-muted-foreground hover:text-foreground transition-colors"
+                            >
+                              <X size={24} />
+                            </button>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
+                    )}
+                  </>
                 )}
               </div>
             </div>
