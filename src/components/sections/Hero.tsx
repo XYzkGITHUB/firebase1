@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useState } from "react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
@@ -72,17 +73,6 @@ export function Hero({ activeTab }: HeroProps) {
 
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-start overflow-hidden bg-background pt-32 md:pt-48 pb-40">
-      {!isMobile && (
-        <TargetCursor 
-          spinDuration={2}
-          hideDefaultCursor
-          parallaxOn
-          hoverDuration={0.2}
-          cursorColor="#ffffff"
-          cursorColorOnTarget="#B497CF"
-        />
-      )}
-      
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div 
           className="absolute inset-0 opacity-[0.08] dark:opacity-[0.15]" 
@@ -160,7 +150,7 @@ export function Hero({ activeTab }: HeroProps) {
                 <Button 
                   onClick={scrollToContact}
                   size="lg" 
-                  className="h-16 px-10 rounded-none font-bold group bg-primary text-white hover:bg-primary/90 uppercase tracking-[0.3em] text-[10px] shadow-2xl transition-all w-full sm:w-auto cursor-target"
+                  className="h-16 px-10 rounded-none font-bold group bg-primary text-white hover:bg-primary/90 uppercase tracking-[0.3em] text-[10px] shadow-2xl transition-all w-full sm:w-auto"
                 >
                   Связаться с менеджером
                   <ArrowRight className="ml-3 h-4 w-4 transition-transform group-hover:translate-x-2" />
@@ -175,7 +165,7 @@ export function Hero({ activeTab }: HeroProps) {
                         icon={<Box className="h-4 w-4" />}
                         bgColor="linear-gradient(325deg, hsl(217 100% 56%) 0%, hsl(194 100% 69%) 55%, hsl(217 100% 56%) 90%)" 
                         onClick={handleTrackerLogin}
-                        className="w-full sm:w-auto cursor-target"
+                        className="w-full sm:w-auto"
                       />
                     ) : (
                       <Dialog open={isStoreOpen} onOpenChange={setIsStoreOpen}>
@@ -186,11 +176,19 @@ export function Hero({ activeTab }: HeroProps) {
                               size="lg" 
                               icon={<ShoppingBag className="h-4 w-4" />}
                               variant="outline"
-                              className="w-full sm:w-auto cursor-target"
+                              className="w-full sm:w-auto"
                             />
                           </div>
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-2xl bg-background/95 backdrop-blur-xl border-white/10 p-0 overflow-hidden rounded-none">
+                          <TargetCursor 
+                            spinDuration={2}
+                            hideDefaultCursor
+                            parallaxOn
+                            hoverDuration={0.2}
+                            cursorColor="#ffffff"
+                            cursorColorOnTarget="#8B5E3C"
+                          />
                           <div className="p-8 md:p-12">
                             <DialogHeader className="mb-10 text-center">
                               <DialogTitle className="text-3xl md:text-5xl font-headline uppercase tracking-tighter mb-4 h-[1.2em] flex items-center justify-center">
