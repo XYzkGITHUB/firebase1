@@ -203,9 +203,9 @@ export function Hero({ activeTab }: HeroProps) {
                                       stiffness: 260,
                                       damping: 20
                                     }}
-                                    whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.05)" }}
+                                    whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.05)", borderColor: "hsl(var(--primary) / 0.4)" }}
                                     whileTap={{ scale: 0.98 }}
-                                    className={`flex items-center gap-6 p-6 border border-white/5 bg-white/5 text-left group transition-all relative overflow-hidden`}
+                                    className={`flex items-center gap-6 p-6 border border-foreground/15 bg-card/40 text-left group transition-all relative overflow-hidden rounded-none shadow-sm`}
                                     onClick={() => setIsStoreOpen(false)}
                                   >
                                     <div className={`absolute inset-0 bg-gradient-to-br ${cat.color} opacity-0 group-hover:opacity-100 transition-opacity`} />
@@ -224,13 +224,6 @@ export function Hero({ activeTab }: HeroProps) {
                                 ))}
                               </AnimatePresence>
                             </div>
-
-                            <button 
-                              onClick={() => setIsStoreOpen(false)}
-                              className="absolute top-6 right-6 p-2 text-muted-foreground hover:text-foreground transition-colors"
-                            >
-                              <X size={24} />
-                            </button>
                           </div>
                         </DialogContent>
                       </Dialog>
