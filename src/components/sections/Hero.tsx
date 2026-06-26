@@ -1,9 +1,8 @@
-
 "use client";
 import React, { useState } from "react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Box, ShoppingBag, Star, Grid3X3, Layers, Bath, LampCeiling, Square, X } from "lucide-react";
+import { ArrowRight, Box, ShoppingBag, Star, Grid3X3, Layers, Bath, LampCeiling, Square } from "lucide-react";
 import { ContentTab } from "@/app/page";
 import BlurText from "@/components/ui/blur-text";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -17,6 +16,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { motion, AnimatePresence } from "framer-motion";
+import { TypingAnimation } from "@/components/ui/typing-animation";
 
 interface HeroProps {
   activeTab: ContentTab;
@@ -61,11 +61,11 @@ export function Hero({ activeTab }: HeroProps) {
   };
 
   const categories = [
-    { name: "Керамогранит", icon: <Grid3X3 className="w-6 h-6" />, color: "from-amber-500/10 to-transparent" },
-    { name: "Ламинат", icon: <Layers className="w-6 h-6" />, color: "from-blue-500/10 to-transparent" },
-    { name: "Сантехника", icon: <Bath className="w-6 h-6" />, color: "from-cyan-500/10 to-transparent" },
-    { name: "Люстры", icon: <LampCeiling className="w-6 h-6" />, color: "from-yellow-500/10 to-transparent" },
-    { name: "Ковры", icon: <Square className="w-6 h-6" />, color: "from-rose-500/10 to-transparent" },
+    { name: "Керамогранит", icon: <Grid3X3 className="w-6 h-6" /> },
+    { name: "Ламинат", icon: <Layers className="w-6 h-6" /> },
+    { name: "Сантехника", icon: <Bath className="w-6 h-6" /> },
+    { name: "Люстры", icon: <LampCeiling className="w-6 h-6" /> },
+    { name: "Ковры", icon: <Square className="w-6 h-6" /> },
   ];
 
   const current = content[activeTab] || content.keramogranit;
@@ -182,8 +182,10 @@ export function Hero({ activeTab }: HeroProps) {
                         <DialogContent className="sm:max-w-2xl bg-background/95 backdrop-blur-xl border-white/10 p-0 overflow-hidden rounded-none">
                           <div className="p-8 md:p-12">
                             <DialogHeader className="mb-10 text-center">
-                              <DialogTitle className="text-3xl md:text-5xl font-headline uppercase tracking-tighter mb-4">
-                                Куда вы хотите перейти?
+                              <DialogTitle className="text-3xl md:text-5xl font-headline uppercase tracking-tighter mb-4 h-[1.2em] flex items-center justify-center">
+                                <TypingAnimation typeSpeed={20} showCursor={true} blinkCursor={true}>
+                                  Куда вы хотите перейти?
+                                </TypingAnimation>
                               </DialogTitle>
                               <p className="text-muted-foreground uppercase tracking-widest text-[10px] font-bold opacity-60">
                                 Выберите интересующую категорию материалов RION
@@ -203,20 +205,17 @@ export function Hero({ activeTab }: HeroProps) {
                                       stiffness: 260,
                                       damping: 20
                                     }}
-                                    whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.05)", borderColor: "hsl(var(--primary) / 0.4)" }}
-                                    whileTap={{ scale: 0.98 }}
-                                    className={`flex items-center gap-6 p-6 border border-foreground/15 bg-card/40 text-left group transition-all relative overflow-hidden rounded-none shadow-sm`}
+                                    className="flex items-center gap-6 p-6 border-2 border-foreground/15 bg-card/40 text-left relative overflow-hidden rounded-none shadow-sm cursor-pointer"
                                     onClick={() => setIsStoreOpen(false)}
                                   >
-                                    <div className={`absolute inset-0 bg-gradient-to-br ${cat.color} opacity-0 group-hover:opacity-100 transition-opacity`} />
-                                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-all">
+                                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                                       {cat.icon}
                                     </div>
                                     <div className="relative z-10">
-                                      <div className="font-headline text-xl font-bold uppercase tracking-tight group-hover:text-primary transition-colors">
+                                      <div className="font-headline text-xl font-bold uppercase tracking-tight">
                                         {cat.name}
                                       </div>
-                                      <div className="text-[9px] uppercase tracking-[0.3em] text-muted-foreground mt-1 font-bold group-hover:text-foreground transition-colors">
+                                      <div className="text-[9px] uppercase tracking-[0.3em] text-muted-foreground mt-1 font-bold">
                                         Смотреть каталог
                                       </div>
                                     </div>
