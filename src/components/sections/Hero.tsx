@@ -3,7 +3,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Box, ShoppingBag, Grid3X3, Layers, Bath, Lightbulb, Layout, X, Filter, Trash2, ArrowLeft, Star } from "lucide-react";
+import { ArrowRight, Box, ShoppingBag, Grid3X3, Layers, Bath, Lightbulb, Layout, Filter, Trash2, ArrowLeft, Star } from "lucide-react";
 import { ContentTab } from "@/app/page";
 import BlurText from "@/components/ui/blur-text";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -11,7 +11,6 @@ import { ShineButton } from "@/components/ui/shine-button";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
 
 interface HeroProps {
   activeTab: ContentTab;
@@ -40,10 +39,10 @@ const mockProducts = [
 
 export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
   const isMobile = useIsMobile();
-  const [storeView, setStoreView] = useState<"selection" | "catalog">("selection");
   const [selectedCats, setSelectedCats] = useState<string[]>([]);
   const [currentRating, setCurrentRating] = useState(0);
   const [hasAnimated, setHasAnimated] = useState(false);
+  const [showFilterMenu, setShowFilterMenu] = useState(false);
 
   useEffect(() => {
     const seen = sessionStorage.getItem('rion_hero_rating_seen');
@@ -64,7 +63,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
       const timer = setInterval(() => {
         startValue += increment;
         
-        // Flicker effect: random jitter
+        // Flicker effect: random jitter for the displayed number
         const flicker = (Math.random() * 0.15) - 0.07;
         const displayValue = Math.min(targetValue, startValue + flicker);
         
@@ -98,7 +97,6 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
       setIsStoreOpen(false);
     } else {
       setIsStoreOpen(true);
-      setStoreView("selection");
       setSelectedCats([]);
     }
   };
@@ -119,12 +117,10 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
     setSelectedCats(prev => 
       prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id]
     );
-    setStoreView("catalog");
   };
 
   const clearFilters = () => {
     setSelectedCats([]);
-    setStoreView("catalog");
   };
 
   const getStarFill = (starIndex: number) => {
@@ -295,141 +291,115 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
               >
                 <ArrowLeft size={16} /> Назад
               </button>
-              <button 
-                onClick={toggleStore}
-                className="p-2 hover:bg-foreground/5 rounded-full transition-colors"
-              >
-                <X size={32} />
-              </button>
+              <div /> {/* Empty div for balance */}
             </div>
 
-            <AnimatePresence mode="wait">
-              {storeView === "selection" ? (
-                <motion.div 
-                  key="selection"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  className="flex-1 flex flex-col p-8 md:p-16 max-w-7xl mx-auto w-full"
-                >
-                  <div className="mb-12 text-center">
-                    <h2 className="text-4xl md:text-6xl font-headline uppercase tracking-tighter mb-4">
-                      Весь ассортимент
-                    </h2>
-                    <p className="text-muted-foreground uppercase tracking-widest text-[10px] font-bold opacity-60">
-                      Выберите интересующую категорию материалов RION
-                    </p>
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex-1 flex flex-col h-full overflow-hidden"
+            >
+              <div className="p-8 border-b border-white/10 bg-background/50 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div className="text-center md:text-left">
+                  <h2 className="text-3xl md:text-5xl font-headline uppercase tracking-tighter text-foreground">
+                    {storeTitle}
+                  </h2>
+                  <p className="text-[10px] uppercase tracking-[0.4em] font-bold text-muted-foreground mt-2">
+                    Каталог товаров RION
+                  </p>
+                </div>
+                
+                <div className="flex items-center gap-4">
+                  <div className="relative">
+                    <Button 
+                      variant="outline" 
+                      className="h-14 px-8 rounded-none border-foreground/20 uppercase tracking-[0.2em] text-[10px] font-bold"
+                      onClick={() => setShowFilterMenu(!showFilterMenu)}
+                    >
+                      <Filter className="mr-2 h-4 w-4" />
+                      Фильтр {selectedCats.length > 0 && `(${selectedCats.length})`}
+                    </Button>
+                    
+                    <AnimatePresence>
+                      {showFilterMenu && (
+                        <motion.div 
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 10 }}
+                          className="absolute top-full right-0 mt-2 bg-background border border-border shadow-2xl p-4 min-w-[200px] z-[60] flex flex-col gap-2"
+                        >
+                          {categories.map((cat) => (
+                            <button
+                              key={cat.id}
+                              onClick={() => toggleCategory(cat.id)}
+                              className={cn(
+                                "flex items-center justify-between px-4 py-3 text-[10px] font-bold uppercase tracking-widest transition-colors",
+                                selectedCats.includes(cat.id) ? "bg-primary text-white" : "hover:bg-muted"
+                              )}
+                            >
+                              {cat.name}
+                              {selectedCats.includes(cat.id) && <Box size={12} />}
+                            </button>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {categories.map((cat, idx) => (
-                      <motion.button
-                        key={cat.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: idx * 0.05 }}
-                        className="flex items-center gap-6 p-8 border-2 border-foreground/15 bg-card/40 text-left relative overflow-hidden rounded-none shadow-sm hover:bg-foreground/5 transition-all group"
-                        onClick={() => toggleCategory(cat.id)}
-                      >
-                        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
-                          {cat.icon}
-                        </div>
-                        <div className="relative z-10">
-                          <div className="font-headline text-xl font-bold uppercase tracking-tight">
-                            {cat.name}
-                          </div>
-                          <div className="text-[9px] uppercase tracking-[0.3em] text-muted-foreground mt-1 font-bold">
-                            Смотреть каталог
-                          </div>
-                        </div>
-                      </motion.button>
-                    ))}
-                  </div>
-                </motion.div>
-              ) : (
-                <motion.div 
-                  key="catalog"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  className="flex-1 flex flex-col h-full overflow-hidden"
-                >
-                  <div className="p-8 border-b border-white/10 bg-background/50 flex flex-col md:flex-row items-center justify-between gap-6">
-                    <div className="text-center md:text-left">
-                      <h2 className="text-3xl md:text-5xl font-headline uppercase tracking-tighter text-foreground">
-                        {storeTitle}
-                      </h2>
-                      <p className="text-[10px] uppercase tracking-[0.4em] font-bold text-muted-foreground mt-2">
-                        Каталог товаров RION
-                      </p>
-                    </div>
-                    
-                    <div className="flex items-center gap-4">
-                      <Button 
-                        variant="outline" 
-                        className="h-14 px-8 rounded-none border-foreground/20 uppercase tracking-[0.2em] text-[10px] font-bold"
-                        onClick={() => setStoreView("selection")}
-                      >
-                        <Filter className="mr-2 h-4 w-4" />
-                        Фильтр {selectedCats.length > 0 && `(${selectedCats.length})`}
-                      </Button>
-                      
-                      {selectedCats.length > 0 && (
-                        <Button 
-                          variant="ghost" 
-                          className="h-14 px-8 rounded-none uppercase tracking-[0.2em] text-[10px] font-bold text-muted-foreground hover:text-primary"
-                          onClick={clearFilters}
-                        >
-                          <Trash2 className="mr-2 h-4 w-4" />
-                          Очистить
-                        </Button>
-                      )}
-                    </div>
-                  </div>
+                  {selectedCats.length > 0 && (
+                    <Button 
+                      variant="ghost" 
+                      className="h-14 px-8 rounded-none uppercase tracking-[0.2em] text-[10px] font-bold text-muted-foreground hover:text-primary"
+                      onClick={clearFilters}
+                    >
+                      <Trash2 className="mr-2 h-4 w-4" />
+                      Очистить
+                    </Button>
+                  )}
+                </div>
+              </div>
 
-                  <ScrollArea className="flex-1 p-8">
-                    <div className="max-w-7xl mx-auto space-y-20 pb-20">
-                      {categories
-                        .filter(c => selectedCats.length === 0 || selectedCats.includes(c.id))
-                        .map(cat => (
-                          <div key={cat.id} className="space-y-8">
-                            <div className="flex items-center gap-6">
-                              <div className="h-[1px] flex-1 bg-primary/20" />
-                              <h3 className="text-2xl md:text-3xl font-headline uppercase tracking-tight text-primary">
-                                {cat.name}
-                              </h3>
-                              <div className="h-[1px] flex-1 bg-primary/20" />
-                            </div>
-                            
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                              {mockProducts
-                                .filter(p => p.cat === cat.id)
-                                .map(prod => (
-                                  <div 
-                                    key={prod.id} 
-                                    className="glass-panel p-6 border-white/5 hover:bg-foreground/5 transition-all group"
-                                  >
-                                    <div className="aspect-square bg-muted/20 mb-6 flex items-center justify-center relative overflow-hidden">
-                                      {cat.icon}
-                                      <div className="absolute bottom-4 right-4">
-                                        <Badge variant="outline" className="bg-background/80 border-primary/20 text-[9px] uppercase tracking-widest">In Stock</Badge>
-                                      </div>
-                                    </div>
-                                    <h4 className="text-lg font-bold uppercase tracking-tight mb-2 group-hover:text-primary transition-colors">{prod.name}</h4>
-                                    <p className="text-primary font-headline font-bold text-xl">{prod.price}</p>
-                                    <Button className="w-full mt-6 rounded-none bg-primary/10 text-primary hover:bg-primary hover:text-white border border-primary/20 transition-all font-bold uppercase tracking-widest text-[10px] h-12">
-                                      Подробнее
-                                    </Button>
+              <ScrollArea className="flex-1 p-8">
+                <div className="max-w-7xl mx-auto space-y-20 pb-20">
+                  {categories
+                    .filter(c => selectedCats.length === 0 || selectedCats.includes(c.id))
+                    .map(cat => (
+                      <div key={cat.id} className="space-y-8">
+                        <div className="flex items-center gap-6">
+                          <div className="h-[1px] flex-1 bg-primary/20" />
+                          <h3 className="text-2xl md:text-3xl font-headline uppercase tracking-tight text-primary">
+                            {cat.name}
+                          </h3>
+                          <div className="h-[1px] flex-1 bg-primary/20" />
+                        </div>
+                        
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                          {mockProducts
+                            .filter(p => p.cat === cat.id)
+                            .map(prod => (
+                              <div 
+                                key={prod.id} 
+                                className="glass-panel p-6 border-white/5 hover:bg-foreground/5 transition-all group"
+                              >
+                                <div className="aspect-square bg-muted/20 mb-6 flex items-center justify-center relative overflow-hidden">
+                                  {cat.icon}
+                                  <div className="absolute bottom-4 right-4">
+                                    <Badge variant="outline" className="bg-background/80 border-primary/20 text-[9px] uppercase tracking-widest">In Stock</Badge>
                                   </div>
-                                ))}
-                            </div>
-                          </div>
-                        ))}
-                    </div>
-                  </ScrollArea>
-                </motion.div>
-              )}
-            </AnimatePresence>
+                                </div>
+                                <h4 className="text-lg font-bold uppercase tracking-tight mb-2 group-hover:text-primary transition-colors">{prod.name}</h4>
+                                <p className="text-primary font-headline font-bold text-xl">{prod.price}</p>
+                                <Button className="w-full mt-6 rounded-none bg-primary/10 text-primary hover:bg-primary hover:text-white border border-primary/20 transition-all font-bold uppercase tracking-widest text-[10px] h-12">
+                                  Подробнее
+                                </Button>
+                              </div>
+                            ))}
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </ScrollArea>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
