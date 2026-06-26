@@ -3,7 +3,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Grid3X3, Layers, Bath, Lightbulb, Layout, Filter, Trash2, ArrowLeft } from "lucide-react";
+import { ArrowRight, Grid3X3, Layers, Layout, Filter, ArrowLeft } from "lucide-react";
 import { ContentTab } from "@/app/page";
 import { cn } from "@/lib/utils";
 import BlurText from "@/components/ui/blur-text";
@@ -24,7 +24,6 @@ const categories = [
   { id: "keramogranit", name: "Керамогранит", icon: <Grid3X3 className="w-6 h-6" /> },
   { id: "laminate", name: "Ламинат", icon: <Layers className="w-6 h-6" /> },
   { id: "carpets", name: "Ковры", icon: <Layout className="w-6 h-6" /> },
-  { id: "sanitary", name: "Сантехника", icon: <Bath className="w-6 h-6" /> },
 ];
 
 const mockProducts = [
@@ -58,10 +57,6 @@ const mockProducts = [
   { id: 'l6', cat: "laminate", name: "Дуб Медичи", price: "1 300 ₽/м²", sub: "12мм, 33 класс", image: "/imgs/Catalog/Laminat/12mm-33class-Dub-Medichi-1300.png" },
   { id: 'l7', cat: "laminate", name: "Дуб Рональд", price: "1 050 ₽/м²", sub: "12мм", image: "/imgs/Catalog/Laminat/12mm-Dob-Ronald-1050.png" },
   { id: 'l8', cat: "laminate", name: "Дуб Савой", price: "1 100 ₽/м²", sub: "12мм", image: "/imgs/Catalog/Laminat/12mm-Dub-Savoy.png" },
-
-  // Сантехника (заглушки)
-  { id: 's1', cat: "sanitary", name: "Раковина подвесная", price: "15 600 ₽", sub: "Premium White", image: "/imgs/inside-store-santehnika.jpeg" },
-  { id: 's2', cat: "sanitary", name: "Унитаз инсталляция", price: "28 900 ₽", sub: "Eco Flush V1", image: "/imgs/inside-store-santehnika.jpeg" },
 ];
 
 export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
@@ -244,7 +239,14 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
                       {showFilterMenu && (
                         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="absolute top-full right-0 mt-2 bg-background border border-border shadow-2xl p-4 min-w-[200px] z-[60] flex flex-col gap-2">
                           {categories.map((cat) => (
-                            <button key={cat.id} onClick={() => toggleCategory(cat.id)} className={cn("flex items-center justify-between px-4 py-3 text-[10px] font-bold uppercase tracking-widest transition-colors", selectedCats.includes(cat.id) ? "bg-primary text-white" : "hover:bg-muted")}>
+                            <button 
+                              key={cat.id} 
+                              onClick={() => toggleCategory(cat.id)} 
+                              className={cn(
+                                "flex items-center justify-between px-4 py-3 text-[10px] font-bold uppercase tracking-widest transition-colors", 
+                                selectedCats.includes(cat.id) ? "bg-primary text-white" : "hover:bg-muted"
+                              )}
+                            >
                               {cat.name}
                             </button>
                           ))}
@@ -277,10 +279,8 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
                             .map(prod => (
                               <div key={prod.id} className="glass-panel p-6 border-white/5 hover:bg-foreground/5 transition-all group">
                                 <div className="aspect-square bg-muted/20 mb-6 flex items-center justify-center relative overflow-hidden">
-                                  {prod.image ? (
+                                  {prod.image && (
                                     <Image src={prod.image} alt={prod.name} fill className="object-cover group-hover:scale-110 transition-transform duration-500" unoptimized />
-                                  ) : (
-                                    cat.icon
                                   )}
                                   <div className="absolute bottom-4 right-4">
                                     <Badge variant="outline" className="bg-background/80 border-primary/20 text-[9px] uppercase tracking-widest">В наличии</Badge>
@@ -311,4 +311,3 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
     </section>
   );
 }
-
