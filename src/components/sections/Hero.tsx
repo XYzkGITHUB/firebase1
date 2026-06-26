@@ -8,11 +8,10 @@ import { ContentTab } from "@/app/page";
 import BlurText from "@/components/ui/blur-text";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ShineButton } from "@/components/ui/shine-button";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import NumberTicker from "@/components/ui/number-ticker";
 
 interface HeroProps {
   activeTab: ContentTab;
@@ -45,16 +44,42 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
   const [selectedCats, setSelectedCats] = useState<string[]>([]);
   const [hasSeenRating, setHasSeenRating] = useState(false);
   const [isSessionLoaded, setIsSessionLoaded] = useState(false);
+
+  // Synchronized Rating Logic
+  const ratingMotionValue = useMotionValue(0);
+  const springRating = useSpring(ratingMotionValue, { 
+    damping: 40, 
+    stiffness: 80,
+    restDelta: 0.001 
+  });
+  const [currentRating, setCurrentRating] = useState(0);
   
   useEffect(() => {
     const seen = sessionStorage.getItem('rion_hero_rating_seen');
     if (seen) {
       setHasSeenRating(true);
+      ratingMotionValue.jump(4.6);
+      setCurrentRating(4.6);
     } else {
       sessionStorage.setItem('rion_hero_rating_seen', 'true');
     }
     setIsSessionLoaded(true);
-  }, []);
+  }, [ratingMotionValue]);
+
+  useEffect(() => {
+    if (isSessionLoaded && !hasSeenRating && !isStoreOpen) {
+      const timer = setTimeout(() => {
+        ratingMotionValue.set(4.6);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [isSessionLoaded, hasSeenRating, isStoreOpen, ratingMotionValue]);
+
+  useEffect(() => {
+    return springRating.on("change", (latest) => {
+      setCurrentRating(latest);
+    });
+  }, [springRating]);
 
   const scrollToContact = () => {
     const element = document.getElementById('contact-form');
@@ -178,34 +203,24 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
                     />
                   </div>
 
-                  {/* Rating Decoration - Positioned right above the buttons */}
+                  {/* Synchronized Rating Decoration */}
                   {isSessionLoaded && (
                     <div className="flex flex-col items-center gap-2 pt-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
                       <div className="flex items-center gap-4">
                         <div className="flex gap-1">
-                          {[1, 2, 3, 4, 5].map((star) => (
-                            <motion.div
-                              key={star}
-                              initial={hasSeenRating ? { scale: 1, opacity: 1, rotate: 0 } : { scale: 0, opacity: 0, rotate: -45 }}
-                              animate={{ scale: 1, opacity: 1, rotate: 0 }}
-                              transition={{ 
-                                delay: hasSeenRating ? 0 : 0.8 + star * 0.1, 
-                                type: "spring", 
-                                stiffness: 260, 
-                                damping: 20 
-                              }}
-                            >
-                              <Star 
-                                className={cn(
-                                  "w-5 h-5 md:w-7 md:h-7",
-                                  star <= 4 ? "fill-primary text-primary" : "text-primary/20"
-                                )} 
-                              />
-                            </motion.div>
+                          {[1, 2, 3, 4, 5].map((starIdx) => (
+                            <Star 
+                              key={starIdx}
+                              className={cn(
+                                "w-5 h-5 md:w-6 md:h-6 transition-colors duration-200",
+                                currentRating >= starIdx - 0.2 ? "fill-primary text-primary" : "text-primary/10"
+                              )} 
+                            />
                           ))}
                         </div>
-                        <div className="text-4xl md:text-5xl font-headline font-bold text-primary tabular-nums">
-                          <NumberTicker value={4.6} decimalPlaces={1} delay={hasSeenRating ? 0 : 1} />
+                        <div className="text-2xl md:text-3xl font-headline font-bold text-black tabular-nums flex items-baseline gap-1">
+                          <span>{currentRating.toFixed(1)}</span>
+                          <span className="text-sm md:text-base opacity-40">/ 5</span>
                         </div>
                       </div>
                       <p className="text-[9px] md:text-[10px] uppercase tracking-[0.4em] font-bold text-muted-foreground opacity-60">
