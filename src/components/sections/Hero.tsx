@@ -16,6 +16,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { motion, AnimatePresence } from "framer-motion";
+import TargetCursor from "@/components/ui/target-cursor";
 
 interface HeroProps {
   activeTab: ContentTab;
@@ -71,6 +72,17 @@ export function Hero({ activeTab }: HeroProps) {
 
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-start overflow-hidden bg-background pt-32 md:pt-48 pb-40">
+      {!isMobile && (
+        <TargetCursor 
+          spinDuration={2}
+          hideDefaultCursor
+          parallaxOn
+          hoverDuration={0.2}
+          cursorColor="#ffffff"
+          cursorColorOnTarget="#B497CF"
+        />
+      )}
+      
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div 
           className="absolute inset-0 opacity-[0.08] dark:opacity-[0.15]" 
@@ -148,7 +160,7 @@ export function Hero({ activeTab }: HeroProps) {
                 <Button 
                   onClick={scrollToContact}
                   size="lg" 
-                  className="h-16 px-10 rounded-none font-bold group bg-primary text-white hover:bg-primary/90 uppercase tracking-[0.3em] text-[10px] shadow-2xl transition-all w-full sm:w-auto"
+                  className="h-16 px-10 rounded-none font-bold group bg-primary text-white hover:bg-primary/90 uppercase tracking-[0.3em] text-[10px] shadow-2xl transition-all w-full sm:w-auto cursor-target"
                 >
                   Связаться с менеджером
                   <ArrowRight className="ml-3 h-4 w-4 transition-transform group-hover:translate-x-2" />
@@ -163,7 +175,7 @@ export function Hero({ activeTab }: HeroProps) {
                         icon={<Box className="h-4 w-4" />}
                         bgColor="linear-gradient(325deg, hsl(217 100% 56%) 0%, hsl(194 100% 69%) 55%, hsl(217 100% 56%) 90%)" 
                         onClick={handleTrackerLogin}
-                        className="w-full sm:w-auto"
+                        className="w-full sm:w-auto cursor-target"
                       />
                     ) : (
                       <Dialog open={isStoreOpen} onOpenChange={setIsStoreOpen}>
@@ -174,7 +186,7 @@ export function Hero({ activeTab }: HeroProps) {
                               size="lg" 
                               icon={<ShoppingBag className="h-4 w-4" />}
                               variant="outline"
-                              className="w-full sm:w-auto"
+                              className="w-full sm:w-auto cursor-target"
                             />
                           </div>
                         </DialogTrigger>
@@ -202,7 +214,7 @@ export function Hero({ activeTab }: HeroProps) {
                                       stiffness: 260,
                                       damping: 20
                                     }}
-                                    className="flex items-center gap-6 p-6 border-2 border-foreground/15 bg-card/40 text-left relative overflow-hidden rounded-none shadow-sm cursor-pointer transition-colors hover:bg-foreground/5"
+                                    className="flex items-center gap-6 p-6 border-2 border-foreground/15 bg-card/40 text-left relative overflow-hidden rounded-none shadow-sm cursor-pointer transition-colors hover:bg-foreground/5 cursor-target"
                                     onClick={() => setIsStoreOpen(false)}
                                   >
                                     <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
