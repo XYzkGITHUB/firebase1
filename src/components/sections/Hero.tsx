@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState, useMemo, useEffect } from "react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
@@ -151,6 +150,14 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
 
   const current = content[activeTab] || content.keramogranit;
 
+  // Star Progressive Fill calculation
+  const getStarFill = (starIndex: number) => {
+    const diff = currentRating - starIndex;
+    if (diff >= 1) return 100;
+    if (diff <= 0) return 0;
+    return diff * 100;
+  };
+
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-start overflow-hidden bg-background pt-32 md:pt-48 pb-40">
       <div className="absolute inset-0 z-0 pointer-events-none">
@@ -208,15 +215,22 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
                     <div className="flex flex-col items-center gap-2 pt-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
                       <div className="flex items-center gap-4">
                         <div className="flex gap-1">
-                          {[1, 2, 3, 4, 5].map((starIdx) => (
-                            <Star 
-                              key={starIdx}
-                              className={cn(
-                                "w-5 h-5 md:w-6 md:h-6 transition-colors duration-200",
-                                currentRating >= starIdx - 0.2 ? "fill-primary text-primary" : "text-primary/10"
-                              )} 
-                            />
-                          ))}
+                          {[0, 1, 2, 3, 4].map((starIdx) => {
+                            const fill = getStarFill(starIdx);
+                            return (
+                              <div key={starIdx} className="relative w-5 h-5 md:w-6 md:h-6">
+                                {/* Base/Empty Star */}
+                                <Star className="absolute inset-0 w-full h-full text-primary/10" />
+                                {/* Progressively Filled Star */}
+                                <div 
+                                  className="absolute inset-0 overflow-hidden" 
+                                  style={{ clipPath: `inset(0 ${100 - fill}% 0 0)` }}
+                                >
+                                  <Star className="w-full h-full fill-primary text-primary" />
+                                </div>
+                              </div>
+                            );
+                          })}
                         </div>
                         <div className="text-2xl md:text-3xl font-headline font-bold text-black tabular-nums flex items-baseline gap-1">
                           <span>{currentRating.toFixed(1)}</span>
