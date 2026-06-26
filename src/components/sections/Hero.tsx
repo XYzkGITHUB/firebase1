@@ -1,6 +1,6 @@
 
 "use client";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Box, ShoppingBag, Grid3X3, Layers, Bath, Lightbulb, Layout, X, Filter, Trash2, ArrowLeft, Star } from "lucide-react";
@@ -43,7 +43,19 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
   const isMobile = useIsMobile();
   const [storeView, setStoreView] = useState<"selection" | "catalog">("selection");
   const [selectedCats, setSelectedCats] = useState<string[]>([]);
+  const [hasSeenRating, setHasSeenRating] = useState(false);
+  const [isSessionLoaded, setIsSessionLoaded] = useState(false);
   
+  useEffect(() => {
+    const seen = sessionStorage.getItem('rion_hero_rating_seen');
+    if (seen) {
+      setHasSeenRating(true);
+    } else {
+      sessionStorage.setItem('rion_hero_rating_seen', 'true');
+    }
+    setIsSessionLoaded(true);
+  }, []);
+
   const scrollToContact = () => {
     const element = document.getElementById('contact-form');
     if (element) {
@@ -167,38 +179,40 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
                   </div>
 
                   {/* Rating Decoration - Positioned right above the buttons */}
-                  <div className="flex flex-col items-center gap-2 pt-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
-                    <div className="flex items-center gap-4">
-                      <div className="flex gap-1">
-                        {[1, 2, 3, 4, 5].map((star) => (
-                          <motion.div
-                            key={star}
-                            initial={{ scale: 0, opacity: 0, rotate: -45 }}
-                            animate={{ scale: 1, opacity: 1, rotate: 0 }}
-                            transition={{ 
-                              delay: 0.8 + star * 0.1, 
-                              type: "spring", 
-                              stiffness: 260, 
-                              damping: 20 
-                            }}
-                          >
-                            <Star 
-                              className={cn(
-                                "w-5 h-5 md:w-7 md:h-7",
-                                star <= 4 ? "fill-primary text-primary" : "text-primary/20"
-                              )} 
-                            />
-                          </motion.div>
-                        ))}
+                  {isSessionLoaded && (
+                    <div className="flex flex-col items-center gap-2 pt-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+                      <div className="flex items-center gap-4">
+                        <div className="flex gap-1">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <motion.div
+                              key={star}
+                              initial={hasSeenRating ? { scale: 1, opacity: 1, rotate: 0 } : { scale: 0, opacity: 0, rotate: -45 }}
+                              animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                              transition={{ 
+                                delay: hasSeenRating ? 0 : 0.8 + star * 0.1, 
+                                type: "spring", 
+                                stiffness: 260, 
+                                damping: 20 
+                              }}
+                            >
+                              <Star 
+                                className={cn(
+                                  "w-5 h-5 md:w-7 md:h-7",
+                                  star <= 4 ? "fill-primary text-primary" : "text-primary/20"
+                                )} 
+                              />
+                            </motion.div>
+                          ))}
+                        </div>
+                        <div className="text-4xl md:text-5xl font-headline font-bold text-primary tabular-nums">
+                          <NumberTicker value={4.6} decimalPlaces={1} delay={hasSeenRating ? 0 : 1} />
+                        </div>
                       </div>
-                      <div className="text-4xl md:text-5xl font-headline font-bold text-primary tabular-nums">
-                        <NumberTicker value={4.6} decimalPlaces={1} />
-                      </div>
+                      <p className="text-[9px] md:text-[10px] uppercase tracking-[0.4em] font-bold text-muted-foreground opacity-60">
+                        Рейтинг удовлетворенности партнеров
+                      </p>
                     </div>
-                    <p className="text-[9px] md:text-[10px] uppercase tracking-[0.4em] font-bold text-muted-foreground opacity-60">
-                      Рейтинг удовлетворенности партнеров
-                    </p>
-                  </div>
+                  )}
 
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-12">
                     <Button 
