@@ -41,7 +41,8 @@ export function AIAssistant() {
             <p className="text-muted-foreground text-xl leading-relaxed max-w-xl">
               Наш ИИ-эксперт анализирует тысячи вариантов коллекций керамогранита и ламината, чтобы подобрать идеальное решение под ваш стиль, бюджет и технические требования объекта.
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+            {/* Hidden on small screens (mobile and tablets), shown on md and up */}
+            <div className="hidden md:grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
               <div className="p-6 border border-white/5 bg-card/40">
                 <h4 className="font-bold text-primary mb-2 uppercase tracking-widest text-xs">Анализ стиля</h4>
                 <p className="text-sm text-muted-foreground">Сопоставление фактур с вашим интерьерным решением.</p>
