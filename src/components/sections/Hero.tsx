@@ -9,7 +9,6 @@ import BlurText from "@/components/ui/blur-text";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ShineButton } from "@/components/ui/shine-button";
 import { motion, AnimatePresence } from "framer-motion";
-import TargetCursor from "@/components/ui/target-cursor";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 
@@ -55,7 +54,7 @@ export function Hero({ activeTab }: HeroProps) {
 
   const toggleStore = () => {
     setIsStoreActive(!isStoreActive);
-    if (isStoreActive) {
+    if (!isStoreActive) {
       setStoreView("selection");
       setSelectedCats([]);
     }
@@ -207,27 +206,18 @@ export function Hero({ activeTab }: HeroProps) {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 1.02 }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="z-50 fixed inset-0 bg-background/95 backdrop-blur-3xl flex flex-col cursor-none"
+            className="z-50 fixed inset-0 bg-background/95 backdrop-blur-3xl flex flex-col"
           >
-            <TargetCursor 
-              spinDuration={2}
-              hideDefaultCursor={false}
-              parallaxOn
-              hoverDuration={0.2}
-              cursorColor="#ffffff"
-              cursorColorOnTarget="#8B5E3C"
-            />
-            
             <div className="flex justify-between items-center px-8 py-6 border-b border-white/10">
               <button 
                 onClick={toggleStore}
-                className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground hover:text-primary transition-colors cursor-target"
+                className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground hover:text-primary transition-colors"
               >
                 <ArrowLeft size={16} /> Назад
               </button>
               <button 
                 onClick={toggleStore}
-                className="p-2 hover:bg-foreground/5 rounded-full transition-colors cursor-target"
+                className="p-2 hover:bg-foreground/5 rounded-full transition-colors"
               >
                 <X size={32} />
               </button>
@@ -258,7 +248,7 @@ export function Hero({ activeTab }: HeroProps) {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: idx * 0.05 }}
-                        className="flex items-center gap-6 p-8 border-2 border-foreground/15 bg-card/40 text-left relative overflow-hidden rounded-none shadow-sm cursor-target hover:bg-foreground/5 transition-all group"
+                        className="flex items-center gap-6 p-8 border-2 border-foreground/15 bg-card/40 text-left relative overflow-hidden rounded-none shadow-sm hover:bg-foreground/5 transition-all group"
                         onClick={() => toggleCategory(cat.id)}
                       >
                         <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
@@ -297,7 +287,7 @@ export function Hero({ activeTab }: HeroProps) {
                     <div className="flex items-center gap-4">
                       <Button 
                         variant="outline" 
-                        className="h-14 px-8 rounded-none border-foreground/20 uppercase tracking-[0.2em] text-[10px] font-bold cursor-target"
+                        className="h-14 px-8 rounded-none border-foreground/20 uppercase tracking-[0.2em] text-[10px] font-bold"
                         onClick={() => setStoreView("selection")}
                       >
                         <Filter className="mr-2 h-4 w-4" />
@@ -307,7 +297,7 @@ export function Hero({ activeTab }: HeroProps) {
                       {selectedCats.length > 0 && (
                         <Button 
                           variant="ghost" 
-                          className="h-14 px-8 rounded-none uppercase tracking-[0.2em] text-[10px] font-bold text-muted-foreground hover:text-primary cursor-target"
+                          className="h-14 px-8 rounded-none uppercase tracking-[0.2em] text-[10px] font-bold text-muted-foreground hover:text-primary"
                           onClick={clearFilters}
                         >
                           <Trash2 className="mr-2 h-4 w-4" />
@@ -337,10 +327,10 @@ export function Hero({ activeTab }: HeroProps) {
                                 .map(prod => (
                                   <div 
                                     key={prod.id} 
-                                    className="glass-panel p-6 border-white/5 hover:border-primary/40 transition-all group cursor-target"
+                                    className="glass-panel p-6 border-white/5 hover:border-primary/40 transition-all group"
                                   >
                                     <div className="aspect-square bg-muted/20 mb-6 flex items-center justify-center relative overflow-hidden">
-                                      <cat.icon.type className="w-16 h-16 opacity-10" />
+                                      {cat.icon}
                                       <div className="absolute bottom-4 right-4">
                                         <Badge variant="outline" className="bg-background/80 border-primary/20 text-[9px] uppercase tracking-widest">In Stock</Badge>
                                       </div>
