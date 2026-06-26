@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useState, useMemo, useEffect } from "react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
@@ -7,7 +8,7 @@ import { ContentTab } from "@/app/page";
 import BlurText from "@/components/ui/blur-text";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ShineButton } from "@/components/ui/shine-button";
-import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -41,44 +42,44 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
   const isMobile = useIsMobile();
   const [storeView, setStoreView] = useState<"selection" | "catalog">("selection");
   const [selectedCats, setSelectedCats] = useState<string[]>([]);
-  const [hasSeenRating, setHasSeenRating] = useState(false);
-  const [isSessionLoaded, setIsSessionLoaded] = useState(false);
-
-  // Synchronized Rating Logic
-  const ratingMotionValue = useMotionValue(0);
-  const springRating = useSpring(ratingMotionValue, { 
-    damping: 40, 
-    stiffness: 80,
-    restDelta: 0.001 
-  });
   const [currentRating, setCurrentRating] = useState(0);
-  
+  const [hasAnimated, setHasAnimated] = useState(false);
+
   useEffect(() => {
     const seen = sessionStorage.getItem('rion_hero_rating_seen');
     if (seen) {
-      setHasSeenRating(true);
-      ratingMotionValue.jump(4.6);
       setCurrentRating(4.6);
-    } else {
-      sessionStorage.setItem('rion_hero_rating_seen', 'true');
+      setHasAnimated(true);
+      return;
     }
-    setIsSessionLoaded(true);
-  }, [ratingMotionValue]);
 
-  useEffect(() => {
-    if (isSessionLoaded && !hasSeenRating && !isStoreOpen && activeTab === 'contacts') {
-      const timer = setTimeout(() => {
-        ratingMotionValue.set(4.6);
-      }, 1000);
-      return () => clearTimeout(timer);
+    if (activeTab === 'contacts' && !isStoreOpen) {
+      let startValue = 0;
+      const targetValue = 4.6;
+      const duration = 2000;
+      const intervalTime = 30;
+      const steps = duration / intervalTime;
+      const increment = targetValue / steps;
+
+      const timer = setInterval(() => {
+        startValue += increment;
+        // Adding a "flicker" offset
+        const flicker = (Math.random() * 0.1) - 0.05;
+        const displayValue = Math.min(targetValue, startValue + flicker);
+        
+        if (startValue >= targetValue) {
+          setCurrentRating(targetValue);
+          clearInterval(timer);
+          setHasAnimated(true);
+          sessionStorage.setItem('rion_hero_rating_seen', 'true');
+        } else {
+          setCurrentRating(displayValue);
+        }
+      }, intervalTime);
+
+      return () => clearInterval(timer);
     }
-  }, [isSessionLoaded, hasSeenRating, isStoreOpen, ratingMotionValue, activeTab]);
-
-  useEffect(() => {
-    return springRating.on("change", (latest) => {
-      setCurrentRating(latest);
-    });
-  }, [springRating]);
+  }, [activeTab, isStoreOpen]);
 
   const scrollToContact = () => {
     const element = document.getElementById('contact-form');
@@ -210,8 +211,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
                     />
                   </div>
 
-                  {/* Progressive Star Rating Block - Only on Contacts tab */}
-                  {activeTab === 'contacts' && isSessionLoaded && (
+                  {activeTab === 'contacts' && (
                     <div className="flex flex-col items-center gap-2 pt-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
                       <div className="flex items-center gap-4">
                         <div className="flex gap-1">
@@ -219,9 +219,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
                             const fill = getStarFill(starIdx);
                             return (
                               <div key={starIdx} className="relative w-5 h-5 md:w-6 md:h-6">
-                                {/* Base/Empty Star */}
                                 <Star className="absolute inset-0 w-full h-full text-black/10" />
-                                {/* Progressive Filled Star */}
                                 <div 
                                   className="absolute inset-0 overflow-hidden" 
                                   style={{ clipPath: `inset(0 ${100 - fill}% 0 0)` }}
@@ -316,7 +314,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
                 >
                   <div className="mb-12 text-center">
                     <h2 className="text-4xl md:text-6xl font-headline uppercase tracking-tighter mb-4">
-                      Куда вы хотите перейти?
+                      Весь ассортимент
                     </h2>
                     <p className="text-muted-foreground uppercase tracking-widest text-[10px] font-bold opacity-60">
                       Выберите интересующую категорию материалов RION
