@@ -35,6 +35,7 @@ export function Contact({ activeTab }: ContactProps) {
   const getTitle = () => {
     if (activeTab === 'keramogranit') return 'Нужен керамогранит?';
     if (activeTab === 'laminate_sps') return 'Нужен ламинат или SPS?';
+    if (activeTab === 'contacts') return 'Есть вопросы по сотрудничеству?';
     return 'Нужна доставка груза?';
   }
 

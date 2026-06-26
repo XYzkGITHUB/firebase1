@@ -1,12 +1,14 @@
 
 "use client";
 import React, { useState } from "react";
-import { Handshake, Construction, ShieldCheck, Layers, Package, TrendingUp, Factory, Globe, Clock, ShieldAlert, Phone, Mail, MapPin, ChevronDown, ChevronUp, Droplets, Bath } from "lucide-react";
+import { Handshake, Construction, ShieldCheck, Layers, Package, TrendingUp, Factory, Globe, Clock, ShieldAlert, Phone, Mail, MapPin, ChevronDown, ChevronUp, Droplets, Bath, Star } from "lucide-react";
 import { ContentTab } from "@/app/page";
 import SplitText from "@/components/ui/split-text";
 import { BorderGlow } from "@/components/ui/border-glow";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
+import NumberTicker from "@/components/ui/number-ticker";
 
 interface StatsProps {
   activeTab: ContentTab;
@@ -131,70 +133,104 @@ export function Stats({ activeTab }: StatsProps) {
         </div>
         
         {isContacts ? (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            <BorderGlow borderRadius={8} className="border-[0.5px] border-foreground/5 shadow-sm">
-              <div className="p-12 h-full bg-card/20 flex flex-col gap-10">
-                <div className="space-y-8">
-                  <div className="flex items-start gap-6">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                      <Phone className="w-6 h-6 text-primary" />
-                    </div>
-                    <div>
-                      <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground mb-2">Телефоны</h4>
-                      <div className="text-xl md:text-2xl font-headline font-bold text-foreground">+7 989 919 95 41</div>
-                      <div className="text-xl md:text-2xl font-headline font-bold text-foreground">+7 989 937 41 11</div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-6">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                      <Mail className="w-6 h-6 text-primary" />
-                    </div>
-                    <div>
-                      <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground mb-2">Email</h4>
-                      <div className="text-xl md:text-2xl font-headline font-bold text-foreground lowercase">irggimport@bk.ru</div>
-                    </div>
-                  </div>
+          <div className="max-w-6xl mx-auto">
+            {/* Анимированный рейтинг, который был удален */}
+            <div className="flex flex-col items-center justify-center mb-24 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+              <div className="flex items-center gap-6 mb-4">
+                <div className="flex gap-1">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <motion.div
+                      key={star}
+                      initial={{ scale: 0, opacity: 0, rotate: -45 }}
+                      animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                      transition={{ 
+                        delay: star * 0.15, 
+                        type: "spring", 
+                        stiffness: 260, 
+                        damping: 20 
+                      }}
+                    >
+                      <Star 
+                        className={cn(
+                          "w-10 h-10 md:w-16 md:h-16",
+                          star <= 4 ? "fill-primary text-primary" : "text-primary/20"
+                        )} 
+                      />
+                    </motion.div>
+                  ))}
+                </div>
+                <div className="text-6xl md:text-8xl font-headline font-bold text-primary tabular-nums">
+                  <NumberTicker value={4.6} decimalPlaces={1} />
                 </div>
               </div>
-            </BorderGlow>
+              <p className="text-[11px] uppercase tracking-[0.5em] font-bold text-muted-foreground opacity-60">Средний рейтинг удовлетворенности клиентов</p>
+            </div>
 
-            <BorderGlow borderRadius={8} className="border-[0.5px] border-foreground/5 shadow-sm">
-              <div className="p-12 h-full bg-card/20 flex flex-col">
-                <div className="flex items-start gap-6 mb-8">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                    <MapPin className="w-6 h-6 text-primary" />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <BorderGlow borderRadius={8} className="border-[0.5px] border-foreground/5 shadow-sm">
+                <div className="p-12 h-full bg-card/20 flex flex-col gap-10">
+                  <div className="space-y-8">
+                    <div className="flex items-start gap-6">
+                      <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                        <Phone className="w-6 h-6 text-primary" />
+                      </div>
+                      <div>
+                        <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground mb-2">Телефоны</h4>
+                        <div className="text-xl md:text-2xl font-headline font-bold text-foreground">+7 989 919 95 41</div>
+                        <div className="text-xl md:text-2xl font-headline font-bold text-foreground">+7 989 937 41 11</div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-6">
+                      <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                        <Mail className="w-6 h-6 text-primary" />
+                      </div>
+                      <div>
+                        <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground mb-2">Email</h4>
+                        <div className="text-xl md:text-2xl font-headline font-bold text-foreground lowercase">irggimport@bk.ru</div>
+                      </div>
+                    </div>
                   </div>
-                  <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground pt-4">Юридический адрес</h4>
                 </div>
+              </BorderGlow>
 
-                <div className="relative flex-1">
-                  <div 
-                    className={cn(
-                      "transition-all duration-500 ease-in-out overflow-hidden",
-                      isAddressExpanded ? "max-h-[500px]" : "max-h-[60px]"
+              <BorderGlow borderRadius={8} className="border-[0.5px] border-foreground/5 shadow-sm">
+                <div className="p-12 h-full bg-card/20 flex flex-col">
+                  <div className="flex items-start gap-6 mb-8">
+                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                      <MapPin className="w-6 h-6 text-primary" />
+                    </div>
+                    <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground pt-4">Юридический адрес</h4>
+                  </div>
+
+                  <div className="relative flex-1">
+                    <div 
+                      className={cn(
+                        "transition-all duration-500 ease-in-out overflow-hidden",
+                        isAddressExpanded ? "max-h-[500px]" : "max-h-[60px]"
+                      )}
+                    >
+                      <p className="text-lg md:text-xl font-headline font-medium leading-relaxed text-foreground">
+                        364029, Чеченская респ г. Грозный ул. имени Магомеда Яхъяевича Узуева (байсангуровский р-н), д 2/17, офис 41
+                      </p>
+                    </div>
+                    
+                    {!isAddressExpanded && (
+                      <div className="absolute bottom-0 left-0 w-full h-12 bg-gradient-to-t from-card/80 to-transparent pointer-events-none" />
                     )}
-                  >
-                    <p className="text-lg md:text-xl font-headline font-medium leading-relaxed text-foreground">
-                      364029, Чеченская респ г. Грозный ул. имени Магомеда Яхъяевича Узуева (байсангуровский р-н), д 2/17, офис 41
-                    </p>
                   </div>
-                  
-                  {!isAddressExpanded && (
-                    <div className="absolute bottom-0 left-0 w-full h-12 bg-gradient-to-t from-card/80 to-transparent pointer-events-none" />
-                  )}
-                </div>
 
-                <Button 
-                  variant="ghost" 
-                  onClick={() => setIsAddressExpanded(!isAddressExpanded)}
-                  className="mt-6 self-start text-[10px] font-bold uppercase tracking-widest gap-2 hover:bg-primary/5 h-10 px-4"
-                >
-                  {isAddressExpanded ? "Свернуть" : "Развернуть"}
-                  {isAddressExpanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
-                </Button>
-              </div>
-            </BorderGlow>
+                  <Button 
+                    variant="ghost" 
+                    onClick={() => setIsAddressExpanded(!isAddressExpanded)}
+                    className="mt-6 self-start text-[10px] font-bold uppercase tracking-widest gap-2 hover:bg-primary/5 h-10 px-4"
+                  >
+                    {isAddressExpanded ? "Свернуть" : "Развернуть"}
+                    {isAddressExpanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                  </Button>
+                </div>
+              </BorderGlow>
+            </div>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
