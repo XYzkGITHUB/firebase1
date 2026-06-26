@@ -3,7 +3,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Grid3X3, Layers, Layout, Filter, ArrowLeft } from "lucide-react";
+import { ArrowRight, Grid3X3, Layers, Layout, Filter, ArrowLeft, ShoppingBag } from "lucide-react";
 import { ContentTab } from "@/app/page";
 import { cn } from "@/lib/utils";
 import BlurText from "@/components/ui/blur-text";
@@ -69,9 +69,14 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
   const [selectedCats, setSelectedCats] = useState<string[]>([]);
   const [showFilterMenu, setShowFilterMenu] = useState(false);
   
-  // Star Rating Animation
+  // Star Rating Animation - EXACT Framer Motion logic provided by user
   const count = useMotionValue(0);
-  const rounded = useTransform(count, (latest) => latest.toFixed(1));
+  const rounded = useTransform(count, (latest) => {
+    // Adding a subtle "flicker" effect to the numbers during the animation
+    const jitter = (Math.random() - 0.5) * 0.05;
+    const value = latest + (latest < 4.6 && latest > 0 ? jitter : 0);
+    return Math.min(4.6, Math.max(0, value)).toFixed(1);
+  });
   const [starsFill, setStarsFill] = useState(0);
   const [animationPlayed, setAnimationPlayed] = useState(false);
 
@@ -153,7 +158,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
     contacts: { title: "БОЛЬШЕ О RION", desc: "Чеченская Республика, с. Бено-Юрт. Мы всегда на связи для решения ваших задач." }
   }[activeTab];
 
-  // Star Generator using Framer Motion logic
+  // Star Generator using Framer Motion logic - Solid Black Stars
   const stars = Array.from({ length: 5 }, (_, i) => {
     const fillPercentage = Math.max(0, Math.min(100, (starsFill - i * 20) * 5));
     return (
@@ -215,7 +220,14 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
                         {activeTab === 'delivery' ? (
                           <ShineButton label="Вход в трекер" size="lg" bgColor="linear-gradient(325deg, hsl(217 100% 56%) 0%, hsl(194 100% 69%) 55%, hsl(217 100% 56%) 90%)" onClick={handleTrackerLogin} className="w-full sm:w-auto" />
                         ) : (
-                          <ShineButton label="Открыть магазин" size="lg" variant="outline" onClick={toggleStore} className="w-full sm:w-auto" />
+                          <ShineButton 
+                            label="Открыть магазин" 
+                            size="lg" 
+                            variant="outline" 
+                            onClick={toggleStore} 
+                            className="w-full sm:w-auto" 
+                            icon={<ShoppingBag className="w-5 h-5 mr-2" />}
+                          />
                         )}
                       </>
                     )}
