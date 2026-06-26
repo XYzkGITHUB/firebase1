@@ -66,13 +66,13 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
   }, [ratingMotionValue]);
 
   useEffect(() => {
-    if (isSessionLoaded && !hasSeenRating && !isStoreOpen) {
+    if (isSessionLoaded && !hasSeenRating && !isStoreOpen && activeTab === 'contacts') {
       const timer = setTimeout(() => {
         ratingMotionValue.set(4.6);
       }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [isSessionLoaded, hasSeenRating, isStoreOpen, ratingMotionValue]);
+  }, [isSessionLoaded, hasSeenRating, isStoreOpen, ratingMotionValue, activeTab]);
 
   useEffect(() => {
     return springRating.on("change", (latest) => {
@@ -210,8 +210,8 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
                     />
                   </div>
 
-                  {/* Synchronized Rating Decoration */}
-                  {isSessionLoaded && (
+                  {/* Progressive Star Rating Block - Only on Contacts tab */}
+                  {activeTab === 'contacts' && isSessionLoaded && (
                     <div className="flex flex-col items-center gap-2 pt-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
                       <div className="flex items-center gap-4">
                         <div className="flex gap-1">
@@ -220,13 +220,13 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
                             return (
                               <div key={starIdx} className="relative w-5 h-5 md:w-6 md:h-6">
                                 {/* Base/Empty Star */}
-                                <Star className="absolute inset-0 w-full h-full text-primary/10" />
-                                {/* Progressively Filled Star */}
+                                <Star className="absolute inset-0 w-full h-full text-black/10" />
+                                {/* Progressive Filled Star */}
                                 <div 
                                   className="absolute inset-0 overflow-hidden" 
                                   style={{ clipPath: `inset(0 ${100 - fill}% 0 0)` }}
                                 >
-                                  <Star className="w-full h-full fill-primary text-primary" />
+                                  <Star className="w-full h-full fill-black text-black" />
                                 </div>
                               </div>
                             );

@@ -76,7 +76,8 @@ export default function LoginPage() {
       <Card className="w-full max-w-md glass-panel border-border shadow-2xl overflow-hidden">
         <div className="bg-primary/10 py-3 px-6 text-center border-b border-border">
           <TypingAnimation 
-            texts={typingTexts} 
+            words={typingTexts} 
+            loop
             className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary"
           />
         </div>
