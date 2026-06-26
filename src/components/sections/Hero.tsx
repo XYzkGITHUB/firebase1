@@ -414,4 +414,3 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
     </section>
   );
 }
-
