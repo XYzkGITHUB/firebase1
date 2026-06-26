@@ -1,10 +1,10 @@
-
 "use client";
 import React, { useState, useMemo, useEffect } from "react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Box, ShoppingBag, Grid3X3, Layers, Bath, Lightbulb, Layout, Filter, Trash2, ArrowLeft, Star } from "lucide-react";
 import { ContentTab } from "@/app/page";
+import { cn } from "@/lib/utils";
 import BlurText from "@/components/ui/blur-text";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ShineButton } from "@/components/ui/shine-button";
@@ -362,7 +362,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
               <ScrollArea className="flex-1 p-8">
                 <div className="max-w-7xl mx-auto space-y-20 pb-20">
                   {categories
-                    .filter(c => selectedCats.length === 0 || selectedCats.includes(c.id))
+                    .filter(cat => selectedCats.length === 0 || selectedCats.includes(cat.id))
                     .map(cat => (
                       <div key={cat.id} className="space-y-8">
                         <div className="flex items-center gap-6">
