@@ -53,18 +53,19 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
       return;
     }
 
-    if (activeTab === 'contacts' && !isStoreOpen) {
+    if (activeTab === 'contacts' && !isStoreOpen && !hasAnimated) {
       let startValue = 0;
       const targetValue = 4.6;
       const duration = 2000;
-      const intervalTime = 30;
+      const intervalTime = 40; 
       const steps = duration / intervalTime;
       const increment = targetValue / steps;
 
       const timer = setInterval(() => {
         startValue += increment;
-        // Adding a "flicker" offset
-        const flicker = (Math.random() * 0.1) - 0.05;
+        
+        // Flicker effect: random jitter
+        const flicker = (Math.random() * 0.15) - 0.07;
         const displayValue = Math.min(targetValue, startValue + flicker);
         
         if (startValue >= targetValue) {
@@ -73,13 +74,13 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
           setHasAnimated(true);
           sessionStorage.setItem('rion_hero_rating_seen', 'true');
         } else {
-          setCurrentRating(displayValue);
+          setCurrentRating(Math.max(0, displayValue));
         }
       }, intervalTime);
 
       return () => clearInterval(timer);
     }
-  }, [activeTab, isStoreOpen]);
+  }, [activeTab, isStoreOpen, hasAnimated]);
 
   const scrollToContact = () => {
     const element = document.getElementById('contact-form');
@@ -126,6 +127,13 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
     setStoreView("catalog");
   };
 
+  const getStarFill = (starIndex: number) => {
+    const diff = currentRating - starIndex;
+    if (diff >= 1) return 100;
+    if (diff <= 0) return 0;
+    return diff * 100;
+  };
+
   const content = {
     keramogranit: {
       title: "КЕРАМОГРАНИТ ПОД КЛЮЧ",
@@ -150,14 +158,6 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
   };
 
   const current = content[activeTab] || content.keramogranit;
-
-  // Star Progressive Fill calculation
-  const getStarFill = (starIndex: number) => {
-    const diff = currentRating - starIndex;
-    if (diff >= 1) return 100;
-    if (diff <= 0) return 0;
-    return diff * 100;
-  };
 
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-start overflow-hidden bg-background pt-32 md:pt-48 pb-40">
