@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 import BlurText from "@/components/ui/blur-text";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ShineButton } from "@/components/ui/shine-button";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useTransform, animate } from "framer-motion";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 
@@ -41,46 +41,44 @@ const mockProducts = [
 export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
   const isMobile = useIsMobile();
   const [selectedCats, setSelectedCats] = useState<string[]>([]);
-  const [currentRating, setCurrentRating] = useState(0);
-  const [hasAnimated, setHasAnimated] = useState(false);
   const [showFilterMenu, setShowFilterMenu] = useState(false);
+  
+  // Animation state
+  const count = useMotionValue(0);
+  const rounded = useTransform(count, (latest) => latest.toFixed(1));
+  const [starsFill, setStarsFill] = useState(0);
+  const [animationPlayed, setAnimationPlayed] = useState(false);
 
   useEffect(() => {
     const seen = sessionStorage.getItem('rion_hero_rating_seen');
     if (seen) {
-      setCurrentRating(4.6);
-      setHasAnimated(true);
+      count.set(4.6);
+      setStarsFill(92);
+      setAnimationPlayed(true);
       return;
     }
 
-    if (activeTab === 'contacts' && !isStoreOpen && !hasAnimated) {
-      let startValue = 0;
-      const targetValue = 4.6;
-      const duration = 2000;
-      const intervalTime = 40; 
-      const steps = duration / intervalTime;
-      const increment = targetValue / steps;
+    if (activeTab === 'contacts' && !isStoreOpen && !animationPlayed) {
+      const numberAnimation = animate(count, 4.6, {
+        duration: 2,
+        ease: "easeOut",
+      });
 
-      const timer = setInterval(() => {
-        startValue += increment;
-        
-        // Flicker effect: random jitter for the displayed number
-        const flicker = (Math.random() * 0.15) - 0.07;
-        const displayValue = Math.min(targetValue, startValue + flicker);
-        
-        if (startValue >= targetValue) {
-          setCurrentRating(targetValue);
-          clearInterval(timer);
-          setHasAnimated(true);
-          sessionStorage.setItem('rion_hero_rating_seen', 'true');
-        } else {
-          setCurrentRating(Math.max(0, displayValue));
-        }
-      }, intervalTime);
+      const starAnimation = animate(0, 92, {
+        duration: 2,
+        ease: "easeOut",
+        onUpdate: (latest) => setStarsFill(latest),
+      });
 
-      return () => clearInterval(timer);
+      sessionStorage.setItem('rion_hero_rating_seen', 'true');
+      setAnimationPlayed(true);
+
+      return () => {
+        numberAnimation.stop();
+        starAnimation.stop();
+      };
     }
-  }, [activeTab, isStoreOpen, hasAnimated]);
+  }, [activeTab, isStoreOpen, animationPlayed, count]);
 
   const scrollToContact = () => {
     const element = document.getElementById('contact-form');
@@ -124,13 +122,6 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
     setSelectedCats([]);
   };
 
-  const getStarFill = (starIndex: number) => {
-    const diff = currentRating - starIndex;
-    if (diff >= 1) return 100;
-    if (diff <= 0) return 0;
-    return diff * 100;
-  };
-
   const content = {
     keramogranit: {
       title: "КЕРАМОГРАНИТ ПОД КЛЮЧ",
@@ -155,6 +146,37 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
   };
 
   const current = content[activeTab] || content.keramogranit;
+
+  // Generate 5 stars
+  const stars = Array.from({ length: 5 }, (_, i) => {
+    // Percentage for this specific star
+    // Since starsFill is 0-92 for total 5 stars, we scale it to 0-500 conceptually for individual star logic
+    const totalProgress = (starsFill / 92) * 4.6; 
+    const fillPercentage = Math.max(0, Math.min(100, (totalProgress - i) * 100));
+
+    return (
+      <svg
+        key={i}
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        className="mr-1"
+      >
+        <defs>
+          <linearGradient id={`star-gradient-${i}`}>
+            <stop offset={`${fillPercentage}%`} stopColor="black" />
+            <stop offset={`${fillPercentage}%`} stopColor="rgba(0,0,0,0.1)" />
+          </linearGradient>
+        </defs>
+        <path
+          d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"
+          fill={`url(#star-gradient-${i})`}
+          stroke="black"
+          strokeWidth="1.5"
+        />
+      </svg>
+    );
+  });
 
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-start overflow-hidden bg-background pt-32 md:pt-48 pb-40">
@@ -210,25 +232,10 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
 
                   {activeTab === 'contacts' && (
                     <div className="flex flex-col items-center gap-2 pt-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
-                      <div className="flex items-center gap-4">
-                        <div className="flex gap-1">
-                          {[0, 1, 2, 3, 4].map((starIdx) => {
-                            const fill = getStarFill(starIdx);
-                            return (
-                              <div key={starIdx} className="relative w-5 h-5 md:w-6 md:h-6">
-                                <Star className="absolute inset-0 w-full h-full text-black/10" />
-                                <div 
-                                  className="absolute inset-0 overflow-hidden" 
-                                  style={{ clipPath: `inset(0 ${100 - fill}% 0 0)` }}
-                                >
-                                  <Star className="w-full h-full fill-black text-black" />
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
+                      <div className="flex items-center gap-6">
+                        <div className="flex">{stars}</div>
                         <div className="text-2xl md:text-3xl font-headline font-bold text-black tabular-nums flex items-baseline gap-1">
-                          <span>{currentRating.toFixed(1)}</span>
+                          <motion.span>{rounded}</motion.span>
                           <span className="text-sm md:text-base opacity-40">/ 5</span>
                         </div>
                       </div>
@@ -292,7 +299,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
               >
                 <ArrowLeft size={16} /> Назад
               </button>
-              <div /> {/* Empty div for balance */}
+              <div />
             </div>
 
             <motion.div 
