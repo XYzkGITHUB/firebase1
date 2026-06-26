@@ -166,14 +166,14 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
   return (
     <section className="py-24 lg:py-32 px-6 lg:px-8 bg-background">
       <div className="max-w-[1600px] mx-auto">
-        <div className="mb-20 lg:mb-32">
+        <div className="mb-20 lg:mb-32 text-center">
           <SplitText
             text={activeTab === 'delivery' ? "Что мы гарантируем при доставке" : (activeTab === 'contacts' ? "Сервис и поддержка" : "Что вы получаете, выбирая нас")}
             tag="h2"
-            className="text-2xl md:text-4xl font-headline mb-12 lg:mb-16 uppercase tracking-tighter"
-            textAlign="left"
+            className="text-4xl md:text-7xl font-headline mb-16 lg:mb-20 uppercase tracking-tighter"
+            textAlign="center"
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
             {currentCheck.map((item, i) => (
               <BorderGlow key={i} borderRadius={8} glowColor="26 40 39" colors={['#8B5E3C', '#C9C3BC', '#4A3728']} className="border-[0.5px] border-foreground/5">
                 <div className="flex flex-col gap-4 p-8 h-full group bg-card/40">
@@ -210,7 +210,7 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
                        ? 'Посетите наш шоурум в Бено-Юрт, чтобы лично оценить качество материалов и получить консультацию.' 
                        : (activeTab === 'sanitary' 
                           ? 'Комплектуем объекты сантехникой любого уровня сложности, обеспечивая идеальный баланс эстетики и функциональности.'
-                          : 'Под проекты любого масштаба — от регулярных заказов до комплексных поставок.')))}
+                          : 'Под проекты любого масштаба — от регулярных закупок до комплексных поставок.')))}
                </p>
              </div>
              <div className="flex flex-col sm:flex-row gap-6">
