@@ -14,6 +14,8 @@ import { Badge } from "@/components/ui/badge";
 
 interface HeroProps {
   activeTab: ContentTab;
+  isStoreOpen: boolean;
+  setIsStoreOpen: (open: boolean) => void;
 }
 
 const categories = [
@@ -35,9 +37,8 @@ const mockProducts = [
   { id: 8, cat: "carpets", name: "Silk Touch Beige", price: "12 000 ₽" },
 ];
 
-export function Hero({ activeTab }: HeroProps) {
+export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
   const isMobile = useIsMobile();
-  const [isStoreActive, setIsStoreActive] = useState(false);
   const [storeView, setStoreView] = useState<"selection" | "catalog">("selection");
   const [selectedCats, setSelectedCats] = useState<string[]>([]);
   
@@ -53,8 +54,10 @@ export function Hero({ activeTab }: HeroProps) {
   };
 
   const toggleStore = () => {
-    setIsStoreActive(!isStoreActive);
-    if (!isStoreActive) {
+    if (isStoreOpen) {
+      setIsStoreOpen(false);
+    } else {
+      setIsStoreOpen(true);
       setStoreView("selection");
       setSelectedCats([]);
     }
@@ -123,7 +126,7 @@ export function Hero({ activeTab }: HeroProps) {
       </div>
 
       <AnimatePresence mode="wait">
-        {!isStoreActive ? (
+        {!isStoreOpen ? (
           <motion.div 
             key="hero-content"
             initial={{ opacity: 0, y: 20 }}
@@ -327,7 +330,7 @@ export function Hero({ activeTab }: HeroProps) {
                                 .map(prod => (
                                   <div 
                                     key={prod.id} 
-                                    className="glass-panel p-6 border-white/5 hover:border-primary/40 transition-all group"
+                                    className="glass-panel p-6 border-white/5 hover:bg-foreground/5 transition-all group"
                                   >
                                     <div className="aspect-square bg-muted/20 mb-6 flex items-center justify-center relative overflow-hidden">
                                       {cat.icon}
@@ -354,7 +357,7 @@ export function Hero({ activeTab }: HeroProps) {
         )}
       </AnimatePresence>
 
-      {!isStoreActive && (
+      {!isStoreOpen && (
         <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-30 pointer-events-none">
           <span className="text-[9px] uppercase tracking-[1em] text-muted-foreground font-bold">Листайте вниз</span>
           <div className="w-[1px] h-12 bg-gradient-to-b from-primary to-transparent" />

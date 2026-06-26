@@ -15,9 +15,11 @@ import { motion, AnimatePresence } from "framer-motion";
 interface NavigationProps {
   activeTab: ContentTab;
   setActiveTab: (tab: ContentTab) => void;
+  isStoreOpen: boolean;
+  setIsStoreOpen: (open: boolean) => void;
 }
 
-export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
+export function Navigation({ activeTab, setActiveTab, isStoreOpen, setIsStoreOpen }: NavigationProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
@@ -50,8 +52,11 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
   ];
 
   const handleNavClick = (id: string) => {
-    // Scroll to top instantly to prevent layout jump during layoutId animation
+    // Scroll to top instantly
     window.scrollTo({ top: 0, behavior: 'instant' });
+    
+    // Close shop if it was open
+    setIsStoreOpen(false);
     
     if (["keramogranit", "laminate_sps", "sanitary", "delivery", "contacts"].includes(id)) {
       setActiveTab(id as ContentTab);
@@ -86,6 +91,7 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
             onClick={(e) => {
               e.preventDefault();
               window.scrollTo({ top: 0, behavior: 'instant' });
+              setIsStoreOpen(false);
               setActiveTab("keramogranit");
               router.push("/");
             }}
@@ -101,13 +107,13 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
                 onClick={() => handleNavClick(link.id)}
                 className={cn(
                   "text-[11px] font-bold transition-all tracking-[0.2em] uppercase relative py-2",
-                  activeTab === link.id 
+                  activeTab === link.id && !isStoreOpen
                     ? "text-primary" 
                     : "text-foreground/70 hover:text-primary"
                 )}
               >
                 {link.name}
-                {activeTab === link.id && (
+                {activeTab === link.id && !isStoreOpen && (
                   <motion.div
                     layoutId="nav-indicator"
                     className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-primary rounded-full"
@@ -185,7 +191,7 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
                     onClick={() => handleNavClick(link.id)}
                     className={cn(
                       "text-2xl font-bold py-6 border-b border-border text-left uppercase tracking-tighter",
-                      activeTab === link.id ? "text-primary" : "text-foreground"
+                      activeTab === link.id && !isStoreOpen ? "text-primary" : "text-foreground"
                     )}
                   >
                     {link.name}

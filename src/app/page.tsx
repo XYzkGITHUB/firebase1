@@ -16,6 +16,7 @@ export type ContentTab = "keramogranit" | "laminate_sps" | "sanitary" | "deliver
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<ContentTab>("keramogranit");
+  const [isStoreOpen, setIsStoreOpen] = useState(false);
 
   const scrollToContact = () => {
     const element = document.getElementById('contact-form');
@@ -29,9 +30,18 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-background selection:bg-primary/30 overflow-x-hidden">
-      <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />
+      <Navigation 
+        activeTab={activeTab} 
+        setActiveTab={setActiveTab} 
+        isStoreOpen={isStoreOpen}
+        setIsStoreOpen={setIsStoreOpen}
+      />
       
-      <Hero activeTab={activeTab} />
+      <Hero 
+        activeTab={activeTab} 
+        isStoreOpen={isStoreOpen}
+        setIsStoreOpen={setIsStoreOpen}
+      />
       
       <Stats activeTab={activeTab} />
 
