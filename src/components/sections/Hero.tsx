@@ -259,7 +259,10 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
                                 selectedCats.includes(cat.id) ? "bg-primary text-white" : "hover:bg-muted"
                               )}
                             >
-                              {cat.name}
+                              <div className="flex items-center gap-3">
+                                {cat.icon}
+                                <span>{cat.name}</span>
+                              </div>
                             </button>
                           ))}
                         </motion.div>
