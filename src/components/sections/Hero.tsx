@@ -69,10 +69,9 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
   const [selectedCats, setSelectedCats] = useState<string[]>([]);
   const [showFilterMenu, setShowFilterMenu] = useState(false);
   
-  // Star Rating Animation - EXACT Framer Motion logic provided by user
+  // Star Rating Animation
   const count = useMotionValue(0);
   const rounded = useTransform(count, (latest) => {
-    // Adding a subtle "flicker" effect to the numbers during the animation
     const jitter = (Math.random() - 0.5) * 0.05;
     const value = latest + (latest < 4.6 && latest > 0 ? jitter : 0);
     return Math.min(4.6, Math.max(0, value)).toFixed(1);
@@ -81,7 +80,6 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
   const [animationPlayed, setAnimationPlayed] = useState(false);
 
   useEffect(() => {
-    // Check if animation was already seen in this session
     const seen = sessionStorage.getItem('rion_hero_rating_seen');
     if (seen) {
       count.set(4.6);
@@ -90,7 +88,6 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
       return;
     }
 
-    // Trigger only on contacts tab and when shop is closed
     if (activeTab === 'contacts' && !isStoreOpen && !animationPlayed) {
       const numberAnimation = animate(count, 4.6, {
         duration: 2,
@@ -129,7 +126,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
       setIsStoreOpen(false);
     } else {
       setIsStoreOpen(true);
-      setSelectedCats([]);
+      setSelectedCats([]); // Reset filters to show everything at once
     }
   };
 
@@ -158,7 +155,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
     contacts: { title: "БОЛЬШЕ О RION", desc: "Чеченская Республика, с. Бено-Юрт. Мы всегда на связи для решения ваших задач." }
   }[activeTab];
 
-  // Star Generator using Framer Motion logic - Solid Black Stars
+  // Star Generator logic - Black Stars
   const stars = Array.from({ length: 5 }, (_, i) => {
     const fillPercentage = Math.max(0, Math.min(100, (starsFill - i * 20) * 5));
     return (
@@ -238,40 +235,40 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
           </motion.div>
         ) : (
           <motion.div key="store-content" initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.02 }} className="z-[110] fixed inset-0 bg-background/95 backdrop-blur-3xl flex flex-col">
-            <div className="flex justify-between items-center px-8 py-6 border-b border-white/10 bg-background/50">
+            <div className="flex justify-between items-center px-8 py-10 border-b border-white/10 bg-background/50">
               <button 
                 onClick={toggleStore} 
-                className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground hover:text-primary transition-colors"
+                className="flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.3em] text-muted-foreground hover:text-primary transition-colors"
               >
-                <ArrowLeft size={16} /> Назад
+                <ArrowLeft size={18} /> Назад
               </button>
             </div>
 
             <div className="flex-1 flex flex-col h-full overflow-hidden">
-              <div className="p-8 border-b border-white/10 bg-background/50 flex flex-col md:flex-row items-center justify-between gap-6">
+              <div className="p-12 border-b border-white/10 bg-background/50 flex flex-col md:flex-row items-center justify-between gap-10">
                 <div>
-                  <h2 className="text-3xl md:text-5xl font-headline uppercase tracking-tighter text-foreground">{storeTitle}</h2>
-                  <p className="text-[10px] uppercase tracking-[0.4em] font-bold text-muted-foreground mt-2">Каталог товаров RION</p>
+                  <h2 className="text-4xl md:text-6xl font-headline uppercase tracking-tighter text-foreground">{storeTitle}</h2>
+                  <p className="text-[11px] uppercase tracking-[0.4em] font-bold text-muted-foreground mt-3">Каталог товаров RION</p>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-6">
                   <div className="relative">
-                    <Button variant="outline" className="h-14 px-8 rounded-none border-foreground/20 uppercase tracking-[0.2em] text-[10px] font-bold" onClick={() => setShowFilterMenu(!showFilterMenu)}>
-                      <Filter className="mr-2 h-4 w-4" />
+                    <Button variant="outline" className="h-16 px-10 rounded-none border-foreground/20 uppercase tracking-[0.2em] text-[11px] font-bold" onClick={() => setShowFilterMenu(!showFilterMenu)}>
+                      <Filter className="mr-3 h-5 w-5" />
                       Фильтр {selectedCats.length > 0 && `(${selectedCats.length})`}
                     </Button>
                     <AnimatePresence>
                       {showFilterMenu && (
-                        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="absolute top-full right-0 mt-2 bg-background border border-border shadow-2xl p-4 min-w-[200px] z-[60] flex flex-col gap-2">
+                        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="absolute top-full right-0 mt-4 bg-background border border-border shadow-2xl p-6 min-w-[240px] z-[60] flex flex-col gap-3">
                           {categories.map((cat) => (
                             <button 
                               key={cat.id} 
                               onClick={() => toggleCategory(cat.id)} 
                               className={cn(
-                                "flex items-center justify-between px-4 py-3 text-[10px] font-bold uppercase tracking-widest transition-colors", 
+                                "flex items-center justify-between px-6 py-4 text-[11px] font-bold uppercase tracking-widest transition-colors", 
                                 selectedCats.includes(cat.id) ? "bg-primary text-white" : "hover:bg-muted"
                               )}
                             >
-                              <div className="flex items-center gap-3">
+                              <div className="flex items-center gap-4">
                                 {cat.icon}
                                 <span>{cat.name}</span>
                               </div>
@@ -282,42 +279,42 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
                     </AnimatePresence>
                   </div>
                   {selectedCats.length > 0 && (
-                    <Button variant="ghost" className="h-14 px-8 rounded-none uppercase tracking-[0.2em] text-[10px] font-bold text-muted-foreground hover:text-primary" onClick={() => setSelectedCats([])}>
+                    <Button variant="ghost" className="h-16 px-10 rounded-none uppercase tracking-[0.2em] text-[11px] font-bold text-muted-foreground hover:text-primary" onClick={() => setSelectedCats([])}>
                       Очистить
                     </Button>
                   )}
                 </div>
               </div>
 
-              <ScrollArea className="flex-1 p-8">
-                <div className="max-w-7xl mx-auto space-y-20 pb-20">
+              <ScrollArea className="flex-1 p-12">
+                <div className="max-w-[1800px] mx-auto space-y-32 pb-32">
                   {categories
                     .filter(cat => selectedCats.length === 0 || selectedCats.includes(cat.id))
                     .map(cat => {
                       const categoryProducts = mockProducts.filter(p => p.cat === cat.id);
                       if (categoryProducts.length === 0) return null;
                       return (
-                        <div key={cat.id} className="space-y-8">
-                          <div className="flex items-center gap-6">
+                        <div key={cat.id} className="space-y-12">
+                          <div className="flex items-center gap-10">
                             <div className="h-[1px] flex-1 bg-primary/20" />
-                            <h3 className="text-2xl md:text-3xl font-headline uppercase tracking-tight text-primary">{cat.name}</h3>
+                            <h3 className="text-3xl md:text-4xl font-headline uppercase tracking-tight text-primary">{cat.name}</h3>
                             <div className="h-[1px] flex-1 bg-primary/20" />
                           </div>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
                             {categoryProducts.map(prod => (
-                                <div key={prod.id} className="glass-panel p-6 border-white/5 hover:bg-foreground/5 transition-all group">
-                                  <div className="aspect-square bg-muted/20 mb-6 flex items-center justify-center relative overflow-hidden">
+                                <div key={prod.id} className="glass-panel p-10 border-white/5 hover:bg-foreground/5 transition-all group">
+                                  <div className="aspect-square bg-muted/20 mb-8 flex items-center justify-center relative overflow-hidden">
                                     {prod.image && (
                                       <Image src={prod.image} alt={prod.name} fill className="object-cover group-hover:scale-110 transition-transform duration-500" unoptimized />
                                     )}
-                                    <div className="absolute bottom-4 right-4">
-                                      <Badge variant="outline" className="bg-background/80 border-primary/20 text-[9px] uppercase tracking-widest">В наличии</Badge>
+                                    <div className="absolute bottom-6 right-6">
+                                      <Badge variant="outline" className="bg-background/80 border-primary/20 text-[10px] uppercase tracking-widest px-3 py-1">В наличии</Badge>
                                     </div>
                                   </div>
-                                  <h4 className="text-lg font-bold uppercase tracking-tight mb-1 group-hover:text-primary transition-colors">{prod.name}</h4>
-                                  <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold mb-3">{prod.sub}</p>
-                                  <p className="text-primary font-headline font-bold text-xl">{prod.price}</p>
-                                  <Button className="w-full mt-6 rounded-none bg-primary/10 text-primary hover:bg-primary hover:text-white border border-primary/20 font-bold uppercase tracking-widest text-[10px] h-12">Подробнее</Button>
+                                  <h4 className="text-xl font-bold uppercase tracking-tight mb-2 group-hover:text-primary transition-colors">{prod.name}</h4>
+                                  <p className="text-[11px] text-muted-foreground uppercase tracking-widest font-bold mb-4">{prod.sub}</p>
+                                  <p className="text-primary font-headline font-bold text-2xl">{prod.price}</p>
+                                  <Button className="w-full mt-8 rounded-none bg-primary/10 text-primary hover:bg-primary hover:text-white border border-primary/20 font-bold uppercase tracking-widest text-[11px] h-14">Подробнее</Button>
                                 </div>
                               ))}
                           </div>
