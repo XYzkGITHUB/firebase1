@@ -3,7 +3,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Grid3X3, Layers, Bath, Truck, Info, ShoppingBag } from "lucide-react";
 import { ContentTab } from "@/app/page";
-import SplitText from "@/components/ui/split-text";
+import TrueFocus from "@/components/ui/TrueFocus";
 
 interface MainSectionProps {
   setActiveTab: (tab: ContentTab) => void;
@@ -28,12 +28,18 @@ export function MainSection({ setActiveTab }: MainSectionProps) {
 
       <div className="max-w-[1400px] w-full mx-auto relative z-10">
         <div className="text-center mb-20">
-          <SplitText
-            text="Быстрая навигация IRGG"
-            tag="h1"
-            className="text-5xl md:text-8xl font-headline uppercase tracking-tighter mb-6"
-            textAlign="center"
-          />
+          <div className="mb-6 h-auto min-h-[120px] flex items-center justify-center">
+            <TrueFocus 
+              sentence="Быстрая навигация IRGG"
+              manualMode={false}
+              blurAmount={5}
+              borderColor="hsl(var(--primary))"
+              glowColor="hsl(var(--primary) / 0.5)"
+              animationDuration={0.4}
+              pauseBetweenAnimations={1.5}
+              className="text-5xl md:text-8xl font-headline uppercase tracking-tighter"
+            />
+          </div>
           <p className="text-muted-foreground text-lg md:text-xl font-light uppercase tracking-widest">
             Выберите интересующий раздел для перехода
           </p>
@@ -98,7 +104,7 @@ export function MainSection({ setActiveTab }: MainSectionProps) {
 
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 opacity-30">
         <div className="flex flex-col items-center gap-4">
-          <span className="text-[8px] uppercase tracking-[1em] text-muted-foreground font-bold">Scrooll</span>
+          <span className="text-[8px] uppercase tracking-[1em] text-muted-foreground font-bold">Scroll</span>
           <div className="w-[1px] h-10 bg-gradient-to-b from-primary to-transparent" />
         </div>
       </div>
