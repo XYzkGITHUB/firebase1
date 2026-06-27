@@ -97,7 +97,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
   const [selectedCats, setSelectedCats] = useState<string[]>([]);
   const [showFilterMenu, setShowFilterMenu] = useState(false);
   
-  // Star Rating Animation - EXACT provided logic
+  // Star Rating Animation
   const count = useMotionValue(0);
   const rounded = useTransform(count, (latest) => {
     const jitter = (Math.random() - 0.5) * 0.05;
@@ -365,4 +365,3 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
     </section>
   );
 }
-

@@ -1,37 +1,17 @@
 
 "use client";
 
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
 
 interface LuxuryLoaderProps {
   isVisible: boolean;
 }
 
 export function LuxuryLoader({ isVisible }: LuxuryLoaderProps) {
-  const [hasCheckedSession, setHasCheckedSession] = useState(false);
-  const [alreadySeen, setAlreadySeen] = useState(false);
-
   // Random pause point between 30% and 70% of the progress
   const pausePoint = useMemo(() => Math.floor(Math.random() * 41) + 30, []);
 
-  useEffect(() => {
-    const seen = sessionStorage.getItem('rion_loader_seen');
-    if (seen) {
-      setAlreadySeen(true);
-    }
-    setHasCheckedSession(true);
-  }, []);
-
-  useEffect(() => {
-    if (isVisible && hasCheckedSession && !alreadySeen) {
-      sessionStorage.setItem('rion_loader_seen', 'true');
-    }
-  }, [isVisible, hasCheckedSession, alreadySeen]);
-
-  // If already seen in this session or not visible, don't show
-  if (!isVisible || (hasCheckedSession && alreadySeen)) return null;
-  // Don't render until we've checked the session storage to avoid a flicker
-  if (!hasCheckedSession) return null;
+  if (!isVisible) return null;
 
   const styles = `
     @keyframes luxuryFill {
@@ -67,7 +47,7 @@ export function LuxuryLoader({ isVisible }: LuxuryLoaderProps) {
     color: darkBeige,
     overflow: 'hidden',
     whiteSpace: 'nowrap',
-    animation: 'luxuryFill 0.3s forwards cubic-bezier(0.65, 0, 0.35, 1)',
+    animation: 'luxuryFill 0.8s forwards cubic-bezier(0.65, 0, 0.35, 1)',
   };
 
   return (
