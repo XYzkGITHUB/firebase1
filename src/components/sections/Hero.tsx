@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useState, useMemo, useEffect } from "react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
@@ -18,9 +19,11 @@ interface HeroProps {
   activeTab: ContentTab;
   isStoreOpen: boolean;
   setIsStoreOpen: (open: boolean) => void;
+  externalFilter?: string[];
+  onFilterChange?: (filters: string[]) => void;
 }
 
-const categoryIcons: Record<string, React.ReactNode> = {
+const categoryIcons: Record<string, React.RecordNode> = {
   keramogranit: <Grid3X3 className="w-6 h-6" />,
   laminate: <Layers className="w-6 h-6" />,
   carpets: <Layout className="w-6 h-6" />,
@@ -29,10 +32,16 @@ const categoryIcons: Record<string, React.ReactNode> = {
 
 const categoriesWithIcons = CATEGORIES.map(cat => ({
   ...cat,
-  icon: categoryIcons[cat.id]
+  icon: categoryIcons[cat.id] || <ShoppingBag className="w-6 h-6" />
 }));
 
-export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
+export function Hero({ 
+  activeTab, 
+  isStoreOpen, 
+  setIsStoreOpen, 
+  externalFilter = [],
+  onFilterChange
+}: HeroProps) {
   const isMobile = useIsMobile();
   const [selectedCats, setSelectedCats] = useState<string[]>([]);
   const [showFilterMenu, setShowFilterMenu] = useState(false);
@@ -46,6 +55,13 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
   });
   const [starsFill, setStarsFill] = useState(0);
   const [animationPlayed, setAnimationPlayed] = useState(false);
+
+  // Sync external filter with internal state
+  useEffect(() => {
+    if (externalFilter.length > 0) {
+      setSelectedCats(externalFilter);
+    }
+  }, [externalFilter]);
 
   useEffect(() => {
     const seen = sessionStorage.getItem('irgg_hero_rating_seen');
@@ -110,13 +126,15 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
   }, [selectedCats]);
 
   const toggleCategory = (id: string) => {
-    setSelectedCats(prev => 
-      prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id]
-    );
+    setSelectedCats(prev => {
+      const next = prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id];
+      onFilterChange?.(next);
+      return next;
+    });
   };
 
   const currentContent = {
-    main: { title: "", desc: "" }, // Handled by MainSection
+    main: { title: "", desc: "" },
     keramogranit: { title: "КЕРАМОГРАНИТ ПОД КЛЮЧ", desc: "Подбираем материал от производителей по всему миру и доставляем на объект точно в срок." },
     laminate_sps: { title: "ЛАМИНАТ И SPS", desc: "Стабильные поставки напрямую с фабрик Китая и Индии." },
     sanitary: { title: "ЭКСКЛЮЗИВНАЯ САНТЕХНИКА", desc: "Прямые поставки санфаянса и мебели для ванных комнат от ведущих мировых брендов." },
@@ -144,7 +162,6 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
 
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-start overflow-hidden bg-background pt-32 md:pt-48 pb-40">
-      {/* Hidden button for MainSection to trigger shop */}
       <button data-shop-trigger="true" className="hidden" onClick={() => setIsStoreOpen(true)} />
       
       <div className="absolute inset-0 z-0 pointer-events-none">
@@ -238,7 +255,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
                               key={cat.id} 
                               onClick={() => toggleCategory(cat.id)} 
                               className={cn(
-                                "flex items-center justify-between px-6 py-4 text-[11px] font-bold uppercase tracking-widest transition-colors", 
+                                "flex items-center justify-between px-6 py-4 text-[11px] font-bold uppercase tracking-widest transition-colors text-left", 
                                 selectedCats.includes(cat.id) ? "bg-primary text-white" : "hover:bg-muted"
                               )}
                             >
@@ -253,7 +270,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
                     </AnimatePresence>
                   </div>
                   {selectedCats.length > 0 && (
-                    <Button variant="ghost" className="h-16 px-10 rounded-none uppercase tracking-[0.2em] text-[11px] font-bold text-muted-foreground hover:text-primary" onClick={() => setSelectedCats([])}>
+                    <Button variant="ghost" className="h-16 px-10 rounded-none uppercase tracking-[0.2em] text-[11px] font-bold text-muted-foreground hover:text-primary" onClick={() => { setSelectedCats([]); onFilterChange?.([]); }}>
                       Очистить
                     </Button>
                   )}

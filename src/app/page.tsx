@@ -18,6 +18,7 @@ export type ContentTab = "main" | "keramogranit" | "laminate_sps" | "sanitary" |
 export default function Home() {
   const [activeTab, setActiveTab] = useState<ContentTab>("main");
   const [isStoreOpen, setIsStoreOpen] = useState(false);
+  const [storeFilter, setStoreFilter] = useState<string[]>([]);
 
   const scrollToContact = () => {
     const element = document.getElementById('contact-form');
@@ -30,6 +31,15 @@ export default function Home() {
   const isContactsTab = activeTab === "contacts";
   const isDeliveryTab = activeTab === "delivery";
 
+  const handleOpenStoreWithFilter = (categoryId?: string) => {
+    if (categoryId) {
+      setStoreFilter([categoryId]);
+    } else {
+      setStoreFilter([]);
+    }
+    setIsStoreOpen(true);
+  };
+
   return (
     <main className="min-h-screen bg-background selection:bg-primary/30 overflow-x-hidden">
       <Navigation 
@@ -37,6 +47,7 @@ export default function Home() {
         setActiveTab={setActiveTab} 
         isStoreOpen={isStoreOpen}
         setIsStoreOpen={setIsStoreOpen}
+        onOpenStoreWithFilter={handleOpenStoreWithFilter}
       />
       
       <AnimatePresence mode="wait">
@@ -54,6 +65,8 @@ export default function Home() {
               activeTab={activeTab} 
               isStoreOpen={isStoreOpen}
               setIsStoreOpen={setIsStoreOpen}
+              externalFilter={storeFilter}
+              onFilterChange={setStoreFilter}
             />
             
             <Stats activeTab={activeTab} />

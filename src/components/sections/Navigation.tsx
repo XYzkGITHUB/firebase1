@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
@@ -35,9 +36,16 @@ interface NavigationProps {
   setActiveTab: (tab: ContentTab) => void;
   isStoreOpen: boolean;
   setIsStoreOpen: (open: boolean) => void;
+  onOpenStoreWithFilter: (categoryId?: string) => void;
 }
 
-export function Navigation({ activeTab, setActiveTab, isStoreOpen, setIsStoreOpen }: NavigationProps) {
+export function Navigation({ 
+  activeTab, 
+  setActiveTab, 
+  isStoreOpen, 
+  setIsStoreOpen,
+  onOpenStoreWithFilter
+}: NavigationProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
@@ -88,7 +96,7 @@ export function Navigation({ activeTab, setActiveTab, isStoreOpen, setIsStoreOpe
     return PRODUCTS.filter(p => 
       p.name.toLowerCase().includes(query) || 
       p.sub.toLowerCase().includes(query)
-    ).slice(0, 8);
+    ).slice(0, 15);
   }, [searchQuery]);
 
   const filteredCategories = useMemo(() => {
@@ -99,9 +107,9 @@ export function Navigation({ activeTab, setActiveTab, isStoreOpen, setIsStoreOpe
     );
   }, [searchQuery]);
 
-  const handleSearchResultClick = () => {
+  const handleSearchResultClick = (categoryId?: string) => {
     setIsSearchOpen(false);
-    setIsStoreOpen(true);
+    onOpenStoreWithFilter(categoryId);
     setSearchQuery("");
   };
 
@@ -211,8 +219,8 @@ export function Navigation({ activeTab, setActiveTab, isStoreOpen, setIsStoreOpe
                       />
                     </div>
                     
-                    <div className="mt-8">
-                      <ScrollArea className="max-h-[50vh] pr-4">
+                    <div className="mt-8 overflow-hidden">
+                      <ScrollArea className="h-[50vh] pr-4">
                         <AnimatePresence mode="wait">
                           {searchQuery.trim() === "" ? (
                             <motion.div 
@@ -220,16 +228,14 @@ export function Navigation({ activeTab, setActiveTab, isStoreOpen, setIsStoreOpe
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
                               exit={{ opacity: 0 }}
-                              className="space-y-4"
+                              className="space-y-4 pb-8"
                             >
                               <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Популярные категории</p>
                               <div className="flex flex-wrap gap-3">
                                 {CATEGORIES.map((cat) => (
                                   <button 
                                     key={cat.id} 
-                                    onClick={() => {
-                                      setSearchQuery(cat.name);
-                                    }}
+                                    onClick={() => handleSearchResultClick(cat.id)}
                                     className="px-4 py-2 bg-primary/5 border border-primary/10 text-[10px] font-bold uppercase tracking-widest hover:bg-primary hover:text-white transition-all"
                                   >
                                     {cat.name}
@@ -243,7 +249,7 @@ export function Navigation({ activeTab, setActiveTab, isStoreOpen, setIsStoreOpe
                               initial={{ opacity: 0, y: 10 }}
                               animate={{ opacity: 1, y: 0 }}
                               exit={{ opacity: 0, y: 10 }}
-                              className="space-y-8"
+                              className="space-y-8 pb-8"
                             >
                               {filteredCategories.length > 0 && (
                                 <div className="space-y-4">
@@ -252,10 +258,12 @@ export function Navigation({ activeTab, setActiveTab, isStoreOpen, setIsStoreOpe
                                     {filteredCategories.map(cat => (
                                       <button 
                                         key={cat.id} 
-                                        onClick={handleSearchResultClick}
-                                        className="flex items-center gap-3 p-3 hover:bg-primary/5 transition-colors text-left"
+                                        onClick={() => handleSearchResultClick(cat.id)}
+                                        className="flex items-center gap-3 p-3 hover:bg-primary/5 transition-colors text-left group"
                                       >
-                                        <ShoppingBag size={14} className="text-primary" />
+                                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                                          <ShoppingBag size={14} />
+                                        </div>
                                         <span className="text-xs font-bold uppercase tracking-widest">{cat.name}</span>
                                       </button>
                                     ))}
@@ -270,7 +278,7 @@ export function Navigation({ activeTab, setActiveTab, isStoreOpen, setIsStoreOpe
                                     {filteredProducts.map(prod => (
                                       <button 
                                         key={prod.id} 
-                                        onClick={handleSearchResultClick}
+                                        onClick={() => handleSearchResultClick(prod.cat)}
                                         className="w-full flex items-center gap-4 p-3 hover:bg-primary/5 transition-colors text-left group"
                                       >
                                         <div className="w-12 h-12 bg-muted relative overflow-hidden flex-shrink-0">
@@ -298,10 +306,7 @@ export function Navigation({ activeTab, setActiveTab, isStoreOpen, setIsStoreOpe
                   </div>
                   <div className="bg-primary/10 p-4 text-center">
                     <button 
-                      onClick={() => {
-                        setIsSearchOpen(false);
-                        setIsStoreOpen(true);
-                      }}
+                      onClick={() => handleSearchResultClick()}
                       className="text-[9px] font-bold uppercase tracking-[0.4em] text-primary flex items-center justify-center gap-2 mx-auto"
                     >
                       Перейти в полный каталог <ArrowRight size={10} />
