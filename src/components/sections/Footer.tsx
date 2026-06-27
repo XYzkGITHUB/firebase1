@@ -8,7 +8,7 @@ export function Footer() {
     <footer className="pt-40 pb-16 px-8 bg-background border-t border-white/5">
       <div className="max-w-[1600px] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-24 mb-32">
-          <div className="lg:col-span-5 space-y-12">
+          <div className="lg:col-span-7 space-y-12">
             <h3 className="text-5xl font-headline font-bold text-primary tracking-tighter">IRGG</h3>
             <p className="text-xl text-muted-foreground leading-relaxed max-w-md font-light">
               Международные поставки строительных материалов под ключ. Качество, проверенное временем.
@@ -23,18 +23,7 @@ export function Footer() {
             </div>
           </div>
           
-          <div className="lg:col-span-3 space-y-10">
-            <h4 className="font-bold text-[11px] uppercase tracking-[0.5em] text-foreground opacity-60">Навигация</h4>
-            <ul className="space-y-6">
-              <li><Link href="/" className="text-muted-foreground hover:text-primary transition-all text-sm uppercase tracking-[0.3em] font-bold">Керамогранит</Link></li>
-              <li><Link href="/" className="text-muted-foreground hover:text-primary transition-all text-sm uppercase tracking-[0.3em] font-bold">Ламинат и SPS</Link></li>
-              <li><Link href="/" className="text-muted-foreground hover:text-primary transition-all text-sm uppercase tracking-[0.3em] font-bold">Сантехника</Link></li>
-              <li><Link href="/" className="text-muted-foreground hover:text-primary transition-all text-sm uppercase tracking-[0.3em] font-bold">Таможня и Склад</Link></li>
-              <li><Link href="/" className="text-muted-foreground hover:text-primary transition-all text-sm uppercase tracking-[0.3em] font-bold">О нас</Link></li>
-            </ul>
-          </div>
-
-          <div className="lg:col-span-4 space-y-10">
+          <div className="lg:col-span-5 space-y-10">
             <h4 className="font-bold text-[11px] uppercase tracking-[0.5em] text-foreground opacity-60">Партнеры и менеджмент</h4>
             <div className="space-y-6">
               <div className="p-8 border border-foreground/10 bg-card/20 text-center text-muted-foreground font-headline italic text-2xl tracking-tighter">Tile Time</div>
