@@ -181,10 +181,10 @@ export function Navigation({ activeTab, setActiveTab, isStoreOpen, setIsStoreOpe
           {/* MOBILE TOGGLE */}
           <div className="lg:hidden flex justify-end">
             <button 
-              className="text-foreground p-2 relative z-[120]"
+              className="text-foreground p-2 relative z-[120] hover:text-primary transition-colors"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
           </div>
         </div>
@@ -193,30 +193,30 @@ export function Navigation({ activeTab, setActiveTab, isStoreOpen, setIsStoreOpe
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div 
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="fixed inset-0 w-full h-[100dvh] bg-background lg:hidden z-[110] overflow-y-auto pt-24"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 w-full h-[100dvh] bg-background/95 backdrop-blur-3xl lg:hidden z-[110] flex flex-col items-center justify-center pt-24"
             >
-              <div className="flex flex-col p-8 space-y-4">
-                <button onClick={() => handleNavClick("main")} className="text-xl font-bold py-4 border-b border-border text-left uppercase tracking-tighter">Главная</button>
-                <button onClick={() => handleNavClick("keramogranit")} className="text-xl font-bold py-4 border-b border-border text-left uppercase tracking-tighter">Керамогранит</button>
-                <button onClick={() => handleNavClick("laminate_sps")} className="text-xl font-bold py-4 border-b border-border text-left uppercase tracking-tighter">Ламинат</button>
-                <button onClick={() => handleNavClick("sanitary")} className="text-xl font-bold py-4 border-b border-border text-left uppercase tracking-tighter">Сантехника</button>
-                <button onClick={() => handleNavClick("delivery")} className="text-xl font-bold py-4 border-b border-border text-left uppercase tracking-tighter">Таможня</button>
-                <button onClick={() => handleNavClick("contacts")} className="text-xl font-bold py-4 border-b border-border text-left uppercase tracking-tighter">О нас</button>
-                <button onClick={() => { setIsStoreOpen(true); setIsMobileMenuOpen(false); }} className="text-xl font-bold py-4 border-b border-border text-left uppercase tracking-tighter text-primary">Магазин</button>
+              <div className="flex flex-col items-center justify-center space-y-8 w-full px-12 overflow-y-auto max-h-[70vh]">
+                <button onClick={() => handleNavClick("main")} className="text-xl font-bold uppercase tracking-[0.3em] text-foreground hover:text-primary transition-colors py-2">Главная</button>
+                <button onClick={() => handleNavClick("keramogranit")} className="text-xl font-bold uppercase tracking-[0.3em] text-foreground hover:text-primary transition-colors py-2">Керамогранит</button>
+                <button onClick={() => handleNavClick("laminate_sps")} className="text-xl font-bold uppercase tracking-[0.3em] text-foreground hover:text-primary transition-colors py-2">Ламинат</button>
+                <button onClick={() => handleNavClick("sanitary")} className="text-xl font-bold uppercase tracking-[0.3em] text-foreground hover:text-primary transition-colors py-2">Сантехника</button>
+                <button onClick={() => handleNavClick("delivery")} className="text-xl font-bold uppercase tracking-[0.3em] text-foreground hover:text-primary transition-colors py-2">Таможня</button>
+                <button onClick={() => handleNavClick("contacts")} className="text-xl font-bold uppercase tracking-[0.3em] text-foreground hover:text-primary transition-colors py-2">О нас</button>
+                <button onClick={() => { setIsStoreOpen(true); setIsMobileMenuOpen(false); }} className="text-xl font-bold uppercase tracking-[0.3em] text-primary py-2">Магазин</button>
+              </div>
                 
-                <div className="pt-8 flex flex-col gap-4">
-                  {user && !user.isAnonymous ? (
-                    <Button onClick={handleSignOut} variant="outline" className="h-14 rounded-none">Выйти</Button>
-                  ) : (
-                    <>
-                      <Button onClick={() => handleAuthNavigation("/login")} variant="outline" className="h-14 rounded-none">Войти</Button>
-                      <Button onClick={() => handleAuthNavigation("/register")} className="h-14 rounded-none bg-primary text-white">Регистрация</Button>
-                    </>
-                  )}
-                </div>
+              <div className="mt-12 flex flex-col items-center gap-6 w-full px-12">
+                {user && !user.isAnonymous ? (
+                  <button onClick={handleSignOut} className="text-xs font-bold uppercase tracking-[0.4em] text-muted-foreground border border-border px-12 py-4 hover:bg-muted transition-all">Выйти</button>
+                ) : (
+                  <>
+                    <button onClick={() => handleAuthNavigation("/login")} className="text-xs font-bold uppercase tracking-[0.4em] text-foreground border border-border px-12 py-4 hover:bg-muted transition-all w-full max-w-[280px]">Войти</button>
+                    <button onClick={() => handleAuthNavigation("/register")} className="text-xs font-bold uppercase tracking-[0.4em] bg-primary text-white px-12 py-4 hover:bg-primary/90 transition-all w-full max-w-[280px] shadow-xl">Регистрация</button>
+                  </>
+                )}
               </div>
             </motion.div>
           )}

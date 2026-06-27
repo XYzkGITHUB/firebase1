@@ -28,14 +28,15 @@ export function LuxuryLoader({ isVisible }: LuxuryLoaderProps) {
   const containerStyle: React.CSSProperties = {
     position: 'relative',
     display: 'inline-block',
-    fontSize: '6rem',
+    fontSize: 'clamp(3.5rem, 15vw, 8rem)', 
     fontWeight: '900',
     fontFamily: '"Inter", sans-serif',
-    letterSpacing: '0.4em', 
+    letterSpacing: '0.3em', 
     color: faintBeige,
     lineHeight: '1',
     userSelect: 'none',
-    textAlign: 'center'
+    textAlign: 'center',
+    marginRight: '-0.3em' // Compensate for the extra spacing on the last letter to ensure perfect centering
   };
 
   const overlayStyle: React.CSSProperties = {
@@ -51,7 +52,7 @@ export function LuxuryLoader({ isVisible }: LuxuryLoaderProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-background animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-background animate-in fade-in duration-300">
       <style>{styles}</style>
       
       <div style={containerStyle}>
