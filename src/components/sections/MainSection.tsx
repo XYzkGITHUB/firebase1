@@ -1,3 +1,4 @@
+
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
@@ -7,6 +8,7 @@ import TrueFocus from "@/components/ui/TrueFocus";
 
 interface MainSectionProps {
   setActiveTab: (tab: ContentTab) => void;
+  setIsStoreOpen: (open: boolean) => void;
 }
 
 const navItems = [
@@ -17,7 +19,7 @@ const navItems = [
   { id: "contacts", title: "О компании", icon: <Info size={24} />, desc: "Наш офис и контакты" },
 ];
 
-export function MainSection({ setActiveTab }: MainSectionProps) {
+export function MainSection({ setActiveTab, setIsStoreOpen }: MainSectionProps) {
   return (
     <section className="min-h-screen pt-40 pb-20 px-6 bg-background relative overflow-hidden flex flex-col items-center justify-center">
       {/* Dynamic Background Elements */}
@@ -81,10 +83,7 @@ export function MainSection({ setActiveTab }: MainSectionProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
             className="lg:col-span-1 p-10 bg-primary text-white flex flex-col justify-between hover:bg-primary/90 transition-all cursor-pointer shadow-2xl relative overflow-hidden group"
-            onClick={() => {
-              const openShopBtn = document.querySelector('[data-shop-trigger="true"]');
-              if (openShopBtn) (openShopBtn as HTMLElement).click();
-            }}
+            onClick={() => setIsStoreOpen(true)}
           >
              <div className="absolute -right-10 -bottom-10 opacity-10 transform rotate-12 group-hover:scale-110 transition-transform">
                <ShoppingBag size={240} />

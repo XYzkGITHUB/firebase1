@@ -50,9 +50,22 @@ export default function Home() {
         onOpenStoreWithFilter={handleOpenStoreWithFilter}
       />
       
+      {/* Hero handles the shop overlay and banner. It needs to be outside the tab conditional to overlay Main tab too. */}
+      <Hero 
+        activeTab={activeTab} 
+        isStoreOpen={isStoreOpen}
+        setIsStoreOpen={setIsStoreOpen}
+        externalFilter={storeFilter}
+        onFilterChange={setStoreFilter}
+      />
+
       <AnimatePresence mode="wait">
         {isMainTab ? (
-          <MainSection key="main-section" setActiveTab={setActiveTab} />
+          <MainSection 
+            key="main-section" 
+            setActiveTab={setActiveTab} 
+            setIsStoreOpen={setIsStoreOpen}
+          />
         ) : (
           <motion.div
             key={activeTab}
@@ -61,13 +74,7 @@ export default function Home() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
           >
-            <Hero 
-              activeTab={activeTab} 
-              isStoreOpen={isStoreOpen}
-              setIsStoreOpen={setIsStoreOpen}
-              externalFilter={storeFilter}
-              onFilterChange={setStoreFilter}
-            />
+            {/* Hero is now handled above AnimatePresence to work as a global overlay */}
             
             <Stats activeTab={activeTab} />
 
