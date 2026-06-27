@@ -40,20 +40,21 @@ const mockProducts = [
   { id: 'ly9', cat: "lyustri", name: "Люстра", price: "18 900 ₽", sub: "11 ламп", image: "/imgs/Catalog/Lyustri/11-lamp-18900.png" },
   { id: 'ly10', cat: "lyustri", name: "Люстра \"Ветка\"", price: "23 750 ₽", sub: "12 ламп", image: "/imgs/Catalog/Lyustri/12-lamp-vetka-23750.png" },
   { id: 'ly11', cat: "lyustri", name: "Люстра", price: "32 500 ₽", sub: "12 ламп", image: "/imgs/Catalog/Lyustri/12-lamp-32500.png" },
-  { id: 'ly12', cat: "lyustri", name: "Люстра", price: "33 750 ₽", sub: "16 ламп", image: "/imgs/Catalog/Lyustri/16-lamp-33750.png" },
-  { id: 'ly13', cat: "lyustri", name: "Люстра", price: "33 800 ₽", sub: "16 ламп, диаметр 1000 мм", image: "/imgs/Catalog/Lyustri/16-lamp-diameter-1000cm-33800.png" },
-  { id: 'ly14', cat: "lyustri", name: "Люстра", price: "47 300 ₽", sub: "18 ламп", image: "/imgs/Catalog/Lyustri/18-lamp-47300.png" },
-  { id: 'ly15', cat: "lyustri", name: "Люстра", price: "14 700 ₽", sub: "740x550 мм, 6 ламп", image: "/imgs/Catalog/Lyustri/740mmx550mm-6-lamp-14700.png" },
-  { id: 'ly16', cat: "lyustri", name: "Люстра", price: "27 000 ₽", sub: "диаметр 60 см", image: "/imgs/Catalog/Lyustri/diameter-60-27000.png" },
-  { id: 'ly17', cat: "lyustri", name: "Люстра \"Диодная\"", price: "33 700 ₽", sub: "диаметр 60 см", image: "/imgs/Catalog/Lyustri/diameter-60-diodnaya-33700.png" },
-  { id: 'ly18', cat: "lyustri", name: "Люстра \"Диодная\"", price: "17 040 ₽", sub: "диаметр 800 мм", image: "/imgs/Catalog/Lyustri/diameter-800-diodnaya-17040.png" },
-  { id: 'ly19', cat: "lyustri", name: "Люстра \"Диод-Трос\"", price: "17 850 ₽", sub: "", image: "/imgs/Catalog/Lyustri/Diod-tross-17850.png" },
-  { id: 'ly20', cat: "lyustri", name: "Люстра \"Диодная\"", price: "25 400 ₽", sub: "", image: "/imgs/Catalog/Lyustri/diyoidnaya-25400.png" },
-  { id: 'ly21', cat: "lyustri", name: "Люстра", price: "4 900 ₽", sub: "", image: "/imgs/Catalog/Lyustri/4900.png" },
-  { id: 'ly22', cat: "lyustri", name: "Люстра", price: "9 500 ₽", sub: "", image: "/imgs/Catalog/Lyustri/9500.png" },
-  { id: 'ly23', cat: "lyustri", name: "Люстра", price: "12 300 ₽", sub: "", image: "/imgs/Catalog/Lyustri/12300.png" },
-  { id: 'ly24', cat: "lyustri", name: "Люстра", price: "22 400 ₽", sub: "", image: "/imgs/Catalog/Lyustri/22400.png" },
-  { id: 'ly25', cat: "lyustri", name: "Люстра", price: "31 500 ₽", sub: "", image: "/imgs/Catalog/Lyustri/31500.png" },
+  { id: 'ly12', cat: "lyustri", name: "Люстра", price: "32 750 ₽", sub: "12 ламп", image: "/imgs/Catalog/Lyustri/12-lamp-32750.png" },
+  { id: 'ly13', cat: "lyustri", name: "Люстра", price: "33 750 ₽", sub: "16 ламп", image: "/imgs/Catalog/Lyustri/16-lamp-33750.png" },
+  { id: 'ly14', cat: "lyustri", name: "Люстра", price: "33 800 ₽", sub: "16 ламп, диаметр 1000 мм", image: "/imgs/Catalog/Lyustri/16-lamp-diameter-1000cm-33800.png" },
+  { id: 'ly15', cat: "lyustri", name: "Люстра", price: "47 300 ₽", sub: "18 ламп", image: "/imgs/Catalog/Lyustri/18-lamp-47300.png" },
+  { id: 'ly16', cat: "lyustri", name: "Люстра", price: "14 700 ₽", sub: "740x550 мм, 6 ламп", image: "/imgs/Catalog/Lyustri/740mmx550mm-6-lamp-14700.png" },
+  { id: 'ly17', cat: "lyustri", name: "Люстра", price: "27 000 ₽", sub: "диаметр 60 см", image: "/imgs/Catalog/Lyustri/diameter-60-27000.png" },
+  { id: 'ly18', cat: "lyustri", name: "Люстра \"Диодная\"", price: "33 700 ₽", sub: "диаметр 60 см", image: "/imgs/Catalog/Lyustri/diameter-60-diodnaya-33700.png" },
+  { id: 'ly19', cat: "lyustri", name: "Люстра \"Диодная\"", price: "17 040 ₽", sub: "диаметр 800 мм", image: "/imgs/Catalog/Lyustri/diameter-800-diodnaya-17040.png" },
+  { id: 'ly20', cat: "lyustri", name: "Люстра \"Диод-Трос\"", price: "17 850 ₽", sub: "", image: "/imgs/Catalog/Lyustri/Diod-tross-17850.png" },
+  { id: 'ly21', cat: "lyustri", name: "Люстра \"Диодная\"", price: "25 400 ₽", sub: "", image: "/imgs/Catalog/Lyustri/diyoidnaya-25400.png" },
+  { id: 'ly22', cat: "lyustri", name: "Люстра", price: "4 900 ₽", sub: "", image: "/imgs/Catalog/Lyustri/4900.png" },
+  { id: 'ly23', cat: "lyustri", name: "Люстра", price: "9 500 ₽", sub: "", image: "/imgs/Catalog/Lyustri/9500.png" },
+  { id: 'ly24', cat: "lyustri", name: "Люстра", price: "12 300 ₽", sub: "", image: "/imgs/Catalog/Lyustri/12300.png" },
+  { id: 'ly25', cat: "lyustri", name: "Люстра", price: "22 400 ₽", sub: "", image: "/imgs/Catalog/Lyustri/22400.png" },
+  { id: 'ly26', cat: "lyustri", name: "Люстра", price: "31 500 ₽", sub: "", image: "/imgs/Catalog/Lyustri/31500.png" },
 
   // Ковры (Carpets)
   { id: 'c1', cat: "carpets", name: "Осло", price: "7 650 ₽", sub: "1.5 * 2 м", image: "/imgs/Catalog/Carpets/1,5.2oslo7650.png" },
@@ -82,14 +83,16 @@ const mockProducts = [
   { id: 'k8', cat: "keramogranit", name: "Прогресс", price: "1 150 ₽/м²", sub: "Керамогранит", image: "/imgs/Catalog/Keramogranit/Progress-1150.png" },
 
   // Ламинат (Laminat)
-  { id: 'l1', cat: "laminate", name: "Peli", price: "950 ₽/м²", sub: "8мм, 33 класс", image: "/imgs/Catalog/Laminat/8mm-33class-peli-950.png" },
-  { id: 'l2', cat: "laminate", name: "Peli Анатолия Бежевый", price: "950 ₽/м²", sub: "8мм", image: "/imgs/Catalog/Laminat/8mm-Peli-Anatolia-Beige.png" },
-  { id: 'l3', cat: "laminate", name: "Peli Анатолия Серый", price: "950 ₽/м²", sub: "8мм", image: "/imgs/Catalog/Laminat/8mm-Peli-Anatolia-Gray-950.png" },
-  { id: 'l4', cat: "laminate", name: "Дуб Аркадия", price: "1 250 ₽/м²", sub: "12мм, 33 класс", image: "/imgs/Catalog/Laminat/12mm-33class-Dub-Arcadia-1250.png" },
-  { id: 'l5', cat: "laminate", name: "Дуб Кайзер", price: "1 270 ₽/м²", sub: "12мм, 33 класс", image: "/imgs/Catalog/Laminat/12mm-33class-Dub-Kaizer-1270.png" },
-  { id: 'l6', cat: "laminate", name: "Дуб Медичи", price: "1 300 ₽/м²", sub: "12мм, 33 класс", image: "/imgs/Catalog/Laminat/12mm-33class-Dub-Medichi-1300.png" },
-  { id: 'l7', cat: "laminate", name: "Дуб Рональд", price: "1 050 ₽/м²", sub: "12мм", image: "/imgs/Catalog/Laminat/12mm-Dob-Ronald-1050.png" },
-  { id: 'l8', cat: "laminate", name: "Дуб Савой", price: "1 100 ₽/м²", sub: "12мм", image: "/imgs/Catalog/Laminat/12mm-Dub-Savoy.png" },
+  { id: 'l1', cat: "laminate", name: "Peli Анатолия Кофе", price: "950 ₽/м²", sub: "8мм, 33 класс", image: "/imgs/Catalog/Laminat/8mm-33class-peli-950-(2).png" },
+  { id: 'l2', cat: "laminate", name: "Peli Анатолия Белый", price: "950 ₽/м²", sub: "8мм, 33 класс", image: "/imgs/Catalog/Laminat/8mm-33class-peli-950-(3).png" },  
+  { id: 'l3', cat: "laminate", name: "Peli Анатолия Темный дуб", price: "950 ₽/м²", sub: "8мм, 33 класс", image: "/imgs/Catalog/Laminat/8mm-33class-peli-950.png" }, 
+  { id: 'l4', cat: "laminate", name: "Peli Анатолия Бежевый", price: "950 ₽/м²", sub: "8мм", image: "/imgs/Catalog/Laminat/8mm-Peli-Anatolia-Beige.png" },
+  { id: 'l5', cat: "laminate", name: "Peli Анатолия Серый", price: "950 ₽/м²", sub: "8мм", image: "/imgs/Catalog/Laminat/8mm-Peli-Anatolia-Gray-950.png" },
+  { id: 'l6', cat: "laminate", name: "Дуб Аркадия", price: "1 270 ₽/м²", sub: "12мм, 33 класс", image: "/imgs/Catalog/Laminat/12mm-33class-Dub-Arcadia-1270.png" },
+  { id: 'l7', cat: "laminate", name: "Дуб Кайзер", price: "1 270 ₽/м²", sub: "12мм, 33 класс", image: "/imgs/Catalog/Laminat/12mm-33class-Dub-Kaizer-1270.png" },
+  { id: 'l8', cat: "laminate", name: "Дуб Медичи", price: "1 300 ₽/м²", sub: "12мм, 33 класс", image: "/imgs/Catalog/Laminat/12mm-33class-Dub-Medichi-1270.png" },
+  { id: 'l9', cat: "laminate", name: "Дуб Рональд", price: "1 050 ₽/м²", sub: "12мм", image: "/imgs/Catalog/Laminat/12mm-Dob-Ronald-1050.png" },
+  { id: 'l10', cat: "laminate", name: "Дуб Савой", price: "1 100 ₽/м²", sub: "12мм", image: "/imgs/Catalog/Laminat/12mm-Dub-Savoy.png" },
 ];
 
 export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
@@ -97,9 +100,10 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
   const [selectedCats, setSelectedCats] = useState<string[]>([]);
   const [showFilterMenu, setShowFilterMenu] = useState(false);
   
-  // Star Rating Animation
+  // Star Rating Animation - EXACT Framer Motion Logic
   const count = useMotionValue(0);
   const rounded = useTransform(count, (latest) => {
+    // Subtle high-frequency jitter for the flicker effect
     const jitter = (Math.random() - 0.5) * 0.05;
     const value = latest + (latest < 4.6 && latest > 0 ? jitter : 0);
     return Math.min(4.6, Math.max(0, value)).toFixed(1);
@@ -108,6 +112,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
   const [animationPlayed, setAnimationPlayed] = useState(false);
 
   useEffect(() => {
+    // One-time session check
     const seen = sessionStorage.getItem('rion_hero_rating_seen');
     if (seen) {
       count.set(4.6);
@@ -117,11 +122,13 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
     }
 
     if (activeTab === 'contacts' && !isStoreOpen && !animationPlayed) {
+      // 1. Animate number from 0 to 4.6 over 2 seconds
       const numberAnimation = animate(count, 4.6, {
         duration: 2,
         ease: "easeOut",
       });
 
+      // 2. Animate star fill from 0 to 92% synchronously
       const starAnimation = animate(0, 92, {
         duration: 2,
         ease: "easeOut",
@@ -154,7 +161,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
       setIsStoreOpen(false);
     } else {
       setIsStoreOpen(true);
-      setSelectedCats([]); 
+      setSelectedCats([]); // Reset filters to show "everything at once"
     }
   };
 
@@ -183,7 +190,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
     contacts: { title: "БОЛЬШЕ О RION", desc: "Чеченская Республика, с. Бено-Юрт. Мы всегда на связи для решения ваших задач." }
   }[activeTab];
 
-  // Star Generator - Black Stars
+  // Star Generator - Precision Clip-Path Filling in Solid Black
   const stars = Array.from({ length: 5 }, (_, i) => {
     const fillPercentage = Math.max(0, Math.min(100, (starsFill - i * 20) * 5));
     return (
@@ -263,6 +270,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
           </motion.div>
         ) : (
           <motion.div key="store-content" initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.02 }} className="z-[110] fixed inset-0 bg-background/95 backdrop-blur-3xl flex flex-col">
+            {/* Header: Simplified with only Back Button */}
             <div className="flex justify-between items-center px-8 py-10 border-b border-white/10 bg-background/50">
               <button 
                 onClick={toggleStore} 
@@ -314,6 +322,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
                 </div>
               </div>
 
+              {/* Scrollable Products with more spacing */}
               <ScrollArea className="flex-1 p-12">
                 <div className="max-w-[1800px] mx-auto space-y-32 pb-32">
                   {categories
