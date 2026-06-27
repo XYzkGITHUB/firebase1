@@ -1,12 +1,11 @@
-
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { 
   Menu, X, User, LogOut, ChevronDown, Package, 
-  Truck, Info, Grid3X3, Layers, Bath, Search, ArrowRight 
+  Truck, Info, Grid3X3, Layers, Bath, Search, ArrowRight, ShoppingBag 
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ContentTab } from "@/app/page";
@@ -28,6 +27,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { CATEGORIES, PRODUCTS } from "@/lib/products";
 
 interface NavigationProps {
   activeTab: ContentTab;
@@ -41,6 +42,7 @@ export function Navigation({ activeTab, setActiveTab, isStoreOpen, setIsStoreOpe
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { user } = useUser();
   const auth = useAuth();
   const router = useRouter();
@@ -78,6 +80,29 @@ export function Navigation({ activeTab, setActiveTab, isStoreOpen, setIsStoreOpe
 
   const handleSignOut = () => {
     signOut(auth);
+  };
+
+  const filteredProducts = useMemo(() => {
+    if (!searchQuery.trim()) return [];
+    const query = searchQuery.toLowerCase();
+    return PRODUCTS.filter(p => 
+      p.name.toLowerCase().includes(query) || 
+      p.sub.toLowerCase().includes(query)
+    ).slice(0, 8);
+  }, [searchQuery]);
+
+  const filteredCategories = useMemo(() => {
+    if (!searchQuery.trim()) return [];
+    const query = searchQuery.toLowerCase();
+    return CATEGORIES.filter(c => 
+      c.name.toLowerCase().includes(query)
+    );
+  }, [searchQuery]);
+
+  const handleSearchResultClick = () => {
+    setIsSearchOpen(false);
+    setIsStoreOpen(true);
+    setSearchQuery("");
   };
 
   return (
@@ -164,13 +189,13 @@ export function Navigation({ activeTab, setActiveTab, isStoreOpen, setIsStoreOpe
           <div className="flex justify-end items-center gap-6">
             <div className="hidden lg:flex items-center gap-6">
               {/* Search Trigger */}
-              <Dialog>
+              <Dialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
                 <DialogTrigger asChild>
                   <button className="text-foreground/60 hover:text-primary transition-colors p-2 mr-4">
                     <Search size={18} />
                   </button>
                 </DialogTrigger>
-                <DialogContent className="max-w-2xl bg-background/95 backdrop-blur-2xl border-border rounded-none p-0 overflow-hidden shadow-2xl">
+                <DialogContent className="max-w-3xl bg-background/95 backdrop-blur-2xl border-border rounded-none p-0 overflow-hidden shadow-2xl">
                   <div className="p-8">
                     <DialogHeader className="mb-8">
                       <DialogTitle className="text-2xl font-headline uppercase tracking-tight">Поиск по IRGG</DialogTitle>
@@ -185,27 +210,98 @@ export function Navigation({ activeTab, setActiveTab, isStoreOpen, setIsStoreOpe
                         autoFocus
                       />
                     </div>
-                    <div className="mt-8 space-y-4">
-                      <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Популярные категории</p>
-                      <div className="flex flex-wrap gap-3">
-                        {["Керамогранит", "Ламинат", "Сантехника", "Люстры", "Ковры"].map((cat) => (
-                          <button 
-                            key={cat} 
-                            onClick={() => {
-                              setSearchQuery(cat);
-                              setIsStoreOpen(true);
-                            }}
-                            className="px-4 py-2 bg-primary/5 border border-primary/10 text-[10px] font-bold uppercase tracking-widest hover:bg-primary hover:text-white transition-all"
-                          >
-                            {cat}
-                          </button>
-                        ))}
-                      </div>
+                    
+                    <div className="mt-8">
+                      <ScrollArea className="max-h-[50vh] pr-4">
+                        <AnimatePresence mode="wait">
+                          {searchQuery.trim() === "" ? (
+                            <motion.div 
+                              key="suggestions"
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              exit={{ opacity: 0 }}
+                              className="space-y-4"
+                            >
+                              <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Популярные категории</p>
+                              <div className="flex flex-wrap gap-3">
+                                {CATEGORIES.map((cat) => (
+                                  <button 
+                                    key={cat.id} 
+                                    onClick={() => {
+                                      setSearchQuery(cat.name);
+                                    }}
+                                    className="px-4 py-2 bg-primary/5 border border-primary/10 text-[10px] font-bold uppercase tracking-widest hover:bg-primary hover:text-white transition-all"
+                                  >
+                                    {cat.name}
+                                  </button>
+                                ))}
+                              </div>
+                            </motion.div>
+                          ) : (
+                            <motion.div 
+                              key="results"
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: 10 }}
+                              className="space-y-8"
+                            >
+                              {filteredCategories.length > 0 && (
+                                <div className="space-y-4">
+                                  <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary/60 border-b border-border pb-2">Категории</h4>
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                    {filteredCategories.map(cat => (
+                                      <button 
+                                        key={cat.id} 
+                                        onClick={handleSearchResultClick}
+                                        className="flex items-center gap-3 p-3 hover:bg-primary/5 transition-colors text-left"
+                                      >
+                                        <ShoppingBag size={14} className="text-primary" />
+                                        <span className="text-xs font-bold uppercase tracking-widest">{cat.name}</span>
+                                      </button>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+
+                              {filteredProducts.length > 0 ? (
+                                <div className="space-y-4">
+                                  <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary/60 border-b border-border pb-2">Товары</h4>
+                                  <div className="space-y-2">
+                                    {filteredProducts.map(prod => (
+                                      <button 
+                                        key={prod.id} 
+                                        onClick={handleSearchResultClick}
+                                        className="w-full flex items-center gap-4 p-3 hover:bg-primary/5 transition-colors text-left group"
+                                      >
+                                        <div className="w-12 h-12 bg-muted relative overflow-hidden flex-shrink-0">
+                                          <img src={prod.image} alt={prod.name} className="object-cover w-full h-full" />
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                          <p className="text-xs font-bold uppercase tracking-widest truncate group-hover:text-primary transition-colors">{prod.name}</p>
+                                          <p className="text-[10px] text-muted-foreground truncate">{prod.sub}</p>
+                                        </div>
+                                        <div className="text-xs font-bold text-primary">{prod.price}</div>
+                                      </button>
+                                    ))}
+                                  </div>
+                                </div>
+                              ) : filteredCategories.length === 0 && (
+                                <div className="text-center py-12">
+                                  <p className="text-muted-foreground text-sm italic">Ничего не найдено по запросу "{searchQuery}"</p>
+                                </div>
+                              )}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </ScrollArea>
                     </div>
                   </div>
                   <div className="bg-primary/10 p-4 text-center">
                     <button 
-                      onClick={() => setIsStoreOpen(true)}
+                      onClick={() => {
+                        setIsSearchOpen(false);
+                        setIsStoreOpen(true);
+                      }}
                       className="text-[9px] font-bold uppercase tracking-[0.4em] text-primary flex items-center justify-center gap-2 mx-auto"
                     >
                       Перейти в полный каталог <ArrowRight size={10} />
@@ -275,23 +371,15 @@ export function Navigation({ activeTab, setActiveTab, isStoreOpen, setIsStoreOpe
                 <button onClick={() => { setIsStoreOpen(true); setIsMobileMenuOpen(false); }} className="text-xl font-bold uppercase tracking-[0.3em] text-primary py-2">Магазин</button>
                 
                 {/* Mobile Search Button */}
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <button className="flex items-center gap-3 text-xl font-bold uppercase tracking-[0.3em] text-muted-foreground hover:text-primary transition-colors py-2">
-                      <Search size={20} /> Поиск
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="w-[90vw] bg-background/95 backdrop-blur-2xl border-border rounded-none p-6 shadow-2xl">
-                    <DialogHeader>
-                      <DialogTitle className="text-lg font-headline uppercase">Поиск</DialogTitle>
-                    </DialogHeader>
-                    <Input 
-                      placeholder="Найти материал..." 
-                      className="h-12 bg-background/50 border-border rounded-none mt-4"
-                      autoFocus
-                    />
-                  </DialogContent>
-                </Dialog>
+                <button 
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    setIsSearchOpen(true);
+                  }}
+                  className="flex items-center gap-3 text-xl font-bold uppercase tracking-[0.3em] text-muted-foreground hover:text-primary transition-colors py-2"
+                >
+                  <Search size={20} /> Поиск
+                </button>
               </div>
                 
               <div className="mt-12 flex flex-col items-center gap-4 w-full px-12">
