@@ -99,7 +99,7 @@ export function Navigation({ activeTab, setActiveTab, isStoreOpen, setIsStoreOpe
                   Информация <ChevronDown size={12} className="opacity-50" />
                 </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="bg-background/95 backdrop-blur-xl border-border min-w-[220px] p-2 rounded-none mt-2">
+              <DropdownMenuContent align="start" sideOffset={12} className="bg-background/95 backdrop-blur-xl border-border min-w-[220px] p-2 rounded-none">
                 <DropdownMenuItem onClick={() => handleNavClick("keramogranit")} className="flex items-center gap-3 py-3 px-4 cursor-pointer focus:bg-primary/5 rounded-none">
                   <Grid3X3 size={14} className="text-primary" />
                   <span className="text-[10px] font-bold uppercase tracking-widest">Керамогранит</span>
