@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
@@ -71,7 +72,7 @@ export function Navigation({ activeTab, setActiveTab, isStoreOpen, setIsStoreOpe
     <>
       <LuxuryLoader isVisible={isNavigating} />
       <nav className={cn(
-        "fixed top-0 left-0 w-full z-[100] transition-all duration-500 py-4 px-6 lg:py-6 lg:px-12",
+        "fixed top-0 left-0 w-full z-[100] transition-all duration-500 py-4 px-4 sm:px-6 lg:py-6 lg:px-12",
         isScrolled 
           ? "bg-background/80 backdrop-blur-md border-b border-border shadow-sm" 
           : "bg-transparent"
@@ -79,56 +80,58 @@ export function Navigation({ activeTab, setActiveTab, isStoreOpen, setIsStoreOpe
         <div className="max-w-[1800px] mx-auto grid grid-cols-3 items-center">
           
           {/* LEFT: Navigation Buttons */}
-          <div className="hidden lg:flex items-center gap-8">
-            <button 
-              onClick={() => handleNavClick("main")}
-              className={cn(
-                "text-[10px] font-bold transition-all tracking-[0.3em] uppercase py-2",
-                activeTab === "main" ? "text-primary" : "text-foreground/60 hover:text-primary"
-              )}
-            >
-              Главная
-            </button>
+          <div className="flex items-center">
+            <div className="hidden lg:flex items-center gap-8">
+              <button 
+                onClick={() => handleNavClick("main")}
+                className={cn(
+                  "text-[10px] font-bold transition-all tracking-[0.3em] uppercase py-2",
+                  activeTab === "main" ? "text-primary" : "text-foreground/60 hover:text-primary"
+                )}
+              >
+                Главная
+              </button>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className={cn(
-                  "text-[10px] font-bold transition-all tracking-[0.3em] uppercase py-2 flex items-center gap-2 outline-none",
-                  activeTab !== "main" && activeTab !== "contacts" ? "text-primary" : "text-foreground/60 hover:text-primary"
-                )}>
-                  Информация <ChevronDown size={12} className="opacity-50" />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" sideOffset={12} className="bg-background/95 backdrop-blur-xl border-border min-w-[220px] p-2 rounded-none">
-                <DropdownMenuItem onClick={() => handleNavClick("keramogranit")} className="flex items-center gap-3 py-3 px-4 cursor-pointer focus:bg-primary/5 rounded-none">
-                  <Grid3X3 size={14} className="text-primary" />
-                  <span className="text-[10px] font-bold uppercase tracking-widest">Керамогранит</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleNavClick("laminate_sps")} className="flex items-center gap-3 py-3 px-4 cursor-pointer focus:bg-primary/5 rounded-none">
-                  <Layers size={14} className="text-primary" />
-                  <span className="text-[10px] font-bold uppercase tracking-widest">Ламинат и SPS</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleNavClick("sanitary")} className="flex items-center gap-3 py-3 px-4 cursor-pointer focus:bg-primary/5 rounded-none">
-                  <Bath size={14} className="text-primary" />
-                  <span className="text-[10px] font-bold uppercase tracking-widest">Сантехника</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleNavClick("delivery")} className="flex items-center gap-3 py-3 px-4 cursor-pointer focus:bg-primary/5 rounded-none">
-                  <Truck size={14} className="text-primary" />
-                  <span className="text-[10px] font-bold uppercase tracking-widest">Таможня</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleNavClick("contacts")} className="flex items-center gap-3 py-3 px-4 cursor-pointer focus:bg-primary/5 rounded-none">
-                  <Info size={14} className="text-primary" />
-                  <span className="text-[10px] font-bold uppercase tracking-widest">О нас</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className={cn(
+                    "text-[10px] font-bold transition-all tracking-[0.3em] uppercase py-2 flex items-center gap-2 outline-none",
+                    activeTab !== "main" && activeTab !== "contacts" ? "text-primary" : "text-foreground/60 hover:text-primary"
+                  )}>
+                    Информация <ChevronDown size={12} className="opacity-50" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" sideOffset={12} className="bg-background/95 backdrop-blur-xl border-border min-w-[220px] p-2 rounded-none z-[150]">
+                  <DropdownMenuItem onClick={() => handleNavClick("keramogranit")} className="flex items-center gap-3 py-3 px-4 cursor-pointer focus:bg-primary/5 rounded-none">
+                    <Grid3X3 size={14} className="text-primary" />
+                    <span className="text-[10px] font-bold uppercase tracking-widest">Керамогранит</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleNavClick("laminate_sps")} className="flex items-center gap-3 py-3 px-4 cursor-pointer focus:bg-primary/5 rounded-none">
+                    <Layers size={14} className="text-primary" />
+                    <span className="text-[10px] font-bold uppercase tracking-widest">Ламинат и SPS</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleNavClick("sanitary")} className="flex items-center gap-3 py-3 px-4 cursor-pointer focus:bg-primary/5 rounded-none">
+                    <Bath size={14} className="text-primary" />
+                    <span className="text-[10px] font-bold uppercase tracking-widest">Сантехника</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleNavClick("delivery")} className="flex items-center gap-3 py-3 px-4 cursor-pointer focus:bg-primary/5 rounded-none">
+                    <Truck size={14} className="text-primary" />
+                    <span className="text-[10px] font-bold uppercase tracking-widest">Таможня</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleNavClick("contacts")} className="flex items-center gap-3 py-3 px-4 cursor-pointer focus:bg-primary/5 rounded-none">
+                    <Info size={14} className="text-primary" />
+                    <span className="text-[10px] font-bold uppercase tracking-widest">О нас</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
 
-            <button 
-              onClick={() => setIsStoreOpen(true)}
-              className="text-[10px] font-bold transition-all tracking-[0.3em] uppercase py-2 text-foreground/60 hover:text-primary"
-            >
-              Каталог
-            </button>
+              <button 
+                onClick={() => setIsStoreOpen(true)}
+                className="text-[10px] font-bold transition-all tracking-[0.3em] uppercase py-2 text-foreground/60 hover:text-primary"
+              >
+                Каталог
+              </button>
+            </div>
           </div>
 
           {/* MIDDLE: IRGG Logo */}
@@ -139,56 +142,58 @@ export function Navigation({ activeTab, setActiveTab, isStoreOpen, setIsStoreOpe
                 e.preventDefault();
                 handleNavClick("main");
               }}
-              className="text-2xl lg:text-3xl font-headline font-bold text-foreground tracking-tighter hover:text-primary transition-all"
+              className="text-xl sm:text-2xl lg:text-3xl font-headline font-bold text-foreground tracking-tighter hover:text-primary transition-all"
             >
               IRGG
             </Link>
           </div>
 
-          {/* RIGHT: Auth Buttons */}
-          <div className="hidden lg:flex items-center justify-end gap-6">
-            {user && !user.isAnonymous ? (
-               <div className="flex items-center gap-6">
-                  <span className="text-[9px] uppercase tracking-widest text-muted-foreground font-bold opacity-60">
-                    {user.email}
-                  </span>
+          {/* RIGHT: Auth Buttons & Mobile Toggle */}
+          <div className="flex justify-end items-center gap-6">
+            <div className="hidden lg:flex items-center gap-6">
+              {user && !user.isAnonymous ? (
+                 <div className="flex items-center gap-6">
+                    <span className="text-[9px] uppercase tracking-widest text-muted-foreground font-bold opacity-60">
+                      {user.email}
+                    </span>
+                    <button 
+                      onClick={handleSignOut}
+                      className="text-[9px] font-bold uppercase tracking-[0.3em] hover:text-primary transition-colors flex items-center gap-2"
+                    >
+                      <LogOut size={14} /> Выйти
+                    </button>
+                 </div>
+              ) : (
+                <>
                   <button 
-                    onClick={handleSignOut}
-                    className="text-[9px] font-bold uppercase tracking-[0.3em] hover:text-primary transition-colors flex items-center gap-2"
+                    onClick={() => handleAuthNavigation("/login")}
+                    className="text-[10px] font-bold uppercase tracking-[0.3em] hover:text-primary transition-colors flex items-center gap-2"
                   >
-                    <LogOut size={14} /> Выйти
+                    <User size={14} /> Войти
                   </button>
-               </div>
-            ) : (
-              <>
-                <button 
-                  onClick={() => handleAuthNavigation("/login")}
-                  className="text-[10px] font-bold uppercase tracking-[0.3em] hover:text-primary transition-colors flex items-center gap-2"
-                >
-                  <User size={14} /> Войти
-                </button>
-                <button 
-                  onClick={() => handleAuthNavigation("/register")}
-                  className="bg-primary text-white px-6 py-3 font-bold text-[10px] uppercase tracking-[0.3em] hover:bg-primary/90 transition-all shadow-xl"
-                >
-                  Регистрация
-                </button>
-              </>
-            )}
-          </div>
+                  <button 
+                    onClick={() => handleAuthNavigation("/register")}
+                    className="bg-primary text-white px-6 py-3 font-bold text-[10px] uppercase tracking-[0.3em] hover:bg-primary/90 transition-all shadow-xl"
+                  >
+                    Регистрация
+                  </button>
+                </>
+              )}
+            </div>
 
-          {/* MOBILE TOGGLE */}
-          <div className="lg:hidden flex justify-end">
-            <button 
-              className="text-foreground p-2 relative z-[120] hover:text-primary transition-colors"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-            </button>
+            {/* MOBILE TOGGLE (Now correctly placed inside the 3rd column) */}
+            <div className="lg:hidden flex items-center">
+              <button 
+                className="text-foreground p-2 relative z-[120] hover:text-primary transition-colors"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              >
+                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Menu Overlay */}
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div 
