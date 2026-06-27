@@ -35,7 +35,7 @@ const mockProducts = [
   { id: 'ly4', cat: "lyustri", name: "Люстра", price: "6 800 ₽", sub: "8 ламп", image: "/imgs/Catalog/Lyustri/8-lamp-6800.png" },
   { id: 'ly5', cat: "lyustri", name: "Люстра", price: "11 900 ₽", sub: "8 ламп", image: "/imgs/Catalog/Lyustri/8-lamp-11900.png" },
   { id: 'ly6', cat: "lyustri", name: "Люстра \"Дождик\"", price: "13 200 ₽", sub: "8 ламп", image: "/imgs/Catalog/Lyustri/8-lamp-dozhdik-13200.png" },
-  { id: 'ly7', cat: "lyustri", name: "Люстра \"Диодная\"", price: "13 120 ₽", sub: "10 ламп", image: "/imgs/Catalog/Lyustri/10-lamp-diodnaya-13120.png" },
+  { id: 'ly7', cat: "lyustri", name: "Люстра \"Диодная\"", price: "13 120 ₽", sub: "10 ламп", image: "/imgs/Catalog/Lyustri/10-lamp-dioidnaya-13120.png" },
   { id: 'ly8', cat: "lyustri", name: "Люстра", price: "19 500 ₽", sub: "10 ламп", image: "/imgs/Catalog/Lyustri/10-lamp-19500.png" },
   { id: 'ly9', cat: "lyustri", name: "Люстра", price: "18 900 ₽", sub: "11 ламп", image: "/imgs/Catalog/Lyustri/11-lamp-18900.png" },
   { id: 'ly10', cat: "lyustri", name: "Люстра \"Ветка\"", price: "23 750 ₽", sub: "12 ламп", image: "/imgs/Catalog/Lyustri/12-lamp-vetka-23750.png" },
@@ -83,9 +83,9 @@ const mockProducts = [
   { id: 'k8', cat: "keramogranit", name: "Прогресс", price: "1 150 ₽/м²", sub: "Керамогранит", image: "/imgs/Catalog/Keramogranit/Progress-1150.png" },
 
   // Ламинат (Laminat)
-  { id: 'l1', cat: "laminate", name: "Peli Анатолия Кофе", price: "950 ₽/м²", sub: "8мм, 33 класс", image: "/imgs/Catalog/Laminat/8mm-33class-peli-950-(2).png" },
-  { id: 'l2', cat: "laminate", name: "Peli Анатолия Белый", price: "950 ₽/м²", sub: "8мм, 33 класс", image: "/imgs/Catalog/Laminat/8mm-33class-peli-950-(3).png" },  
-  { id: 'l3', cat: "laminate", name: "Peli Анатолия Темный дуб", price: "950 ₽/м²", sub: "8мм, 33 класс", image: "/imgs/Catalog/Laminat/8mm-33class-peli-950.png" }, 
+  { id: 'l1', cat: "laminate", name: "Peli Анатолия Кофе", price: "950 ₽/м²", sub: "8мм, 33 класс", image: "/imgs/Catalog/Laminat/8mm-33class-peli-950 (2).png" },
+  { id: 'l2', cat: "laminate", name: "Peli Анатолия Белый", price: "950 ₽/м²", sub: "8мм, 33 класс", image: "/imgs/Catalog/Laminat/8mm-33class-Peli-950 (3).png" },  
+  { id: 'l3', cat: "laminate", name: "Peli Анатолия Темный дуб", price: "950 ₽/м²", sub: "8мм, 33 класс", image: "/imgs/Catalog/Laminat/8mm-33class-Peli-950.png" }, 
   { id: 'l4', cat: "laminate", name: "Peli Анатолия Бежевый", price: "950 ₽/м²", sub: "8мм", image: "/imgs/Catalog/Laminat/8mm-Peli-Anatolia-Beige.png" },
   { id: 'l5', cat: "laminate", name: "Peli Анатолия Серый", price: "950 ₽/м²", sub: "8мм", image: "/imgs/Catalog/Laminat/8mm-Peli-Anatolia-Gray-950.png" },
   { id: 'l6', cat: "laminate", name: "Дуб Аркадия", price: "1 270 ₽/м²", sub: "12мм, 33 класс", image: "/imgs/Catalog/Laminat/12mm-33class-Dub-Arcadia-1270.png" },
@@ -100,10 +100,9 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
   const [selectedCats, setSelectedCats] = useState<string[]>([]);
   const [showFilterMenu, setShowFilterMenu] = useState(false);
   
-  // Star Rating Animation - EXACT Framer Motion Logic
+  // Star Rating Animation
   const count = useMotionValue(0);
   const rounded = useTransform(count, (latest) => {
-    // Subtle high-frequency jitter for the flicker effect
     const jitter = (Math.random() - 0.5) * 0.05;
     const value = latest + (latest < 4.6 && latest > 0 ? jitter : 0);
     return Math.min(4.6, Math.max(0, value)).toFixed(1);
@@ -112,7 +111,6 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
   const [animationPlayed, setAnimationPlayed] = useState(false);
 
   useEffect(() => {
-    // One-time session check
     const seen = sessionStorage.getItem('rion_hero_rating_seen');
     if (seen) {
       count.set(4.6);
@@ -122,13 +120,11 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
     }
 
     if (activeTab === 'contacts' && !isStoreOpen && !animationPlayed) {
-      // 1. Animate number from 0 to 4.6 over 2 seconds
       const numberAnimation = animate(count, 4.6, {
         duration: 2,
         ease: "easeOut",
       });
 
-      // 2. Animate star fill from 0 to 92% synchronously
       const starAnimation = animate(0, 92, {
         duration: 2,
         ease: "easeOut",
@@ -161,7 +157,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
       setIsStoreOpen(false);
     } else {
       setIsStoreOpen(true);
-      setSelectedCats([]); // Reset filters to show "everything at once"
+      setSelectedCats([]);
     }
   };
 
@@ -183,6 +179,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
   };
 
   const currentContent = {
+    main: { title: "", desc: "" }, // Handled by MainSection
     keramogranit: { title: "КЕРАМОГРАНИТ ПОД КЛЮЧ", desc: "Подбираем материал от производителей по всему миру и доставляем на объект точно в срок." },
     laminate_sps: { title: "ЛАМИНАТ И SPS", desc: "Стабильные поставки напрямую с фабрик Китая и Индии." },
     sanitary: { title: "ЭКСКЛЮЗИВНАЯ САНТЕХНИКА", desc: "Прямые поставки санфаянса и мебели для ванных комнат от ведущих мировых брендов." },
@@ -190,7 +187,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
     contacts: { title: "БОЛЬШЕ О RION", desc: "Чеченская Республика, с. Бено-Юрт. Мы всегда на связи для решения ваших задач." }
   }[activeTab];
 
-  // Star Generator - Precision Clip-Path Filling in Solid Black
+  // Star Generator
   const stars = Array.from({ length: 5 }, (_, i) => {
     const fillPercentage = Math.max(0, Math.min(100, (starsFill - i * 20) * 5));
     return (
@@ -206,8 +203,13 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
     );
   });
 
+  if (activeTab === "main" && !isStoreOpen) return null;
+
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-start overflow-hidden bg-background pt-32 md:pt-48 pb-40">
+      {/* Hidden button for MainSection to trigger shop */}
+      <button data-shop-trigger="true" className="hidden" onClick={() => setIsStoreOpen(true)} />
+      
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute inset-0 opacity-[0.08] dark:opacity-[0.15]" style={{ backgroundImage: `linear-gradient(to right, hsl(var(--primary)) 1px, transparent 1px), linear-gradient(to bottom, hsl(var(--primary)) 1px, transparent 1px)`, backgroundSize: '100px 100px' }} />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
@@ -270,7 +272,6 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
           </motion.div>
         ) : (
           <motion.div key="store-content" initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.02 }} className="z-[110] fixed inset-0 bg-background/95 backdrop-blur-3xl flex flex-col">
-            {/* Header: Simplified with only Back Button */}
             <div className="flex justify-between items-center px-8 py-10 border-b border-white/10 bg-background/50">
               <button 
                 onClick={toggleStore} 
@@ -322,7 +323,6 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
                 </div>
               </div>
 
-              {/* Scrollable Products with more spacing */}
               <ScrollArea className="flex-1 p-12">
                 <div className="max-w-[1800px] mx-auto space-y-32 pb-32">
                   {categories

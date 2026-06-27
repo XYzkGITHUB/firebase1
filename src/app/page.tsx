@@ -10,12 +10,13 @@ import { AIAssistant } from "@/components/sections/AIAssistant";
 import { Contact } from "@/components/sections/Contact";
 import { FAQ } from "@/components/sections/FAQ";
 import { Footer } from "@/components/sections/Footer";
+import { MainSection } from "@/components/sections/MainSection";
 import { motion, AnimatePresence } from "framer-motion";
 
-export type ContentTab = "keramogranit" | "laminate_sps" | "sanitary" | "delivery" | "contacts";
+export type ContentTab = "main" | "keramogranit" | "laminate_sps" | "sanitary" | "delivery" | "contacts";
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<ContentTab>("keramogranit");
+  const [activeTab, setActiveTab] = useState<ContentTab>("main");
   const [isStoreOpen, setIsStoreOpen] = useState(false);
 
   const scrollToContact = () => {
@@ -25,6 +26,7 @@ export default function Home() {
     }
   };
 
+  const isMainTab = activeTab === "main";
   const isContactsTab = activeTab === "contacts";
   const isDeliveryTab = activeTab === "delivery";
 
@@ -37,59 +39,63 @@ export default function Home() {
         setIsStoreOpen={setIsStoreOpen}
       />
       
-      <Hero 
-        activeTab={activeTab} 
-        isStoreOpen={isStoreOpen}
-        setIsStoreOpen={setIsStoreOpen}
-      />
-      
-      <Stats activeTab={activeTab} />
-
       <AnimatePresence mode="wait">
-        <motion.div
-          key={activeTab}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        >
-          {/* Section: AI Assistant - hidden on contacts and delivery */}
-          {!isContactsTab && !isDeliveryTab && <AIAssistant />}
-          
-          {/* Section: Explorer - always visible but content inside reacts to activeTab */}
-          <ProductExplorer activeTab={activeTab} setActiveTab={setActiveTab} />
-          
-          {/* Section: Logistics Journey - only on delivery */}
-          {isDeliveryTab && (
-            <LogisticsJourney activeTab={activeTab} />
-          )}
+        {isMainTab ? (
+          <MainSection key="main-section" setActiveTab={setActiveTab} />
+        ) : (
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <Hero 
+              activeTab={activeTab} 
+              isStoreOpen={isStoreOpen}
+              setIsStoreOpen={setIsStoreOpen}
+            />
+            
+            <Stats activeTab={activeTab} />
 
-          {/* Section: Call to Action - hidden on delivery and contacts */}
-          {!isContactsTab && !isDeliveryTab && (activeTab !== "sanitary") && (
-            <section className="py-24 md:py-32 px-6 bg-primary flex flex-col items-center justify-center text-center">
-               <h2 className="text-3xl md:text-6xl font-headline text-white mb-8 uppercase tracking-tighter max-w-4xl">
-                 Связаться с менеджером
-               </h2>
-               <p className="text-white/80 text-lg md:text-2xl mb-12 max-w-2xl font-medium leading-relaxed">
-                 Мы поможем рассчитать объем и сроки поставки для вашего объекта уже сегодня.
-               </p>
-               <button 
-                 onClick={scrollToContact}
-                 className="h-20 md:h-24 px-12 md:px-20 bg-white text-primary font-bold uppercase tracking-widest text-sm md:text-lg hover:bg-neutral-100 transition-all shadow-2xl"
-               >
-                 Отправить запрос
-               </button>
-            </section>
-          )}
+            {/* Section: AI Assistant - hidden on contacts and delivery */}
+            {!isContactsTab && !isDeliveryTab && <AIAssistant />}
+            
+            {/* Section: Explorer - always visible but content inside reacts to activeTab */}
+            <ProductExplorer activeTab={activeTab} setActiveTab={setActiveTab} />
+            
+            {/* Section: Logistics Journey - only on delivery */}
+            {isDeliveryTab && (
+              <LogisticsJourney activeTab={activeTab} />
+            )}
 
-          {/* Section: FAQ and Contact - hidden on contacts page specifically */}
-          {!isContactsTab && (
-            <>
-              <FAQ activeTab={activeTab} />
-              <Contact activeTab={activeTab} />
-            </>
-          )}
-        </motion.div>
+            {/* Section: Call to Action - hidden on delivery and contacts */}
+            {!isContactsTab && !isDeliveryTab && (activeTab !== "sanitary") && (
+              <section className="py-24 md:py-32 px-6 bg-primary flex flex-col items-center justify-center text-center">
+                 <h2 className="text-3xl md:text-6xl font-headline text-white mb-8 uppercase tracking-tighter max-w-4xl">
+                   Связаться с менеджером
+                 </h2>
+                 <p className="text-white/80 text-lg md:text-2xl mb-12 max-w-2xl font-medium leading-relaxed">
+                   Мы поможем рассчитать объем и сроки поставки для вашего объекта уже сегодня.
+                 </p>
+                 <button 
+                   onClick={scrollToContact}
+                   className="h-20 md:h-24 px-12 md:px-20 bg-white text-primary font-bold uppercase tracking-widest text-sm md:text-lg hover:bg-neutral-100 transition-all shadow-2xl"
+                 >
+                   Отправить запрос
+                 </button>
+              </section>
+            )}
+
+            {/* Section: FAQ and Contact - hidden on contacts page specifically */}
+            {!isContactsTab && (
+              <>
+                <FAQ activeTab={activeTab} />
+                <Contact activeTab={activeTab} />
+              </>
+            )}
+          </motion.div>
+        )}
       </AnimatePresence>
       
       <Footer />
