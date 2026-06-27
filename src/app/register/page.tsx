@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState } from "react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
@@ -31,7 +30,7 @@ export default function RegisterPage() {
     "Прямые поставки из Индии",
     "Ламинат и SPS коллекции",
     "Логистика под ключ",
-    "RION"
+    "IRGG"
   ];
 
   const handleRegister = async (e: React.FormEvent) => {
@@ -90,7 +89,7 @@ export default function RegisterPage() {
         <CardHeader className="space-y-4 text-center pt-8">
           <CardTitle className="text-4xl font-headline tracking-tighter uppercase">Регистрация</CardTitle>
           <CardDescription className="text-muted-foreground uppercase tracking-widest text-[10px]">
-            Станьте партнером RION
+            Станьте партнером IRGG
           </CardDescription>
         </CardHeader>
         <CardContent>

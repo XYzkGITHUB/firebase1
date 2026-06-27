@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useMemo } from 'react';
@@ -57,11 +56,11 @@ export function LuxuryLoader({ isVisible }: LuxuryLoaderProps) {
       
       <div style={containerStyle}>
         {/* Background Layer */}
-        <span>RION</span>
+        <span>IRGG</span>
         
         {/* Animated Progress Layer */}
         <div style={overlayStyle}>
-          RION
+          IRGG
         </div>
       </div>
     </div>

@@ -43,7 +43,7 @@ const prompt = ai.definePrompt({
   name: 'deliveryDateEstimatorPrompt',
   input: {schema: DeliveryDateEstimatorInputSchema},
   output: {schema: DeliveryDateEstimatorOutputSchema},
-  prompt: `You are an expert logistics specialist for construction materials. Your task is to estimate a realistic delivery date, if the request is outside of the field of construction and materials. please, do not waste any time on saying, that this ai isn't made for any tasks but Materials of RION.
+  prompt: `You are an expert logistics specialist for construction materials. Your task is to estimate a realistic delivery date, if the request is outside of the field of construction and materials. please, do not waste any time on saying, that this ai isn't made for any tasks but Materials of IRGG.
 
 STRICT RULE: The 'reasoning' field in the output MUST BE STRICTLY IN RUSSIAN.
 

@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -28,7 +27,7 @@ export default function LoginPage() {
     "Прямые поставки из Индии",
     "Ламинат и SPS коллекции",
     "Логистика под ключ",
-    "RION"
+    "IRGG"
   ];
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -38,7 +37,7 @@ export default function LoginPage() {
       await signInWithEmailAndPassword(auth, email, password);
       toast({
         title: "Успешный вход",
-        description: "Добро пожаловать в RION.",
+        description: "Добро пожаловать в IRGG.",
       });
       router.push("/");
     } catch (error: any) {
@@ -75,7 +74,7 @@ export default function LoginPage() {
         <CardHeader className="space-y-4 text-center pt-8">
           <CardTitle className="text-4xl font-headline tracking-tighter uppercase">Вход</CardTitle>
           <CardDescription className="text-muted-foreground uppercase tracking-widest text-[10px]">
-            Личный кабинет партнера RION
+            Личный кабинет партнера IRGG
           </CardDescription>
         </CardHeader>
         <CardContent>

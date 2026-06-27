@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
@@ -132,7 +131,7 @@ export function Navigation({ activeTab, setActiveTab, isStoreOpen, setIsStoreOpe
             </button>
           </div>
 
-          {/* MIDDLE: RION Logo */}
+          {/* MIDDLE: IRGG Logo */}
           <div className="flex justify-center">
             <Link 
               href="/" 
@@ -142,7 +141,7 @@ export function Navigation({ activeTab, setActiveTab, isStoreOpen, setIsStoreOpe
               }}
               className="text-2xl lg:text-3xl font-headline font-bold text-foreground tracking-tighter hover:text-primary transition-all"
             >
-              RION
+              IRGG
             </Link>
           </div>
 

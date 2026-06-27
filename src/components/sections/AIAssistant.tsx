@@ -82,7 +82,7 @@ export function AIAssistant() {
           {isLoading && (
             <div className="h-64 flex flex-col items-center justify-center space-y-4 border border-white/5 bg-card/20 backdrop-blur-sm">
               <Loader2 className="w-10 h-10 animate-spin text-primary" />
-              <p className="text-muted-foreground font-code text-sm uppercase tracking-widest animate-pulse">Сканирование коллекций RION...</p>
+              <p className="text-muted-foreground font-code text-sm uppercase tracking-widest animate-pulse">Сканирование коллекций IRGG...</p>
             </div>
           )}
 

@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 
 export function FaviconSetter() {
   useEffect(() => {
-    // 1. Create a data URI for the SVG favicon with inverted colors (White background, Brand colored 'R')
+    // 1. Create a data URI for the SVG favicon with inverted colors (White background, Brand colored 'I')
     const faviconUrl = `data:image/svg+xml,
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
         <circle cx="50" cy="50" r="50" fill="white"/>
@@ -14,7 +14,7 @@ export function FaviconSetter() {
               font-size="60" 
               fill="%238B5E3C" 
               dominant-baseline="middle" 
-              text-anchor="middle">R</text>
+              text-anchor="middle">I</text>
       </svg>`;
 
     // 2. Find and update existing icon links, or create a new one

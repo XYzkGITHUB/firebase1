@@ -1,4 +1,3 @@
-
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
@@ -30,7 +29,7 @@ export function MainSection({ setActiveTab }: MainSectionProps) {
       <div className="max-w-[1400px] w-full mx-auto relative z-10">
         <div className="text-center mb-20">
           <SplitText
-            text="Быстрая навигация RION"
+            text="Быстрая навигация IRGG"
             tag="h1"
             className="text-5xl md:text-8xl font-headline uppercase tracking-tighter mb-6"
             textAlign="center"
@@ -87,7 +86,7 @@ export function MainSection({ setActiveTab }: MainSectionProps) {
              <div className="relative z-10">
                <ShoppingBag size={32} className="mb-8" />
                <h3 className="text-2xl font-headline font-bold uppercase tracking-tight mb-2">Весь ассортимент</h3>
-               <p className="text-white/70 font-light text-sm tracking-wide">Открыть онлайн-магазин RION</p>
+               <p className="text-white/70 font-light text-sm tracking-wide">Открыть онлайн-магазин IRGG</p>
              </div>
              <div className="relative z-10 mt-8 pt-6 border-t border-white/20 flex items-center gap-3">
                <span className="text-[9px] uppercase tracking-[0.4em] font-bold">За покупками</span>

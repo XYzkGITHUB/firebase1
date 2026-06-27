@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState, useMemo, useEffect } from "react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
@@ -111,7 +110,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
   const [animationPlayed, setAnimationPlayed] = useState(false);
 
   useEffect(() => {
-    const seen = sessionStorage.getItem('rion_hero_rating_seen');
+    const seen = sessionStorage.getItem('irgg_hero_rating_seen');
     if (seen) {
       count.set(4.6);
       setStarsFill(92);
@@ -131,7 +130,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
         onUpdate: (latest) => setStarsFill(latest),
       });
 
-      sessionStorage.setItem('rion_hero_rating_seen', 'true');
+      sessionStorage.setItem('irgg_hero_rating_seen', 'true');
       setAnimationPlayed(true);
 
       return () => {
@@ -169,7 +168,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
     
     if (names.length === 1) return names[0];
     if (names.length === 2) return `${names[0]} & ${names[1]}`;
-    return "Коллекции RION";
+    return "Коллекции IRGG";
   }, [selectedCats]);
 
   const toggleCategory = (id: string) => {
@@ -184,7 +183,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
     laminate_sps: { title: "ЛАМИНАТ И SPS", desc: "Стабильные поставки напрямую с фабрик Китая и Индии." },
     sanitary: { title: "ЭКСКЛЮЗИВНАЯ САНТЕХНИКА", desc: "Прямые поставки санфаянса и мебели для ванных комнат от ведущих мировых брендов." },
     delivery: { title: "ЛОГИСТИКА БЕЗ ГРАНИЦ", desc: "Бережная доставка ваших материалов из Индии (25 дней) и Китая (35 дней) с полной страховкой." },
-    contacts: { title: "БОЛЬШЕ О RION", desc: "Чеченская Республика, с. Бено-Юрт. Мы всегда на связи для решения ваших задач." }
+    contacts: { title: "БОЛЬШЕ ОБ IRGG", desc: "Чеченская Республика, с. Бено-Юрт. Мы всегда на связи для решения ваших задач." }
   }[activeTab];
 
   // Star Generator
@@ -221,7 +220,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
             <div className="relative w-full max-w-6xl py-12 md:py-24 px-4 md:px-16 flex flex-col items-center justify-center">
               <div className="relative z-10 flex flex-col items-center w-full">
                 <div className="w-full h-[8rem] md:h-[14rem] flex items-center justify-center cursor-default">
-                  <TextHoverEffect text="RION" disableInteraction={isMobile} />
+                  <TextHoverEffect text="IRGG" disableInteraction={isMobile} />
                 </div>
                 <div className="mt-8 text-center space-y-6 max-w-4xl">
                   <div className="min-h-[100px] flex items-center justify-center">
@@ -285,7 +284,7 @@ export function Hero({ activeTab, isStoreOpen, setIsStoreOpen }: HeroProps) {
               <div className="p-12 border-b border-white/10 bg-background/50 flex flex-col md:flex-row items-center justify-between gap-10">
                 <div>
                   <h2 className="text-4xl md:text-6xl font-headline uppercase tracking-tighter text-foreground">{storeTitle}</h2>
-                  <p className="text-[11px] uppercase tracking-[0.4em] font-bold text-muted-foreground mt-3">Каталог товаров RION</p>
+                  <p className="text-[11px] uppercase tracking-[0.4em] font-bold text-muted-foreground mt-3">Каталог товаров IRGG</p>
                 </div>
                 <div className="flex items-center gap-6">
                   <div className="relative">

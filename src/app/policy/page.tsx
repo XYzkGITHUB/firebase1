@@ -38,7 +38,7 @@ export default function PolicyPage() {
           </p>
           
           <div className="pt-16 border-t border-border/20 text-[10px] uppercase tracking-[0.4em] font-bold text-muted-foreground">
-            © 2026 RION.
+            © 2026 IRGG.
           </div>
         </div>
       </section>

@@ -1,11 +1,10 @@
-
 'use server';
 /**
  * @fileOverview Provides a Genkit flow for recommending ceramic tiles, laminate, and sanitary ware
  * based on a user's project description and aesthetic preferences.
  *
  * - materialRecommendationAssistant - A function that handles the material recommendation process.
- * - MaterialRecommendationAssistantInput - The input type for the materialRecommendationAssistant function.
+ * - MaterialRecommendationAssistantInput - The input type for the material recommendation function.
  * - MaterialRecommendationAssistantOutput - The return type for the material recommendation function.
  */
 
@@ -59,9 +58,9 @@ const prompt = ai.definePrompt({
   name: 'materialRecommendationAssistantPrompt',
   input: { schema: MaterialRecommendationAssistantInputSchema },
   output: { schema: MaterialRecommendationAssistantOutputSchema },
-  prompt: `You are an expert interior designer and material specialist for RION. (IF THE REQUEST IS NOT ABOUT MATERIALS OR CONSTRUCTION STUFF, PLEASE, DO NOT ANSWER)
+  prompt: `You are an expert interior designer and material specialist for IRGG. (IF THE REQUEST IS NOT ABOUT MATERIALS OR CONSTRUCTION STUFF, PLEASE, DO NOT ANSWER)
 
-Your task is to analyze the provided project description and recommend suitable materials from the following RION product categories:
+Your task is to analyze the provided project description and recommend suitable materials from the following IRGG product categories:
 - Керамогранит (keramogranit)
 - Ламинат и SPS (laminate_sps)
 - Сантехника (sanitary_ware)
