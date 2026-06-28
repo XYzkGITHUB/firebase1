@@ -2,7 +2,7 @@
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Grid3X3, Layers, Layout, Filter, ArrowLeft, ShoppingBag, LampCeiling, Bath, X } from "lucide-react";
+import { ArrowRight, Grid3X3, Layers, Layout, Filter, ArrowLeft, ShoppingBag, LampCeiling, Bath, X, ArrowUp } from "lucide-react";
 import { ContentTab } from "@/app/page";
 import { cn } from "@/lib/utils";
 import BlurText from "@/components/ui/blur-text";
@@ -47,6 +47,8 @@ export function Hero({
   const [selectedCats, setSelectedCats] = useState<string[]>([]);
   const [showFilterMenu, setShowFilterMenu] = useState(false);
   const [isStoreScrolled, setIsStoreScrolled] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const storeScrollRef = useRef<HTMLDivElement>(null);
   
   // Star Rating Animation
   const count = useMotionValue(0);
@@ -119,6 +121,7 @@ export function Hero({
       setIsStoreOpen(false);
       setIsStoreScrolled(false);
       setShowFilterMenu(false);
+      setShowScrollTop(false);
     } else {
       setIsStoreOpen(true);
       setSelectedCats([]);
@@ -146,11 +149,12 @@ export function Hero({
 
   const handleStoreScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const scrollPos = e.currentTarget.scrollTop;
-    if (scrollPos > 40) {
-      if (!isStoreScrolled) setIsStoreScrolled(true);
-    } else {
-      if (isStoreScrolled) setIsStoreScrolled(false);
-    }
+    setIsStoreScrolled(scrollPos > 40);
+    setShowScrollTop(scrollPos > 400);
+  };
+
+  const handleScrollToTop = () => {
+    storeScrollRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const currentContent = {
@@ -282,7 +286,6 @@ export function Hero({
                 <ArrowLeft size={18} /> <span className={cn(isMobile && isStoreScrolled ? "hidden" : "inline")}>Назад</span>
               </button>
               
-              {/* On mobile when scrolled, the back button is alone, current title shows in center bar */}
               {isMobile && isStoreScrolled && (
                  <span className="text-[10px] font-bold uppercase tracking-widest text-primary absolute left-1/2 -translate-x-1/2 animate-in fade-in slide-in-from-top-2">
                    {storeTitle}
@@ -291,7 +294,6 @@ export function Hero({
             </div>
 
             <div className="flex-1 flex flex-col h-full overflow-hidden relative z-10">
-              {/* Main Title Section - Larger and Centered on Mobile */}
               <motion.div 
                 className={cn(
                   "border-b border-white/10 bg-background/50 flex flex-col transition-all duration-500",
@@ -308,7 +310,6 @@ export function Hero({
                   <p className="text-[10px] md:text-[11px] uppercase tracking-[0.4em] font-bold text-muted-foreground mt-4 md:mt-3 opacity-60">Каталог товаров IRGG</p>
                 </div>
                 
-                {/* Filter Button - Rendered outside/below on Mobile, inline on Desktop */}
                 {!isMobile && (
                   <div className="flex items-center gap-6 justify-end">
                     <div className="relative">
@@ -353,7 +354,6 @@ export function Hero({
                 )}
               </motion.div>
 
-              {/* Mobile Only - Filter Button Outside of Title Header */}
               {isMobile && !isStoreScrolled && (
                 <div className="px-8 py-8 flex flex-col items-center border-b border-white/5 bg-background/30">
                   <Button 
@@ -375,9 +375,7 @@ export function Hero({
                 </div>
               )}
 
-              {/* Floating Filter / Mobile Filter Menu Logic */}
               <AnimatePresence>
-                {/* Floating Button appears only when scrolled on mobile */}
                 {(isMobile && isStoreScrolled) && (
                   <motion.div 
                     initial={{ scale: 0, opacity: 0 }} 
@@ -402,7 +400,6 @@ export function Hero({
                   </motion.div>
                 )}
 
-                {/* Mobile Full Screen Filter Menu */}
                 {isMobile && showFilterMenu && (
                   <motion.div 
                     initial={{ opacity: 0, y: 20 }}
@@ -448,6 +445,7 @@ export function Hero({
               </AnimatePresence>
 
               <div 
+                ref={storeScrollRef}
                 className="flex-1 overflow-y-auto overflow-x-hidden p-6 md:p-12 scroll-smooth"
                 onScroll={handleStoreScroll}
               >
@@ -487,6 +485,21 @@ export function Hero({
                     })}
                 </div>
               </div>
+
+              {/* Scroll to Top Button */}
+              <AnimatePresence>
+                {showScrollTop && (
+                  <motion.button
+                    initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.8, y: 20 }}
+                    onClick={handleScrollToTop}
+                    className="fixed bottom-10 right-6 md:right-12 z-[140] w-14 h-14 rounded-full bg-primary text-white shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-transform"
+                  >
+                    <ArrowUp size={24} />
+                  </motion.button>
+                )}
+              </AnimatePresence>
             </div>
           </motion.div>
         )}
