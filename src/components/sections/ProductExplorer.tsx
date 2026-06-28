@@ -232,7 +232,7 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
                   <div className="flex flex-col sm:flex-row gap-6">
                     <Button variant="outline" className="h-16 px-10 rounded-none border-foreground/20 hover:bg-foreground/5 font-bold uppercase tracking-[0.3em] text-[10px] w-full md:w-auto">
                       <Download className="mr-3 h-5 w-5" />
-                      {activeTab === 'delivery' ? 'Прайс-лист' : `Каталог`}
+                      {activeTab === 'delivery' ? 'График поставок' : `Изучить коллекции`}
                     </Button>
                   </div>
                 )}
