@@ -50,7 +50,6 @@ export default function Home() {
         onOpenStoreWithFilter={handleOpenStoreWithFilter}
       />
       
-      {/* Hero handles the shop overlay and banner. It needs to be outside the tab conditional to overlay Main tab too. */}
       <Hero 
         activeTab={activeTab} 
         isStoreOpen={isStoreOpen}
@@ -74,22 +73,20 @@ export default function Home() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
           >
-            {/* Hero is now handled above AnimatePresence to work as a global overlay */}
-            
             <Stats activeTab={activeTab} />
 
-            {/* Section: AI Assistant - hidden on contacts and delivery */}
             {!isContactsTab && !isDeliveryTab && <AIAssistant />}
             
-            {/* Section: Explorer - always visible but content inside reacts to activeTab */}
-            <ProductExplorer activeTab={activeTab} setActiveTab={setActiveTab} />
+            <ProductExplorer 
+              activeTab={activeTab} 
+              setActiveTab={setActiveTab} 
+              onOpenStore={handleOpenStoreWithFilter}
+            />
             
-            {/* Section: Logistics Journey - only on delivery */}
             {isDeliveryTab && (
               <LogisticsJourney activeTab={activeTab} />
             )}
 
-            {/* Section: Call to Action - hidden on delivery and contacts */}
             {!isContactsTab && !isDeliveryTab && (activeTab !== "sanitary") && (
               <section className="py-24 md:py-32 px-6 bg-primary flex flex-col items-center justify-center text-center">
                  <h2 className="text-3xl md:text-6xl font-headline text-white mb-8 uppercase tracking-tighter max-w-4xl">
@@ -107,7 +104,6 @@ export default function Home() {
               </section>
             )}
 
-            {/* Section: FAQ and Contact - hidden on contacts page specifically */}
             {!isContactsTab && (
               <>
                 <FAQ activeTab={activeTab} />

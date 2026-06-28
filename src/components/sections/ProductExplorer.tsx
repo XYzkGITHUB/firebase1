@@ -2,7 +2,7 @@
 "use client";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Download, Check, HelpCircle, ArrowRight } from "lucide-react";
+import { ShoppingBag, Check, HelpCircle, ArrowRight, CalendarDays } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { ContentTab } from "@/app/page";
 import SplitText from "@/components/ui/split-text";
@@ -14,6 +14,7 @@ import { BorderGlow } from "@/components/ui/border-glow";
 interface ProductExplorerProps {
   activeTab: ContentTab;
   setActiveTab?: (tab: ContentTab) => void;
+  onOpenStore?: (categoryId?: string) => void;
 }
 
 function InteractiveImage({ primaryImage, secondaryImage, label }: { primaryImage: any; secondaryImage: any; label: string }) {
@@ -66,7 +67,7 @@ function InteractiveImage({ primaryImage, secondaryImage, label }: { primaryImag
   );
 }
 
-export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProps) {
+export function ProductExplorer({ activeTab, setActiveTab, onOpenStore }: ProductExplorerProps) {
   const keramogranitCheck = [
     { title: "Материал под проект", desc: "Подбор форматов, фактур и технических параметров." },
     { title: "Предсказуемый результат", desc: "Соответствие согласованному решению." },
@@ -163,6 +164,13 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
     }
   };
 
+  const handleOpenStore = () => {
+    if (onOpenStore) {
+      // User requested "no filters", so we open the store normally
+      onOpenStore();
+    }
+  };
+
   return (
     <section className="py-24 lg:py-32 px-6 lg:px-8 bg-background">
       <div className="max-w-[1600px] mx-auto">
@@ -230,9 +238,22 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
                   </div>
                 ) : (
                   <div className="flex flex-col sm:flex-row gap-6">
-                    <Button variant="outline" className="h-16 px-10 rounded-none border-foreground/20 hover:bg-foreground/5 font-bold uppercase tracking-[0.3em] text-[10px] w-full md:w-auto">
-                      <Download className="mr-3 h-5 w-5" />
-                      {activeTab === 'delivery' ? 'График поставок' : `Изучить коллекции`}
+                    <Button 
+                      onClick={activeTab === 'delivery' ? undefined : handleOpenStore}
+                      variant={activeTab === 'delivery' ? "outline" : "default"}
+                      className="h-16 px-10 rounded-none font-bold uppercase tracking-[0.3em] text-[10px] w-full md:w-auto shadow-xl"
+                    >
+                      {activeTab === 'delivery' ? (
+                        <>
+                          <CalendarDays className="mr-3 h-5 w-5" />
+                          График поставок
+                        </>
+                      ) : (
+                        <>
+                          <ShoppingBag className="mr-3 h-5 w-5" />
+                          Изучить коллекции
+                        </>
+                      )}
                     </Button>
                   </div>
                 )}
