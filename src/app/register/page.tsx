@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useAuth, useFirestore } from "@/firebase";
-import { collection, addDoc, serverTimestamp, query, where, getDocs, deleteDoc, doc } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp, query, where, getDocs, deleteDoc, doc, limit } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -52,13 +52,14 @@ export default function RegisterPage() {
     try {
       const generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
       const codeData = {
-        email: email.toLowerCase(),
+        email: email.toLowerCase().trim(),
         code: generatedCode,
         type: 'registration',
         createdAt: serverTimestamp(),
       };
 
       const codesRef = collection(db, "verificationCodes");
+      // Non-blocking write as per guidelines
       addDoc(codesRef, codeData).catch(async (err) => {
         const permissionError = new FirestorePermissionError({
           path: codesRef.path,
@@ -68,7 +69,7 @@ export default function RegisterPage() {
         errorEmitter.emit('permission-error', permissionError);
       });
 
-      await sendVerificationEmail(email.toLowerCase(), generatedCode, name);
+      await sendVerificationEmail(email.toLowerCase().trim(), generatedCode, name);
 
       toast({
         title: "Код отправлен",
@@ -95,8 +96,9 @@ export default function RegisterPage() {
       const codesRef = collection(db, "verificationCodes");
       const q = query(
         codesRef, 
-        where("email", "==", email.toLowerCase()),
-        where("code", "==", otp)
+        where("email", "==", email.toLowerCase().trim()),
+        where("code", "==", otp),
+        limit(1)
       );
       
       const querySnapshot = await getDocs(q).catch(async (err) => {

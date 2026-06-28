@@ -3,14 +3,14 @@
 import React, { useState } from "react";
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { useAuth, useFirestore } from "@/firebase";
-import { collection, addDoc, serverTimestamp, query, where, getDocs, deleteDoc, doc } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp, query, where, getDocs, deleteDoc, doc, limit } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
-import { LogIn, ArrowLeft, Eye, EyeOff, ShieldCheck, Mail, KeyRound, LockKeyhole } from "lucide-react";
+import { LogIn, ArrowLeft, Eye, EyeOff, ShieldCheck, Mail, KeyRound } from "lucide-react";
 import { TypingAnimation } from "@/components/ui/typing-animation";
 import { LuxuryLoader } from "@/components/ui/luxury-loader";
 import { sendAuthEmail } from "@/app/actions/email";
@@ -18,11 +18,9 @@ import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
 
 export default function LoginPage() {
-  const [view, setView] = useState<"login" | "forgot" | "verify_reset" | "new_password">("login");
+  const [view, setView] = useState<"login" | "forgot" | "verify_reset">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [otp, setOtp] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -72,13 +70,14 @@ export default function LoginPage() {
     try {
       const generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
       const codeData = {
-        email: email.toLowerCase(),
+        email: email.toLowerCase().trim(),
         code: generatedCode,
         type: 'password_reset',
         createdAt: serverTimestamp(),
       };
 
       const codesRef = collection(db, "verificationCodes");
+      // Use non-blocking write as per guidelines
       addDoc(codesRef, codeData).catch(async (err) => {
         const permissionError = new FirestorePermissionError({
           path: codesRef.path,
@@ -106,7 +105,7 @@ export default function LoginPage() {
     }
   };
 
-  const handleVerifyReset = async (e: React.FormEvent) => {
+  const handleVerifyResetAndFinish = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
@@ -114,8 +113,9 @@ export default function LoginPage() {
       const codesRef = collection(db, "verificationCodes");
       const q = query(
         codesRef, 
-        where("email", "==", email.toLowerCase()),
-        where("code", "==", otp)
+        where("email", "==", email.toLowerCase().trim()),
+        where("code", "==", otp),
+        limit(1)
       );
       
       const querySnapshot = await getDocs(q).catch(async (err) => {
@@ -131,49 +131,24 @@ export default function LoginPage() {
         throw new Error("Неверный код восстановления.");
       }
 
-      // Cleanup code
+      // Cleanup used code
       const codeDocId = querySnapshot.docs[0].id;
       deleteDoc(doc(db, "verificationCodes", codeDocId));
 
-      toast({
-        title: "Доступ подтвержден",
-        description: "Пожалуйста, установите новый пароль.",
-      });
-      setView("new_password");
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Ошибка верификации",
-        description: error.message,
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleSetNewPassword = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newPassword !== confirmNewPassword) {
-      toast({ variant: "destructive", title: "Ошибка", description: "Пароли не совпадают." });
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      // Firebase requires a secure OOB link to change password without an active session.
-      // We send this link as the FINAL step to ensure 100% security.
+      // Final secure step: Send the official reset link
+      // This is the only 100% safe way to update a password via client SDK for an unauthenticated user
       await sendPasswordResetEmail(auth, email);
       
       toast({
         title: "Личность подтверждена",
-        description: "Мы отправили финальную ссылку для активации вашего нового пароля на email. Нажмите на нее, чтобы завершить обновление.",
+        description: "Мы отправили финальную ссылку для сброса пароля на ваш email. Перейдите по ней, чтобы установить новый пароль.",
       });
       setView("login");
     } catch (error: any) {
       toast({
         variant: "destructive",
-        title: "Ошибка",
-        description: "Не удалось завершить сброс пароля.",
+        title: "Ошибка верификации",
+        description: error.message,
       });
     } finally {
       setIsLoading(false);
@@ -326,7 +301,7 @@ export default function LoginPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleVerifyReset} className="space-y-6">
+              <form onSubmit={handleVerifyResetAndFinish} className="space-y-6">
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground block text-center">Код из письма</label>
                   <Input 
@@ -346,7 +321,7 @@ export default function LoginPage() {
                   disabled={isLoading || otp.length !== 6}
                 >
                   <KeyRound className="mr-2 h-4 w-4" />
-                  Подтвердить код
+                  Подтвердить и Сбросить
                 </Button>
                 <button 
                   type="button"
@@ -355,55 +330,6 @@ export default function LoginPage() {
                 >
                   Изменить email
                 </button>
-              </form>
-            </CardContent>
-          </>
-        )}
-
-        {view === "new_password" && (
-          <>
-            <CardHeader className="space-y-4 text-center pt-8">
-              <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                <LockKeyhole className="text-primary w-8 h-8" />
-              </div>
-              <CardTitle className="text-3xl font-headline tracking-tighter uppercase">Новый пароль</CardTitle>
-              <CardDescription className="text-muted-foreground uppercase tracking-widest text-[10px]">
-                Установите ваш новый пароль доступа
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSetNewPassword} className="space-y-6">
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Новый пароль</label>
-                    <Input 
-                      type="password" 
-                      placeholder="••••••••" 
-                      value={newPassword}
-                      onChange={(e) => setNewPassword(e.target.value)}
-                      className="bg-background/50 border-border h-12"
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Подтвердите новый пароль</label>
-                    <Input 
-                      type="password" 
-                      placeholder="••••••••" 
-                      value={confirmNewPassword}
-                      onChange={(e) => setConfirmNewPassword(e.target.value)}
-                      className="bg-background/50 border-border h-12"
-                      required
-                    />
-                  </div>
-                </div>
-                <Button 
-                  type="submit" 
-                  className="w-full h-14 bg-primary text-white font-bold uppercase tracking-widest text-xs"
-                  disabled={isLoading}
-                >
-                  Сохранить пароль
-                </Button>
               </form>
             </CardContent>
           </>
