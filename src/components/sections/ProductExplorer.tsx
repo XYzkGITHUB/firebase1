@@ -213,19 +213,28 @@ export function ProductExplorer({ activeTab, setActiveTab }: ProductExplorerProp
                           : 'Под проекты любого масштаба — от регулярных закупок до комплексных поставок.')))}
                </p>
              </div>
-             <div className="flex flex-col sm:flex-row gap-6">
-                <Button variant="outline" className="h-16 px-10 rounded-none border-foreground/20 hover:bg-foreground/5 font-bold uppercase tracking-[0.3em] text-[10px] w-full md:w-auto">
-                  <Download className="mr-3 h-5 w-5" />
-                  {activeTab === 'delivery' ? 'Прайс-лист' : (activeTab === 'contacts' ? 'Реквизиты' : `Каталог`)}
-                </Button>
-                {activeTab === 'contacts' && (
-                  <Button 
-                    onClick={handleLearnAboutShipping}
-                    className="h-16 px-10 rounded-none bg-primary text-white hover:bg-primary/90 transition-all font-bold uppercase tracking-[0.3em] text-[10px] w-full md:w-auto shadow-xl group flex items-center justify-center"
-                  >
-                    <span>О логистике</span>
-                    <ArrowRight className="ml-3 h-5 w-5 transition-transform group-hover:translate-x-2" />
-                  </Button>
+             
+             <div className="flex flex-col gap-8">
+                {activeTab === 'contacts' ? (
+                  <div className="space-y-6">
+                    <p className="text-lg font-bold uppercase tracking-[0.2em] text-primary">
+                      Хотите узнать больше о доставке?
+                    </p>
+                    <Button 
+                      onClick={handleLearnAboutShipping}
+                      className="h-16 px-10 rounded-none bg-primary text-white hover:bg-primary/90 transition-all font-bold uppercase tracking-[0.3em] text-[10px] w-full md:w-auto shadow-xl group flex items-center justify-center"
+                    >
+                      <span>Узнать о логистике</span>
+                      <ArrowRight className="ml-3 h-5 w-5 transition-transform group-hover:translate-x-2" />
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="flex flex-col sm:flex-row gap-6">
+                    <Button variant="outline" className="h-16 px-10 rounded-none border-foreground/20 hover:bg-foreground/5 font-bold uppercase tracking-[0.3em] text-[10px] w-full md:w-auto">
+                      <Download className="mr-3 h-5 w-5" />
+                      {activeTab === 'delivery' ? 'Прайс-лист' : `Каталог`}
+                    </Button>
+                  </div>
                 )}
              </div>
           </div>
