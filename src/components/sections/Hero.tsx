@@ -1,8 +1,9 @@
+
 "use client";
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Grid3X3, Layers, Layout, Filter, ArrowLeft, ShoppingBag, LampCeiling, Bath } from "lucide-react";
+import { ArrowRight, Grid3X3, Layers, Layout, Filter, ArrowLeft, ShoppingBag, LampCeiling, Bath, X } from "lucide-react";
 import { ContentTab } from "@/app/page";
 import { cn } from "@/lib/utils";
 import BlurText from "@/components/ui/blur-text";
@@ -46,6 +47,7 @@ export function Hero({
   const isMobile = useIsMobile();
   const [selectedCats, setSelectedCats] = useState<string[]>([]);
   const [showFilterMenu, setShowFilterMenu] = useState(false);
+  const [isStoreScrolled, setIsStoreScrolled] = useState(false);
   
   // Star Rating Animation
   const count = useMotionValue(0);
@@ -116,6 +118,7 @@ export function Hero({
   const toggleStore = () => {
     if (isStoreOpen) {
       setIsStoreOpen(false);
+      setIsStoreScrolled(false);
     } else {
       setIsStoreOpen(true);
       setSelectedCats([]);
@@ -139,6 +142,15 @@ export function Hero({
       onFilterChange?.(next);
       return next;
     });
+  };
+
+  const handleStoreScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const scrollPos = e.currentTarget.scrollTop;
+    if (scrollPos > 30) {
+      if (!isStoreScrolled) setIsStoreScrolled(true);
+    } else {
+      if (isStoreScrolled) setIsStoreScrolled(false);
+    }
   };
 
   const currentContent = {
@@ -258,25 +270,33 @@ export function Hero({
               )}
             </div>
 
-            <div className="flex justify-between items-center px-8 py-10 border-b border-white/10 bg-background/50 relative z-10">
+            <div className={cn(
+              "flex justify-between items-center px-4 md:px-8 py-6 md:py-10 border-b border-white/10 bg-background/50 relative z-10 transition-all duration-300",
+              isMobile && isStoreScrolled ? "h-16 py-2" : ""
+            )}>
               <button 
                 onClick={toggleStore} 
                 className="flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.3em] text-muted-foreground hover:text-primary transition-colors"
               >
-                <ArrowLeft size={18} /> Назад
+                <ArrowLeft size={18} /> <span className={cn(isMobile && isStoreScrolled ? "hidden" : "inline")}>Назад</span>
               </button>
             </div>
 
             <div className="flex-1 flex flex-col h-full overflow-hidden relative z-10">
-              <div className="p-12 border-b border-white/10 bg-background/50 flex flex-col md:flex-row items-center justify-between gap-10">
+              <motion.div 
+                className={cn(
+                  "p-8 md:p-12 border-b border-white/10 bg-background/50 flex flex-col md:flex-row items-center justify-between gap-6 md:gap-10 transition-all duration-500",
+                  isMobile && isStoreScrolled ? "h-0 p-0 overflow-hidden border-none opacity-0" : ""
+                )}
+              >
                 <div>
-                  <h2 className="text-4xl md:text-6xl font-headline uppercase tracking-tighter text-foreground">{storeTitle}</h2>
-                  <p className="text-[11px] uppercase tracking-[0.4em] font-bold text-muted-foreground mt-3">Каталог товаров IRGG</p>
+                  <h2 className="text-3xl md:text-6xl font-headline uppercase tracking-tighter text-foreground">{storeTitle}</h2>
+                  <p className="text-[10px] md:text-[11px] uppercase tracking-[0.4em] font-bold text-muted-foreground mt-2 md:mt-3">Каталог товаров IRGG</p>
                 </div>
-                <div className="flex items-center gap-6">
+                <div className="flex items-center gap-4 md:gap-6">
                   <div className="relative">
-                    <Button variant="outline" className="h-16 px-10 rounded-none border-foreground/20 uppercase tracking-[0.2em] text-[11px] font-bold" onClick={() => setShowFilterMenu(!showFilterMenu)}>
-                      <Filter className="mr-3 h-5 w-5" />
+                    <Button variant="outline" className="h-14 md:h-16 px-8 md:px-10 rounded-none border-foreground/20 uppercase tracking-[0.2em] text-[10px] md:text-[11px] font-bold" onClick={() => setShowFilterMenu(!showFilterMenu)}>
+                      <Filter className="mr-3 h-4 md:h-5 w-4 md:h-5" />
                       Фильтр {selectedCats.length > 0 && `(${selectedCats.length})`}
                     </Button>
                     <AnimatePresence>
@@ -302,42 +322,97 @@ export function Hero({
                     </AnimatePresence>
                   </div>
                   {selectedCats.length > 0 && (
-                    <Button variant="ghost" className="h-16 px-10 rounded-none uppercase tracking-[0.2em] text-[11px] font-bold text-muted-foreground hover:text-primary" onClick={() => { setSelectedCats([]); onFilterChange?.([]); }}>
+                    <Button variant="ghost" className="h-14 md:h-16 px-6 md:px-10 rounded-none uppercase tracking-[0.2em] text-[10px] md:text-[11px] font-bold text-muted-foreground hover:text-primary" onClick={() => { setSelectedCats([]); onFilterChange?.([]); }}>
                       Очистить
                     </Button>
                   )}
                 </div>
-              </div>
+              </motion.div>
 
-              <ScrollArea className="flex-1 p-12">
-                <div className="max-w-[1400px] mx-auto space-y-32 pb-32">
+              {/* Floating Filter for Mobile Scrolled State */}
+              <AnimatePresence>
+                {isMobile && isStoreScrolled && (
+                  <motion.div 
+                    initial={{ scale: 0, opacity: 0 }} 
+                    animate={{ scale: 1, opacity: 1 }} 
+                    exit={{ scale: 0, opacity: 0 }} 
+                    className="fixed top-2 right-4 z-[130]"
+                  >
+                    <button 
+                      onClick={() => setShowFilterMenu(!showFilterMenu)}
+                      className={cn(
+                        "w-12 h-12 rounded-full flex items-center justify-center bg-primary text-white shadow-2xl border border-white/20 transition-transform active:scale-90",
+                        selectedCats.length > 0 ? "ring-2 ring-primary ring-offset-2" : ""
+                      )}
+                    >
+                      {showFilterMenu ? <X size={20} /> : <Filter size={20} />}
+                      {selectedCats.length > 0 && !showFilterMenu && (
+                        <div className="absolute -top-1 -right-1 w-5 h-5 bg-white text-primary text-[10px] font-bold rounded-full flex items-center justify-center border border-primary">
+                          {selectedCats.length}
+                        </div>
+                      )}
+                    </button>
+                    <AnimatePresence>
+                      {showFilterMenu && (
+                        <motion.div initial={{ opacity: 0, scale: 0.9, x: 20 }} animate={{ opacity: 1, scale: 1, x: 0 }} exit={{ opacity: 0, scale: 0.9, x: 20 }} className="fixed top-20 right-4 bg-background border border-border shadow-2xl p-4 min-w-[200px] z-[140] flex flex-col gap-2">
+                          <div className="flex justify-between items-center pb-2 border-b border-border mb-2">
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Фильтр</span>
+                            {selectedCats.length > 0 && (
+                              <button onClick={() => { setSelectedCats([]); onFilterChange?.([]); }} className="text-[9px] font-bold text-primary uppercase">Сброс</button>
+                            )}
+                          </div>
+                          {categoriesWithIcons.map((cat) => (
+                            <button 
+                              key={cat.id} 
+                              onClick={() => toggleCategory(cat.id)} 
+                              className={cn(
+                                "flex items-center gap-4 px-4 py-3 text-[10px] font-bold uppercase tracking-widest transition-colors text-left", 
+                                selectedCats.includes(cat.id) ? "bg-primary text-white" : "hover:bg-muted"
+                              )}
+                            >
+                              {cat.icon}
+                              <span>{cat.name}</span>
+                            </button>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              <div 
+                className="flex-1 overflow-y-auto overflow-x-hidden p-6 md:p-12 scroll-smooth"
+                onScroll={handleStoreScroll}
+              >
+                <div className="max-w-[1400px] mx-auto space-y-16 md:space-y-32 pb-32">
                   {categoriesWithIcons
                     .filter(cat => selectedCats.length === 0 || selectedCats.includes(cat.id))
                     .map(cat => {
                       const categoryProducts = PRODUCTS.filter(p => p.cat === cat.id);
                       if (categoryProducts.length === 0) return null;
                       return (
-                        <div key={cat.id} className="space-y-12">
-                          <div className="flex items-center gap-10">
+                        <div key={cat.id} className="space-y-8 md:space-y-12">
+                          <div className="flex items-center gap-6 md:gap-10">
                             <div className="h-[1px] flex-1 bg-primary/20" />
-                            <h3 className="text-3xl md:text-4xl font-headline uppercase tracking-tight text-primary">{cat.name}</h3>
+                            <h3 className="text-2xl md:text-4xl font-headline uppercase tracking-tight text-primary whitespace-nowrap">{cat.name}</h3>
                             <div className="h-[1px] flex-1 bg-primary/20" />
                           </div>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-12">
                             {categoryProducts.map(prod => (
-                                <div key={prod.id} className="glass-panel p-10 border-white/5 hover:bg-foreground/5 transition-all group">
-                                  <div className="aspect-square bg-muted/20 mb-8 flex items-center justify-center relative overflow-hidden">
+                                <div key={prod.id} className="glass-panel p-6 md:p-10 border-white/5 hover:bg-foreground/5 transition-all group">
+                                  <div className="aspect-square bg-muted/20 mb-6 md:mb-8 flex items-center justify-center relative overflow-hidden">
                                     {prod.image && (
                                       <Image src={prod.image} alt={prod.name} fill className="object-cover group-hover:scale-110 transition-transform duration-500" unoptimized />
                                     )}
-                                    <div className="absolute bottom-6 right-6">
-                                      <Badge variant="outline" className="bg-background/80 border-primary/20 text-[10px] uppercase tracking-widest px-3 py-1">В наличии</Badge>
+                                    <div className="absolute bottom-4 md:bottom-6 right-4 md:right-6">
+                                      <Badge variant="outline" className="bg-background/80 border-primary/20 text-[9px] md:text-[10px] uppercase tracking-widest px-3 py-1">В наличии</Badge>
                                     </div>
                                   </div>
-                                  <h4 className="text-xl font-bold uppercase tracking-tight mb-2 group-hover:text-primary transition-colors">{prod.name}</h4>
-                                  <p className="text-[11px] text-muted-foreground uppercase tracking-widest font-bold mb-4">{prod.sub}</p>
-                                  <p className="text-primary font-headline font-bold text-2xl">{prod.price}</p>
-                                  <Button className="w-full mt-8 rounded-none bg-primary/10 text-primary hover:bg-primary hover:text-white border border-primary/20 font-bold uppercase tracking-widest text-[11px] h-14">Подробнее</Button>
+                                  <h4 className="text-lg md:text-xl font-bold uppercase tracking-tight mb-2 group-hover:text-primary transition-colors">{prod.name}</h4>
+                                  <p className="text-[10px] md:text-[11px] text-muted-foreground uppercase tracking-widest font-bold mb-4">{prod.sub}</p>
+                                  <p className="text-primary font-headline font-bold text-xl md:text-2xl">{prod.price}</p>
+                                  <Button className="w-full mt-6 md:mt-8 rounded-none bg-primary/10 text-primary hover:bg-primary hover:text-white border border-primary/20 font-bold uppercase tracking-widest text-[10px] md:text-[11px] h-12 md:h-14">Подробнее</Button>
                                 </div>
                               ))}
                           </div>
@@ -345,13 +420,13 @@ export function Hero({
                       );
                     })}
                 </div>
-              </ScrollArea>
+              </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {!isStoreOpen && (
+      {!isStoreOpen && (activeTab !== "main") && (
         <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-30 pointer-events-none">
           <span className="text-[9px] uppercase tracking-[1em] text-muted-foreground font-bold">Листайте вниз</span>
           <div className="w-[1px] h-12 bg-gradient-to-b from-primary to-transparent" />
