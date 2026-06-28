@@ -33,6 +33,29 @@
         "phone",
         "section"
       ]
+    },
+    "VerificationCode": {
+      "title": "VerificationCode",
+      "description": "Temporary OTP for email verification during sign-up.",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "code": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "email",
+        "code",
+        "createdAt"
+      ]
     }
   },
   "auth": {
@@ -44,6 +67,10 @@
     "/leads/{leadId}": {
       "schema": "Lead",
       "description": "Collection of incoming leads from clients. Allows public creation of documents."
+    },
+    "/verificationCodes/{codeId}": {
+      "schema": "VerificationCode",
+      "description": "Temporary storage for OTP codes. Used to verify identity before account creation."
     }
   }
 }
