@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
@@ -271,9 +270,10 @@ export function Hero({
               )}
             </div>
 
+            {/* Top Bar with Back Button */}
             <div className={cn(
-              "flex justify-between items-center px-4 md:px-8 py-6 md:py-10 border-b border-white/10 bg-background/50 relative z-10 transition-all duration-300",
-              isMobile && isStoreScrolled ? "h-14 py-2" : ""
+              "flex justify-between items-center px-4 md:px-8 py-4 md:py-6 border-b border-white/10 bg-background/50 relative z-10 transition-all duration-300",
+              isMobile && isStoreScrolled ? "h-14" : ""
             )}>
               <button 
                 onClick={toggleStore} 
@@ -282,77 +282,103 @@ export function Hero({
                 <ArrowLeft size={18} /> <span className={cn(isMobile && isStoreScrolled ? "hidden" : "inline")}>Назад</span>
               </button>
               
-              {/* On mobile when scrolled, the back button is alone, filter floats */}
+              {/* On mobile when scrolled, the back button is alone, current title shows in center bar */}
               {isMobile && isStoreScrolled && (
-                 <span className="text-[10px] font-bold uppercase tracking-widest text-primary animate-in fade-in slide-in-from-top-2">
+                 <span className="text-[10px] font-bold uppercase tracking-widest text-primary absolute left-1/2 -translate-x-1/2 animate-in fade-in slide-in-from-top-2">
                    {storeTitle}
                  </span>
               )}
             </div>
 
             <div className="flex-1 flex flex-col h-full overflow-hidden relative z-10">
+              {/* Main Title Section - Larger and Centered on Mobile */}
               <motion.div 
                 className={cn(
                   "border-b border-white/10 bg-background/50 flex flex-col transition-all duration-500",
                   isMobile 
-                    ? (isStoreScrolled ? "h-0 p-0 overflow-hidden border-none opacity-0" : "p-12 sm:p-16 gap-8") 
+                    ? (isStoreScrolled ? "h-0 p-0 overflow-hidden border-none opacity-0" : "py-24 px-8 items-center text-center") 
                     : "p-8 md:p-12 md:flex-row md:items-center md:justify-between md:gap-10"
                 )}
               >
-                <div className="text-center md:text-left">
-                  <h2 className="text-4xl md:text-6xl font-headline uppercase tracking-tighter text-foreground">{storeTitle}</h2>
-                  <p className="text-[10px] md:text-[11px] uppercase tracking-[0.4em] font-bold text-muted-foreground mt-3 md:mt-3 opacity-60">Каталог товаров IRGG</p>
+                <div className={cn(isMobile ? "max-w-xs mx-auto" : "")}>
+                  <h2 className={cn(
+                    "font-headline uppercase tracking-tighter text-foreground",
+                    isMobile ? "text-4xl sm:text-5xl leading-tight" : "text-4xl md:text-6xl"
+                  )}>{storeTitle}</h2>
+                  <p className="text-[10px] md:text-[11px] uppercase tracking-[0.4em] font-bold text-muted-foreground mt-4 md:mt-3 opacity-60">Каталог товаров IRGG</p>
                 </div>
                 
-                <div className={cn(
-                  "flex items-center gap-4 md:gap-6",
-                  isMobile ? "justify-center" : "justify-end"
-                )}>
-                  <div className="relative">
-                    <Button 
-                      variant="outline" 
-                      className="h-16 md:h-16 px-10 md:px-10 rounded-none border-foreground/20 uppercase tracking-[0.2em] text-[10px] md:text-[11px] font-bold bg-background/50 hover:bg-primary hover:text-white transition-all shadow-xl" 
-                      onClick={() => setShowFilterMenu(!showFilterMenu)}
-                    >
-                      <Filter className="mr-3 h-5 w-5" />
-                      Фильтр {selectedCats.length > 0 && `(${selectedCats.length})`}
-                    </Button>
+                {/* Filter Button - Rendered outside/below on Mobile, inline on Desktop */}
+                {!isMobile && (
+                  <div className="flex items-center gap-6 justify-end">
+                    <div className="relative">
+                      <Button 
+                        variant="outline" 
+                        className="h-16 px-10 rounded-none border-foreground/20 uppercase tracking-[0.2em] text-[11px] font-bold bg-background/50 hover:bg-primary hover:text-white transition-all shadow-xl" 
+                        onClick={() => setShowFilterMenu(!showFilterMenu)}
+                      >
+                        <Filter className="mr-3 h-5 w-5" />
+                        Фильтр {selectedCats.length > 0 && `(${selectedCats.length})`}
+                      </Button>
+                      
+                      <AnimatePresence>
+                        {showFilterMenu && (
+                          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="absolute top-full right-0 mt-4 bg-background border border-border shadow-2xl p-6 min-w-[240px] z-[60] flex flex-col gap-3">
+                            {categoriesWithIcons.map((cat) => (
+                              <button 
+                                key={cat.id} 
+                                onClick={() => toggleCategory(cat.id)} 
+                                className={cn(
+                                  "flex items-center justify-between px-6 py-4 text-[11px] font-bold uppercase tracking-widest transition-colors text-left", 
+                                  selectedCats.includes(cat.id) ? "bg-primary text-white" : "hover:bg-muted"
+                                )}
+                              >
+                                <div className="flex items-center gap-4">
+                                  {cat.icon}
+                                  <span>{cat.name}</span>
+                                </div>
+                              </button>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
                     
-                    <AnimatePresence>
-                      {showFilterMenu && !isMobile && (
-                        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="absolute top-full right-0 mt-4 bg-background border border-border shadow-2xl p-6 min-w-[240px] z-[60] flex flex-col gap-3">
-                          {categoriesWithIcons.map((cat) => (
-                            <button 
-                              key={cat.id} 
-                              onClick={() => toggleCategory(cat.id)} 
-                              className={cn(
-                                "flex items-center justify-between px-6 py-4 text-[11px] font-bold uppercase tracking-widest transition-colors text-left", 
-                                selectedCats.includes(cat.id) ? "bg-primary text-white" : "hover:bg-muted"
-                              )}
-                            >
-                              <div className="flex items-center gap-4">
-                                {cat.icon}
-                                <span>{cat.name}</span>
-                              </div>
-                            </button>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                    {selectedCats.length > 0 && (
+                      <Button variant="ghost" className="h-16 px-10 rounded-none uppercase tracking-[0.2em] text-[11px] font-bold text-muted-foreground hover:text-primary" onClick={() => { setSelectedCats([]); onFilterChange?.([]); }}>
+                        Очистить
+                      </Button>
+                    )}
                   </div>
-                  
-                  {selectedCats.length > 0 && (
-                    <Button variant="ghost" className="h-16 md:h-16 px-6 md:px-10 rounded-none uppercase tracking-[0.2em] text-[10px] md:text-[11px] font-bold text-muted-foreground hover:text-primary" onClick={() => { setSelectedCats([]); onFilterChange?.([]); }}>
-                      Очистить
-                    </Button>
-                  )}
-                </div>
+                )}
               </motion.div>
 
-              {/* Floating Filter / Mobile Filter Menu */}
+              {/* Mobile Only - Filter Button Outside of Title Header */}
+              {isMobile && !isStoreScrolled && (
+                <div className="px-8 py-8 flex flex-col items-center border-b border-white/5 bg-background/30">
+                  <Button 
+                    variant="outline" 
+                    className="w-full h-16 rounded-none border-foreground/10 uppercase tracking-[0.3em] text-[10px] font-bold bg-background/50" 
+                    onClick={() => setShowFilterMenu(true)}
+                  >
+                    <Filter className="mr-3 h-4 w-4" />
+                    Фильтр {selectedCats.length > 0 && `(${selectedCats.length})`}
+                  </Button>
+                  {selectedCats.length > 0 && (
+                    <button 
+                      onClick={() => { setSelectedCats([]); onFilterChange?.([]); }}
+                      className="mt-6 text-[9px] uppercase tracking-widest font-bold text-muted-foreground underline underline-offset-4"
+                    >
+                      Сбросить фильтры
+                    </button>
+                  )}
+                </div>
+              )}
+
+              {/* Floating Filter / Mobile Filter Menu Logic */}
               <AnimatePresence>
-                {/* Floating Button appears when scrolled or menu active on mobile */}
-                {(isMobile && (isStoreScrolled || showFilterMenu)) && (
+                {/* Floating Button appears only when scrolled on mobile */}
+                {(isMobile && isStoreScrolled) && (
                   <motion.div 
                     initial={{ scale: 0, opacity: 0 }} 
                     animate={{ scale: 1, opacity: 1 }} 
@@ -382,13 +408,11 @@ export function Hero({
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 20 }}
-                    className="fixed inset-0 top-14 z-[125] bg-background/95 backdrop-blur-2xl p-8 overflow-y-auto"
+                    className="fixed inset-0 top-0 z-[125] bg-background/98 backdrop-blur-2xl p-8 overflow-y-auto"
                   >
-                    <div className="flex justify-between items-center mb-10 border-b border-border pb-6">
-                       <h3 className="text-2xl font-headline uppercase tracking-tight">Категории</h3>
-                       {selectedCats.length > 0 && (
-                         <button onClick={() => { setSelectedCats([]); onFilterChange?.([]); }} className="text-[10px] font-bold text-primary uppercase tracking-widest underline underline-offset-4">Сбросить все</button>
-                       )}
+                    <div className="flex justify-between items-center mb-10 border-b border-border pb-6 pt-12">
+                       <h3 className="text-3xl font-headline uppercase tracking-tight">Категории</h3>
+                       <button onClick={() => setShowFilterMenu(false)} className="p-2 text-muted-foreground"><X size={24}/></button>
                     </div>
                     <div className="grid grid-cols-1 gap-4">
                       {categoriesWithIcons.map((cat) => (
@@ -408,11 +432,17 @@ export function Hero({
                       ))}
                     </div>
                     <Button 
-                      className="w-full h-16 mt-12 bg-primary text-white font-bold uppercase tracking-widest text-[10px]" 
+                      className="w-full h-16 mt-12 bg-primary text-white font-bold uppercase tracking-widest text-[11px]" 
                       onClick={() => setShowFilterMenu(false)}
                     >
                       Показать товары
                     </Button>
+                    <button 
+                      onClick={() => { setSelectedCats([]); onFilterChange?.([]); setShowFilterMenu(false); }} 
+                      className="w-full mt-6 text-[10px] font-bold text-muted-foreground uppercase tracking-widest text-center"
+                    >
+                      Сбросить всё
+                    </button>
                   </motion.div>
                 )}
               </AnimatePresence>
