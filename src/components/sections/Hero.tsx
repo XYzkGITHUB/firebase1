@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState, useMemo, useEffect } from "react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
@@ -14,6 +13,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { CATEGORIES, PRODUCTS } from "@/lib/products";
+import { PlaceHolderImages } from "@/lib/placeholder-images";
 
 interface HeroProps {
   activeTab: ContentTab;
@@ -56,6 +56,13 @@ export function Hero({
   });
   const [starsFill, setStarsFill] = useState(0);
   const [animationPlayed, setAnimationPlayed] = useState(false);
+
+  // Decorative images for shop soul
+  const soulImages = useMemo(() => ({
+    left: PlaceHolderImages.find(img => img.id === "tiles-secondary"),
+    right: PlaceHolderImages.find(img => img.id === "sanitary-secondary"),
+    bottom: PlaceHolderImages.find(img => img.id === "store-random"),
+  }), []);
 
   // Sync external filter with internal state
   useEffect(() => {
@@ -227,7 +234,31 @@ export function Hero({
           </motion.div>
         ) : (
           <motion.div key="store-content" initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.02 }} className="z-[110] fixed inset-0 bg-background/95 backdrop-blur-3xl flex flex-col">
-            <div className="flex justify-between items-center px-8 py-10 border-b border-white/10 bg-background/50">
+            {/* Decorative Architectural "Soul" Images */}
+            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden hidden xl:block">
+              {soulImages.left && (
+                <motion.div 
+                  initial={{ x: -100, opacity: 0 }}
+                  animate={{ x: 0, opacity: 0.1 }}
+                  transition={{ delay: 0.2, duration: 1 }}
+                  className="absolute -left-20 top-0 bottom-0 w-[400px] border-r border-primary/10"
+                >
+                  <Image src={soulImages.left.imageUrl} alt="Texture Left" fill className="object-cover grayscale" unoptimized />
+                </motion.div>
+              )}
+              {soulImages.right && (
+                <motion.div 
+                  initial={{ x: 100, opacity: 0 }}
+                  animate={{ x: 0, opacity: 0.1 }}
+                  transition={{ delay: 0.3, duration: 1 }}
+                  className="absolute -right-20 top-0 bottom-0 w-[400px] border-l border-primary/10"
+                >
+                  <Image src={soulImages.right.imageUrl} alt="Texture Right" fill className="object-cover grayscale" unoptimized />
+                </motion.div>
+              )}
+            </div>
+
+            <div className="flex justify-between items-center px-8 py-10 border-b border-white/10 bg-background/50 relative z-10">
               <button 
                 onClick={toggleStore} 
                 className="flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.3em] text-muted-foreground hover:text-primary transition-colors"
@@ -236,7 +267,7 @@ export function Hero({
               </button>
             </div>
 
-            <div className="flex-1 flex flex-col h-full overflow-hidden">
+            <div className="flex-1 flex flex-col h-full overflow-hidden relative z-10">
               <div className="p-12 border-b border-white/10 bg-background/50 flex flex-col md:flex-row items-center justify-between gap-10">
                 <div>
                   <h2 className="text-4xl md:text-6xl font-headline uppercase tracking-tighter text-foreground">{storeTitle}</h2>
@@ -279,7 +310,7 @@ export function Hero({
               </div>
 
               <ScrollArea className="flex-1 p-12">
-                <div className="max-w-[1800px] mx-auto space-y-32 pb-32">
+                <div className="max-w-[1400px] mx-auto space-y-32 pb-32">
                   {categoriesWithIcons
                     .filter(cat => selectedCats.length === 0 || selectedCats.includes(cat.id))
                     .map(cat => {
@@ -292,7 +323,7 @@ export function Hero({
                             <h3 className="text-3xl md:text-4xl font-headline uppercase tracking-tight text-primary">{cat.name}</h3>
                             <div className="h-[1px] flex-1 bg-primary/20" />
                           </div>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12">
                             {categoryProducts.map(prod => (
                                 <div key={prod.id} className="glass-panel p-10 border-white/5 hover:bg-foreground/5 transition-all group">
                                   <div className="aspect-square bg-muted/20 mb-8 flex items-center justify-center relative overflow-hidden">
