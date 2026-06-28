@@ -14,6 +14,8 @@ import { LogIn, ArrowLeft, Eye, EyeOff, ShieldCheck, Mail, KeyRound, LockKeyhole
 import { TypingAnimation } from "@/components/ui/typing-animation";
 import { LuxuryLoader } from "@/components/ui/luxury-loader";
 import { sendAuthEmail } from "@/app/actions/email";
+import { errorEmitter } from "@/firebase/error-emitter";
+import { FirestorePermissionError } from "@/firebase/errors";
 
 export default function LoginPage() {
   const [view, setView] = useState<"login" | "forgot" | "verify_reset" | "new_password">("login");
@@ -69,12 +71,21 @@ export default function LoginPage() {
     setIsLoading(true);
     try {
       const generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
-
-      await addDoc(collection(db, "verificationCodes"), {
+      const codeData = {
         email: email.toLowerCase(),
         code: generatedCode,
         type: 'password_reset',
         createdAt: serverTimestamp(),
+      };
+
+      const codesRef = collection(db, "verificationCodes");
+      addDoc(codesRef, codeData).catch(async (err) => {
+        const permissionError = new FirestorePermissionError({
+          path: codesRef.path,
+          operation: 'create',
+          requestResourceData: codeData,
+        });
+        errorEmitter.emit('permission-error', permissionError);
       });
 
       await sendAuthEmail(email, generatedCode, "", "reset");
@@ -100,12 +111,21 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
+      const codesRef = collection(db, "verificationCodes");
       const q = query(
-        collection(db, "verificationCodes"), 
+        codesRef, 
         where("email", "==", email.toLowerCase()),
         where("code", "==", otp)
       );
-      const querySnapshot = await getDocs(q);
+      
+      const querySnapshot = await getDocs(q).catch(async (err) => {
+        const permissionError = new FirestorePermissionError({
+          path: codesRef.path,
+          operation: 'list',
+        });
+        errorEmitter.emit('permission-error', permissionError);
+        throw err;
+      });
 
       if (querySnapshot.empty) {
         throw new Error("Неверный код восстановления.");
@@ -113,7 +133,7 @@ export default function LoginPage() {
 
       // Cleanup code
       const codeDocId = querySnapshot.docs[0].id;
-      await deleteDoc(doc(db, "verificationCodes", codeDocId));
+      deleteDoc(doc(db, "verificationCodes", codeDocId));
 
       toast({
         title: "Доступ подтвержден",
@@ -140,13 +160,13 @@ export default function LoginPage() {
 
     setIsLoading(true);
     try {
-      // In Firebase client SDK, resetting password after custom OTP verification
-      // usually requires the final secure link to be sent to confirm identity with the server.
+      // Firebase requires a secure OOB link to change password without an active session.
+      // We send this link as the FINAL step to ensure 100% security.
       await sendPasswordResetEmail(auth, email);
       
       toast({
-        title: "Запрос принят",
-        description: "Мы отправили финальную ссылку для активации нового пароля на ваш email.",
+        title: "Личность подтверждена",
+        description: "Мы отправили финальную ссылку для активации вашего нового пароля на email. Нажмите на нее, чтобы завершить обновление.",
       });
       setView("login");
     } catch (error: any) {

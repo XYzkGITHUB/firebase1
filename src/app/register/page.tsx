@@ -14,6 +14,8 @@ import { UserPlus, ArrowLeft, Eye, EyeOff, ShieldCheck, Mail } from "lucide-reac
 import { TypingAnimation } from "@/components/ui/typing-animation";
 import { LuxuryLoader } from "@/components/ui/luxury-loader";
 import { sendVerificationEmail } from "@/app/actions/email";
+import { errorEmitter } from "@/firebase/error-emitter";
+import { FirestorePermissionError } from "@/firebase/errors";
 
 export default function RegisterPage() {
   const [step, setStep] = useState<"details" | "verify">("details");
@@ -48,18 +50,25 @@ export default function RegisterPage() {
 
     setIsLoading(true);
     try {
-      // 1. Generate 6-digit code
       const generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
-
-      // 2. Save code to Firestore temporarily
-      await addDoc(collection(db, "verificationCodes"), {
+      const codeData = {
         email: email.toLowerCase(),
         code: generatedCode,
+        type: 'registration',
         createdAt: serverTimestamp(),
+      };
+
+      const codesRef = collection(db, "verificationCodes");
+      addDoc(codesRef, codeData).catch(async (err) => {
+        const permissionError = new FirestorePermissionError({
+          path: codesRef.path,
+          operation: 'create',
+          requestResourceData: codeData,
+        });
+        errorEmitter.emit('permission-error', permissionError);
       });
 
-      // 3. Send email via Brevo
-      await sendVerificationEmail(email, generatedCode, name);
+      await sendVerificationEmail(email.toLowerCase(), generatedCode, name);
 
       toast({
         title: "Код отправлен",
@@ -83,27 +92,33 @@ export default function RegisterPage() {
     setIsLoading(true);
 
     try {
-      // 1. Check code in Firestore
+      const codesRef = collection(db, "verificationCodes");
       const q = query(
-        collection(db, "verificationCodes"), 
+        codesRef, 
         where("email", "==", email.toLowerCase()),
         where("code", "==", otp)
       );
-      const querySnapshot = await getDocs(q);
+      
+      const querySnapshot = await getDocs(q).catch(async (err) => {
+        const permissionError = new FirestorePermissionError({
+          path: codesRef.path,
+          operation: 'list',
+        });
+        errorEmitter.emit('permission-error', permissionError);
+        throw err;
+      });
 
       if (querySnapshot.empty) {
         throw new Error("Неверный код подтверждения.");
       }
 
-      // 2. Create the actual account
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       if (userCredential.user) {
         await updateProfile(userCredential.user, { displayName: name });
       }
 
-      // 3. Cleanup: remove the code from Firestore
       const codeDocId = querySnapshot.docs[0].id;
-      await deleteDoc(doc(db, "verificationCodes", codeDocId));
+      deleteDoc(doc(db, "verificationCodes", codeDocId));
 
       toast({
         title: "Регистрация успешна",

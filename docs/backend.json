@@ -70,22 +70,11 @@
   "firestore": {
     "/leads/{leadId}": {
       "schema": "Lead",
-      "description": "Collection of incoming leads from clients. ALLOW PUBLIC CREATE.",
-      "permissions": {
-        "create": "true",
-        "read": "auth != null",
-        "update": "auth != null",
-        "delete": "auth != null"
-      }
+      "description": "Collection of incoming leads from clients. MUST ALLOW PUBLIC CREATE."
     },
     "/verificationCodes/{codeId}": {
       "schema": "VerificationCode",
-      "description": "Temporary storage for OTP codes. ALLOW PUBLIC CREATE & READ (filtered).",
-      "permissions": {
-        "create": "true",
-        "read": "true",
-        "delete": "true"
-      }
+      "description": "Temporary storage for OTP codes. MUST ALLOW PUBLIC CREATE AND LIST/READ FOR MATCHING EMAIL/CODE."
     }
   }
 }
