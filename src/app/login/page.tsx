@@ -2,8 +2,7 @@
 "use client";
 import React, { useState } from "react";
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
-import { useAuth, useFirestore } from "@/firebase";
-import { collection, query, where, getDocs, limit } from "firebase/firestore";
+import { useAuth } from "@/firebase";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -63,19 +62,17 @@ export default function LoginPage() {
 
     setIsLoading(true);
     try {
-      // Using official Firebase reset to ensure 100% safety and a single-email flow
       await sendPasswordResetEmail(auth, email.toLowerCase().trim());
-      
       toast({
-        title: "Инструкции отправлены",
-        description: `Мы отправили ссылку для восстановления на ${email}. Пожалуйста, проверьте почту.`,
+        title: "Ссылка отправлена",
+        description: `Мы отправили инструкции по восстановлению на ${email}. Проверьте почту.`,
       });
       setView("login");
     } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Ошибка",
-        description: "Не удалось инициировать восстановление. Проверьте правильность email.",
+        description: "Не удалось отправить письмо. Проверьте правильность email.",
       });
     } finally {
       setIsLoading(false);

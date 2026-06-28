@@ -49,9 +49,10 @@ export function Contact({ activeTab }: ContactProps) {
     };
 
     const leadsRef = collection(db, "leads");
+    // Non-blocking write to improve UX
     addDoc(leadsRef, leadData)
       .then(() => {
-        toast({ title: "Отправлено", description: "Спасибо за ваш отзыв!" });
+        toast({ title: "Отправлено", description: "Спасибо за ваш запрос!" });
         setFormData({ name: "", phone: "", message: "" });
         setIsSubmitting(false);
       })
@@ -97,6 +98,7 @@ export function Contact({ activeTab }: ContactProps) {
                   onChange={handleInputChange}
                   placeholder="Введите ваше имя" 
                   className="h-14 bg-background/50 border-foreground/10 rounded-none text-base px-6" 
+                  required
                 />
               </div>
               <div className="space-y-3">
@@ -107,6 +109,7 @@ export function Contact({ activeTab }: ContactProps) {
                   onChange={handleInputChange}
                   placeholder="+7 (___) ___-__-__" 
                   className="h-14 bg-background/50 border-foreground/10 rounded-none text-base px-6" 
+                  required
                 />
               </div>
               <div className="space-y-3">
@@ -124,7 +127,7 @@ export function Contact({ activeTab }: ContactProps) {
                 disabled={isSubmitting}
                 className="w-full h-16 bg-primary text-white text-[10px] font-bold uppercase tracking-[0.4em] group rounded-none shadow-2xl"
               >
-                {isSubmitting ? <Loader2 className="h-5 w-5 animate-spin" /> : "Отправить отзыв"}
+                {isSubmitting ? <Loader2 className="h-5 w-5 animate-spin" /> : "Отправить запрос"}
               </Button>
             </form>
           </div>

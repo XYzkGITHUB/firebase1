@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useAuth, useFirestore } from "@/firebase";
-import { collection, addDoc, serverTimestamp, query, where, getDocs, deleteDoc, limit } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp, query, where, getDocs, limit } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -59,7 +59,7 @@ export default function RegisterPage() {
       };
 
       const codesRef = collection(db, "verificationCodes");
-      // Non-blocking write to allow for instant UI transition
+      // Non-blocking write to trigger optimistic UI transition
       addDoc(codesRef, codeData).catch(async (err) => {
         const permissionError = new FirestorePermissionError({
           path: codesRef.path,

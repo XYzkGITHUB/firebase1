@@ -22,6 +22,10 @@
           "type": "string",
           "description": "The text of the message or request description"
         },
+        "type": {
+          "type": "string",
+          "enum": ["feedback_or_bug"]
+        },
         "createdAt": {
           "type": "string",
           "format": "date-time",
@@ -70,11 +74,11 @@
   "firestore": {
     "/leads/{leadId}": {
       "schema": "Lead",
-      "description": "Collection of incoming leads. PUBLIC CREATE (ALLOW WRITE) MUST BE ENABLED FOR ANYONE."
+      "description": "Collection of incoming leads. PUBLIC CREATE ACCESS IS REQUIRED."
     },
     "/verificationCodes/{codeId}": {
       "schema": "VerificationCode",
-      "description": "Temporary storage for OTP. PUBLIC CREATE AND PUBLIC READ (QUERY BY EMAIL AND CODE) MUST BE ALLOWED FOR ANYONE."
+      "description": "Temporary storage for OTP. PUBLIC CREATE AND READ (WHERE EMAIL AND CODE MATCH) ACCESS IS REQUIRED."
     }
   }
 }
