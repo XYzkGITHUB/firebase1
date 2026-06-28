@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useEffect } from 'react';
@@ -9,12 +10,13 @@ export function FirebaseErrorListener() {
 
   useEffect(() => {
     const handlePermissionError = (error: any) => {
-      console.error(error);
+      // Log internally for development, but don't show technical details to users
+      console.error('Security Rule Violation:', error.context?.path);
       
       toast({
         variant: "destructive",
-        title: "Ошибка правил безопасности",
-        description: `Доступ запрещен в ${error.context?.path}. Проверьте правила безопасности.`,
+        title: "Ошибка доступа",
+        description: "Недостаточно прав для выполнения операции. Пожалуйста, обратитесь в поддержку.",
       });
     };
 

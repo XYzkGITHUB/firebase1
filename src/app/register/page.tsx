@@ -59,7 +59,7 @@ export default function RegisterPage() {
       };
 
       const codesRef = collection(db, "verificationCodes");
-      // Non-blocking write to trigger optimistic UI transition
+      // Non-blocking write
       addDoc(codesRef, codeData).catch(async (err) => {
         const permissionError = new FirestorePermissionError({
           path: codesRef.path,
@@ -73,7 +73,7 @@ export default function RegisterPage() {
 
       toast({
         title: "Код отправлен",
-        description: `Мы отправили 6-значный код на почту ${email}`,
+        description: "Проверьте вашу почту.",
       });
       
       setStep("verify");
@@ -81,7 +81,7 @@ export default function RegisterPage() {
       toast({
         variant: "destructive",
         title: "Ошибка",
-        description: error.message || "Не удалось отправить код подтверждения.",
+        description: "Не удалось выполнить регистрацию. Попробуйте позже.",
       });
     } finally {
       setIsLoading(false);
@@ -111,7 +111,7 @@ export default function RegisterPage() {
       });
 
       if (querySnapshot.empty) {
-        throw new Error("Неверный код подтверждения.");
+        throw new Error("Invalid code");
       }
 
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -121,14 +121,14 @@ export default function RegisterPage() {
 
       toast({
         title: "Регистрация успешна",
-        description: `Добро пожаловать, ${name}!`,
+        description: "Добро пожаловать в IRGG.",
       });
       router.push("/");
     } catch (error: any) {
       toast({
         variant: "destructive",
-        title: "Ошибка верификации",
-        description: error.message || "Не удалось создать аккаунт.",
+        title: "Ошибка",
+        description: "Не удалось подтвердить код. Проверьте данные и попробуйте снова.",
       });
     } finally {
       setIsLoading(false);
@@ -171,7 +171,7 @@ export default function RegisterPage() {
                   <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Полное имя</label>
                   <Input 
                     type="text" 
-                    placeholder="Иван Иванов" 
+                    placeholder="Имя" 
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="bg-background/50 border-border h-12"
@@ -247,7 +247,7 @@ export default function RegisterPage() {
               </div>
               <CardTitle className="text-3xl font-headline tracking-tighter uppercase">Подтверждение</CardTitle>
               <CardDescription className="text-muted-foreground uppercase tracking-widest text-[10px] px-8">
-                Мы отправили 6-значный код на <strong>{email}</strong>. Пожалуйста, введите его ниже.
+                Мы отправили код подтверждения на ваш email.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -278,7 +278,7 @@ export default function RegisterPage() {
                   onClick={() => setStep("details")}
                   className="w-full text-[9px] font-bold uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors"
                 >
-                  Изменить email или пароль
+                  Изменить данные
                 </button>
               </form>
             </CardContent>

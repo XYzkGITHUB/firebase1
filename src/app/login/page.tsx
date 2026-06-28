@@ -37,17 +37,17 @@ export default function LoginPage() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      await signInWithEmailAndPassword(auth, email.toLowerCase().trim(), password);
       toast({
         title: "Успешный вход",
-        description: "Добро пожаловать в IRGG.",
+        description: "Добро пожаловать.",
       });
       router.push("/");
     } catch (error: any) {
       toast({
         variant: "destructive",
-        title: "Ошибка входа",
-        description: "Неверный email или пароль.",
+        title: "Ошибка",
+        description: "Неверные данные для входа.",
       });
       setIsLoading(false);
     }
@@ -64,15 +64,16 @@ export default function LoginPage() {
     try {
       await sendPasswordResetEmail(auth, email.toLowerCase().trim());
       toast({
-        title: "Ссылка отправлена",
-        description: `Мы отправили инструкции по восстановлению на ${email}. Проверьте почту.`,
+        title: "Запрос отправлен",
+        description: "Проверьте вашу почту для восстановления пароля.",
       });
       setView("login");
     } catch (error: any) {
+      // Ambiguous error for security
       toast({
         variant: "destructive",
         title: "Ошибка",
-        description: "Не удалось отправить письмо. Проверьте правильность email.",
+        description: "Не удалось выполнить запрос. Попробуйте позже.",
       });
     } finally {
       setIsLoading(false);
@@ -177,7 +178,7 @@ export default function LoginPage() {
             <CardHeader className="space-y-4 text-center pt-8">
               <CardTitle className="text-3xl font-headline tracking-tighter uppercase">Восстановление</CardTitle>
               <CardDescription className="text-muted-foreground uppercase tracking-widest text-[10px]">
-                Введите email для получения ссылки
+                Введите email для получения ссылки для сброса пароля
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -199,7 +200,7 @@ export default function LoginPage() {
                   disabled={isLoading}
                 >
                   <Mail className="mr-2 h-4 w-4" />
-                  Получить ссылку
+                  Отправить ссылку
                 </Button>
                 <button 
                   type="button"

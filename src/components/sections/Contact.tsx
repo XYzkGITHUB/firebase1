@@ -49,10 +49,10 @@ export function Contact({ activeTab }: ContactProps) {
     };
 
     const leadsRef = collection(db, "leads");
-    // Non-blocking write to improve UX
+    // Non-blocking write
     addDoc(leadsRef, leadData)
       .then(() => {
-        toast({ title: "Отправлено", description: "Спасибо за ваш запрос!" });
+        toast({ title: "Отправлено", description: "Спасибо! Мы свяжемся с вами." });
         setFormData({ name: "", phone: "", message: "" });
         setIsSubmitting(false);
       })
@@ -63,6 +63,11 @@ export function Contact({ activeTab }: ContactProps) {
           requestResourceData: leadData,
         });
         errorEmitter.emit("permission-error", permissionError);
+        toast({
+          variant: "destructive",
+          title: "Ошибка",
+          description: "Не удалось отправить форму. Попробуйте позже.",
+        });
         setIsSubmitting(false);
       });
   };
@@ -80,7 +85,7 @@ export function Contact({ activeTab }: ContactProps) {
               textAlign="left"
             />
             <p className="text-base md:text-lg text-muted-foreground leading-relaxed font-light max-w-xl">
-              Мы ценим ваш опыт. Сообщите нам, если вы столкнулись с ошибкой, у вас есть предложение или вы не нашли нужный материал.
+              Мы ценим ваш опыт. Сообщите нам, если вы столкнулись с проблемой или у вас есть предложение.
             </p>
             <div className="space-y-4 pt-6 md:pt-10">
                <div className="text-2xl md:text-3xl font-headline font-bold text-primary tracking-tighter">+7 989 919 95 41</div>
@@ -113,7 +118,7 @@ export function Contact({ activeTab }: ContactProps) {
                 />
               </div>
               <div className="space-y-3">
-                <label className="text-[10px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Сообщение или отчет об ошибке</label>
+                <label className="text-[10px] font-bold uppercase tracking-[0.4em] text-muted-foreground">Сообщение</label>
                 <Textarea 
                   name="message"
                   value={formData.message}
