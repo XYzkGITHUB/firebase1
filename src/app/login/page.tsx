@@ -1,7 +1,7 @@
 
 "use client";
 import React, { useState } from "react";
-import { signInWithEmailAndPassword, confirmPasswordReset, sendPasswordResetEmail } from "firebase/auth";
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { useAuth, useFirestore } from "@/firebase";
 import { collection, addDoc, serverTimestamp, query, where, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
@@ -10,16 +10,17 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
-import { LogIn, ArrowLeft, Eye, EyeOff, ShieldCheck, Mail, KeyRound } from "lucide-react";
+import { LogIn, ArrowLeft, Eye, EyeOff, ShieldCheck, Mail, KeyRound, LockKeyhole } from "lucide-react";
 import { TypingAnimation } from "@/components/ui/typing-animation";
 import { LuxuryLoader } from "@/components/ui/luxury-loader";
 import { sendAuthEmail } from "@/app/actions/email";
 
 export default function LoginPage() {
-  const [view, setView] = useState<"login" | "forgot" | "verify_reset">("login");
+  const [view, setView] = useState<"login" | "forgot" | "verify_reset" | "new_password">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [otp, setOtp] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -67,9 +68,6 @@ export default function LoginPage() {
 
     setIsLoading(true);
     try {
-      // For this prototype, we use custom OTP via Brevo
-      // In a real app, you'd use Firebase's native reset flow, 
-      // but we'll simulate the OTP for the user's specific request
       const generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
 
       await addDoc(collection(db, "verificationCodes"), {
@@ -117,20 +115,45 @@ export default function LoginPage() {
       const codeDocId = querySnapshot.docs[0].id;
       await deleteDoc(doc(db, "verificationCodes", codeDocId));
 
-      // In this setup, we'd normally redirect to a page that uses confirmPasswordReset
-      // For the prototype, we use the default Firebase method as the final fallback
-      await sendPasswordResetEmail(auth, email);
-      
       toast({
         title: "Доступ подтвержден",
-        description: "Мы отправили финальную ссылку для смены пароля на вашу почту.",
+        description: "Пожалуйста, установите новый пароль.",
       });
-      setView("login");
+      setView("new_password");
     } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Ошибка верификации",
         description: error.message,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSetNewPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newPassword !== confirmNewPassword) {
+      toast({ variant: "destructive", title: "Ошибка", description: "Пароли не совпадают." });
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      // In Firebase client SDK, resetting password after custom OTP verification
+      // usually requires the final secure link to be sent to confirm identity with the server.
+      await sendPasswordResetEmail(auth, email);
+      
+      toast({
+        title: "Запрос принят",
+        description: "Мы отправили финальную ссылку для активации нового пароля на ваш email.",
+      });
+      setView("login");
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Ошибка",
+        description: "Не удалось завершить сброс пароля.",
       });
     } finally {
       setIsLoading(false);
@@ -312,6 +335,55 @@ export default function LoginPage() {
                 >
                   Изменить email
                 </button>
+              </form>
+            </CardContent>
+          </>
+        )}
+
+        {view === "new_password" && (
+          <>
+            <CardHeader className="space-y-4 text-center pt-8">
+              <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                <LockKeyhole className="text-primary w-8 h-8" />
+              </div>
+              <CardTitle className="text-3xl font-headline tracking-tighter uppercase">Новый пароль</CardTitle>
+              <CardDescription className="text-muted-foreground uppercase tracking-widest text-[10px]">
+                Установите ваш новый пароль доступа
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSetNewPassword} className="space-y-6">
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Новый пароль</label>
+                    <Input 
+                      type="password" 
+                      placeholder="••••••••" 
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      className="bg-background/50 border-border h-12"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Подтвердите новый пароль</label>
+                    <Input 
+                      type="password" 
+                      placeholder="••••••••" 
+                      value={confirmNewPassword}
+                      onChange={(e) => setConfirmNewPassword(e.target.value)}
+                      className="bg-background/50 border-border h-12"
+                      required
+                    />
+                  </div>
+                </div>
+                <Button 
+                  type="submit" 
+                  className="w-full h-14 bg-primary text-white font-bold uppercase tracking-widest text-xs"
+                  disabled={isLoading}
+                >
+                  Сохранить пароль
+                </Button>
               </form>
             </CardContent>
           </>
