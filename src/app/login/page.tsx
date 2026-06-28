@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { useAuth } from "@/firebase";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
-import { LogIn, ArrowLeft, Eye, EyeOff } from "lucide-react";
+import { LogIn, ArrowLeft, Eye, EyeOff, HelpCircle } from "lucide-react";
 import { TypingAnimation } from "@/components/ui/typing-animation";
 import { LuxuryLoader } from "@/components/ui/luxury-loader";
 
@@ -46,6 +46,34 @@ export default function LoginPage() {
         title: "Ошибка входа",
         description: "Неверный email или пароль.",
       });
+      setIsLoading(false);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    if (!email) {
+      toast({
+        variant: "destructive",
+        title: "Внимание",
+        description: "Пожалуйста, введите email для восстановления пароля.",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      await sendPasswordResetEmail(auth, email);
+      toast({
+        title: "Инструкции отправлены",
+        description: `Ссылка для восстановления пароля отправлена на ${email}`,
+      });
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Ошибка",
+        description: "Не удалось отправить письмо для восстановления. Проверьте правильность email.",
+      });
+    } finally {
       setIsLoading(false);
     }
   };
@@ -91,7 +119,16 @@ export default function LoginPage() {
               />
             </div>
             <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Пароль</label>
+              <div className="flex items-center justify-between">
+                <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Пароль</label>
+                <button 
+                  type="button" 
+                  onClick={handleForgotPassword}
+                  className="text-[9px] font-bold uppercase tracking-widest text-primary hover:underline transition-all"
+                >
+                  Забыли пароль?
+                </button>
+              </div>
               <div className="relative">
                 <Input 
                   type={showPassword ? "text" : "password"} 
