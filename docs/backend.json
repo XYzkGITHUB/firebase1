@@ -36,7 +36,7 @@
     },
     "VerificationCode": {
       "title": "VerificationCode",
-      "description": "Temporary OTP for email verification during sign-up.",
+      "description": "Temporary OTP for email verification or password reset.",
       "type": "object",
       "properties": {
         "email": {
@@ -45,6 +45,10 @@
         },
         "code": {
           "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["registration", "password_reset"]
         },
         "createdAt": {
           "type": "string",
@@ -66,11 +70,22 @@
   "firestore": {
     "/leads/{leadId}": {
       "schema": "Lead",
-      "description": "Collection of incoming leads from clients. Allows public creation of documents."
+      "description": "Collection of incoming leads from clients. ALLOW PUBLIC CREATE.",
+      "permissions": {
+        "create": "true",
+        "read": "auth != null",
+        "update": "auth != null",
+        "delete": "auth != null"
+      }
     },
     "/verificationCodes/{codeId}": {
       "schema": "VerificationCode",
-      "description": "Temporary storage for OTP codes. Used to verify identity before account creation."
+      "description": "Temporary storage for OTP codes. ALLOW PUBLIC CREATE & READ (filtered).",
+      "permissions": {
+        "create": "true",
+        "read": "true",
+        "delete": "true"
+      }
     }
   }
 }
