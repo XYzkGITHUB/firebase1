@@ -7,7 +7,7 @@
 
 export async function sendVerificationEmail(email: string, code: string, name: string) {
   const brevoApiKey = process.env.BREVO_API_KEY;
-  const senderEmail = process.env.BREVO_SENDER_EMAIL || 'noreply@irgg.ru';
+  const senderEmail = process.env.BREVO_SENDER_EMAIL || 'noreply@irggorg.ru';
   const senderName = 'IRGG Global';
 
   if (!brevoApiKey) {
