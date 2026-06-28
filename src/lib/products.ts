@@ -19,6 +19,7 @@ export const CATEGORIES: Category[] = [
   { id: "laminate", name: "Ламинат" },
   { id: "carpets", name: "Ковры" },
   { id: "lyustri", name: "Люстры" },
+  { id: "sanitary", name: "Сантехника" },
 ];
 
 export const PRODUCTS: Product[] = [
@@ -119,4 +120,31 @@ export const PRODUCTS: Product[] = [
   { id: 'l8', cat: "laminate", name: "Дуб Медичи", price: "1 300 ₽/м²", sub: "12мм, 33 класс", image: "/imgs/Catalog/Laminat/12mm-33class-Dub-Medichi-1270.png" },
   { id: 'l9', cat: "laminate", name: "Дуб Рональд", price: "1 050 ₽/м²", sub: "12мм", image: "/imgs/Catalog/Laminat/12mm-Dob-Ronald-1050.png" },
   { id: 'l10', cat: "laminate", name: "Дуб Савой", price: "1 100 ₽/м²", sub: "12мм", image: "/imgs/Catalog/Laminat/12mm-Dub-Savoy.png" },
+
+  // Сантехника (Sanitary)
+  { id: 's1', cat: "sanitary", name: "Тумба-умывальник 2-в-1", price: "16 900 ₽", sub: "Daniela + Modern", image: "/imgs/Catalog/Santehnika/2-in-1-Tumba-Daniela+Umivalnik-Modern-16900.png" },
+  { id: 's2', cat: "sanitary", name: "Комплект 3-в-1", price: "35 900 ₽", sub: "Leticiya (Тумба, Зеркало, Пенал)", image: "/imgs/Catalog/Santehnika/3-in-1-Komplekt-Leticiya;tumba,Zerkalo,Penal.png" },
+  { id: 's3', cat: "sanitary", name: "Тумба напольная", price: "24 100 ₽", sub: "80 см", image: "/imgs/Catalog/Santehnika/80cm-tumba-napolnaya-24100.png" },
+  { id: 's4', cat: "sanitary", name: "Тумба", price: "25 250 ₽", sub: "105 см", image: "/imgs/Catalog/Santehnika/105cm-тумба-25250.png" },
+  { id: 's5', cat: "sanitary", name: "Ванна акриловая", price: "15 750 ₽", sub: "150x90 см", image: "/imgs/Catalog/Santehnika/150.90-vanna-akrilovaya-15750.png" },
+  { id: 's6', cat: "sanitary", name: "Комплект мебели", price: "65 160 ₽", sub: "", image: "/imgs/Catalog/Santehnika/Komplekt-mebeli-65160.png" },
+  { id: 's7', cat: "sanitary", name: "Комплект мебели", price: "77 200 ₽", sub: "", image: "/imgs/Catalog/Santehnika/Komplekt-mebeli-77200.png" },
+  { id: 's8', cat: "sanitary", name: "Комплект мебели", price: "96 800 ₽", sub: "", image: "/imgs/Catalog/Santehnika/Komplekt-mebeli-96800.png" },
+  { id: 's9', cat: "sanitary", name: "Комплект мебели", price: "98 640 ₽", sub: "", image: "/imgs/Catalog/Santehnika/Komplekt-mebeli-98640.png" },
+  { id: 's10', cat: "sanitary", name: "Комплект мебели", price: "102 240 ₽", sub: "", image: "/imgs/Catalog/Santehnika/Komplekt-mebeli-102240.png" },
+  { id: 's11', cat: "sanitary", name: "Моноблок безободковый", price: "12 330 ₽", sub: "", image: "/imgs/Catalog/Santehnika/Monoblock-Bezobodkoviyi-12330.png" },
+  { id: 's12', cat: "sanitary", name: "Комплект мебели", price: "30 900 ₽", sub: "Подстолье, умывальник, зеркало, пенал", image: "/imgs/Catalog/Santehnika/Podstolye,umivalnik-zerkalo-penal-30900.png" },
+  { id: 's13', cat: "sanitary", name: "Подвесной унитаз", price: "14 100 ₽", sub: "с функцией биде", image: "/imgs/Catalog/Santehnika/Podvesnoy-unitaz-c-functsiey-bide-14100.png" },
+  { id: 's14', cat: "sanitary", name: "Тумба", price: "21 950 ₽", sub: "", image: "/imgs/Catalog/Santehnika/Tumba-21950.png" },
+  { id: 's15', cat: "sanitary", name: "Тумба напольная", price: "23 585 ₽", sub: "", image: "/imgs/Catalog/Santehnika/Tumba-napolnaya-23585.png" },
+  { id: 's16', cat: "sanitary", name: "Тумба подвесная", price: "26 800 ₽", sub: "", image: "/imgs/Catalog/Santehnika/Tumba-Podvesnaya-26800.png" },
+  { id: 's17', cat: "sanitary", name: "Тумба-умывальник", price: "21 600 ₽", sub: "", image: "/imgs/Catalog/Santehnika/tumba-umivalnik-21600.png" },
+  { id: 's18', cat: "sanitary", name: "Унитаз-компакт", price: "6 450 ₽", sub: "", image: "/imgs/Catalog/Santehnika/Unitaz-kompakt-6450.png" },
+  { id: 's19', cat: "sanitary", name: "Унитаз-компакт", price: "12 200 ₽", sub: "", image: "/imgs/Catalog/Santehnika/Unitaz-kompakt-12200.png" },
+  { id: 's20', cat: "sanitary", name: "Унитаз-моноблок", price: "12 000 ₽", sub: "", image: "/imgs/Catalog/Santehnika/Unitaz-monoblock-12000.png" },
+  { id: 's21', cat: "sanitary", name: "Унитаз-моноблок", price: "15 110 ₽", sub: "", image: "/imgs/Catalog/Santehnika/Unitaz-monoblock-15110.png" },
+  { id: 's22', cat: "sanitary", name: "Унитаз-моноблок", price: "15 515 ₽", sub: "", image: "/imgs/Catalog/Santehnika/unitaz-monoblock-15515.png" },
+  { id: 's23', cat: "sanitary", name: "Унитаз с сидением", price: "15 210 ₽", sub: "Микролифт", image: "/imgs/Catalog/Santehnika/Unitaz-s-sideniem-mikrolift-15210.png" },
+  { id: 's24', cat: "sanitary", name: "Ванна акриловая", price: "27 500 ₽", sub: "", image: "/imgs/Catalog/Santehnika/vanna-akrilovaya-27500.png" },
+  { id: 's25', cat: "sanitary", name: "Ванна отдельностоящая", price: "55 900 ₽", sub: "", image: "/imgs/Catalog/Santehnika/Vanna-Otdelnoctoyashya-55900.png" },
 ];

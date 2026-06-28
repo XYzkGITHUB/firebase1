@@ -3,7 +3,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Grid3X3, Layers, Layout, Filter, ArrowLeft, ShoppingBag, LampCeiling } from "lucide-react";
+import { ArrowRight, Grid3X3, Layers, Layout, Filter, ArrowLeft, ShoppingBag, LampCeiling, Bath } from "lucide-react";
 import { ContentTab } from "@/app/page";
 import { cn } from "@/lib/utils";
 import BlurText from "@/components/ui/blur-text";
@@ -23,11 +23,12 @@ interface HeroProps {
   onFilterChange?: (filters: string[]) => void;
 }
 
-const categoryIcons: Record<string, React.RecordNode> = {
+const categoryIcons: Record<string, React.ReactNode> = {
   keramogranit: <Grid3X3 className="w-6 h-6" />,
   laminate: <Layers className="w-6 h-6" />,
   carpets: <Layout className="w-6 h-6" />,
   lyustri: <LampCeiling className="w-6 h-6" />,
+  sanitary: <Bath className="w-6 h-6" />,
 };
 
 const categoriesWithIcons = CATEGORIES.map(cat => ({
