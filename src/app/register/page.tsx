@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useAuth, useFirestore } from "@/firebase";
-import { collection, addDoc, serverTimestamp, query, where, getDocs, deleteDoc, doc, limit } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp, query, where, getDocs, deleteDoc, limit } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -59,7 +59,7 @@ export default function RegisterPage() {
       };
 
       const codesRef = collection(db, "verificationCodes");
-      // Non-blocking write as per guidelines
+      // Non-blocking write to allow for instant UI transition
       addDoc(codesRef, codeData).catch(async (err) => {
         const permissionError = new FirestorePermissionError({
           path: codesRef.path,
@@ -118,9 +118,6 @@ export default function RegisterPage() {
       if (userCredential.user) {
         await updateProfile(userCredential.user, { displayName: name });
       }
-
-      const codeDocId = querySnapshot.docs[0].id;
-      deleteDoc(doc(db, "verificationCodes", codeDocId));
 
       toast({
         title: "Регистрация успешна",

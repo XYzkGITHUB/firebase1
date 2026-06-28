@@ -3,32 +3,25 @@
 import React, { useState } from "react";
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { useAuth, useFirestore } from "@/firebase";
-import { collection, addDoc, serverTimestamp, query, where, getDocs, deleteDoc, doc, limit } from "firebase/firestore";
+import { collection, query, where, getDocs, limit } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
-import { LogIn, ArrowLeft, Eye, EyeOff, ShieldCheck, Mail, KeyRound, CheckCircle2 } from "lucide-react";
+import { LogIn, ArrowLeft, Eye, EyeOff, Mail } from "lucide-react";
 import { TypingAnimation } from "@/components/ui/typing-animation";
 import { LuxuryLoader } from "@/components/ui/luxury-loader";
-import { sendAuthEmail } from "@/app/actions/email";
-import { errorEmitter } from "@/firebase/error-emitter";
-import { FirestorePermissionError } from "@/firebase/errors";
 
 export default function LoginPage() {
-  const [view, setView] = useState<"login" | "forgot" | "verify_reset" | "new_password">("login");
+  const [view, setView] = useState<"login" | "forgot">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [otp, setOtp] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   
   const auth = useAuth();
-  const db = useFirestore();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -70,106 +63,19 @@ export default function LoginPage() {
 
     setIsLoading(true);
     try {
-      const generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
-      const codeData = {
-        email: email.toLowerCase().trim(),
-        code: generatedCode,
-        type: 'password_reset',
-        createdAt: serverTimestamp(),
-      };
-
-      const codesRef = collection(db, "verificationCodes");
-      addDoc(codesRef, codeData).catch(async (err) => {
-        const permissionError = new FirestorePermissionError({
-          path: codesRef.path,
-          operation: 'create',
-          requestResourceData: codeData,
-        });
-        errorEmitter.emit('permission-error', permissionError);
-      });
-
-      await sendAuthEmail(email, generatedCode, "", "reset");
-
-      toast({
-        title: "Код отправлен",
-        description: `Мы отправили код для восстановления на ${email}`,
-      });
-      setView("verify_reset");
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Ошибка",
-        description: "Не удалось инициировать восстановление.",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleVerifyReset = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    try {
-      const codesRef = collection(db, "verificationCodes");
-      const q = query(
-        codesRef, 
-        where("email", "==", email.toLowerCase().trim()),
-        where("code", "==", otp),
-        limit(1)
-      );
-      
-      const querySnapshot = await getDocs(q).catch(async (err) => {
-        const permissionError = new FirestorePermissionError({
-          path: codesRef.path,
-          operation: 'list',
-        });
-        errorEmitter.emit('permission-error', permissionError);
-        throw err;
-      });
-
-      if (querySnapshot.empty) {
-        throw new Error("Неверный код восстановления.");
-      }
-
-      // Cleanup code
-      const codeDocId = querySnapshot.docs[0].id;
-      deleteDoc(doc(db, "verificationCodes", codeDocId));
-
-      setView("new_password");
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Ошибка верификации",
-        description: error.message,
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleFinishReset = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newPassword !== confirmPassword) {
-      toast({ variant: "destructive", title: "Ошибка", description: "Пароли не совпадают." });
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      // Firebase triggers the final secure link
-      await sendPasswordResetEmail(auth, email);
+      // Using official Firebase reset to ensure 100% safety and a single-email flow
+      await sendPasswordResetEmail(auth, email.toLowerCase().trim());
       
       toast({
-        title: "Запрос принят",
-        description: "Для завершения смены пароля, пожалуйста, перейдите по ссылке в финальном письме безопасности.",
+        title: "Инструкции отправлены",
+        description: `Мы отправили ссылку для восстановления на ${email}. Пожалуйста, проверьте почту.`,
       });
       setView("login");
     } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Ошибка",
-        description: "Не удалось завершить смену пароля.",
+        description: "Не удалось инициировать восстановление. Проверьте правильность email.",
       });
     } finally {
       setIsLoading(false);
@@ -274,7 +180,7 @@ export default function LoginPage() {
             <CardHeader className="space-y-4 text-center pt-8">
               <CardTitle className="text-3xl font-headline tracking-tighter uppercase">Восстановление</CardTitle>
               <CardDescription className="text-muted-foreground uppercase tracking-widest text-[10px]">
-                Введите email для получения кода
+                Введите email для получения ссылки
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -296,7 +202,7 @@ export default function LoginPage() {
                   disabled={isLoading}
                 >
                   <Mail className="mr-2 h-4 w-4" />
-                  Получить код
+                  Получить ссылку
                 </Button>
                 <button 
                   type="button"
@@ -305,97 +211,6 @@ export default function LoginPage() {
                 >
                   Вернуться ко входу
                 </button>
-              </form>
-            </CardContent>
-          </>
-        )}
-
-        {view === "verify_reset" && (
-          <>
-            <CardHeader className="space-y-4 text-center pt-8">
-              <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                <ShieldCheck className="text-primary w-8 h-8" />
-              </div>
-              <CardTitle className="text-3xl font-headline tracking-tighter uppercase">Проверка</CardTitle>
-              <CardDescription className="text-muted-foreground uppercase tracking-widest text-[10px] px-8">
-                Мы отправили код восстановления на <strong>{email}</strong>
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleVerifyReset} className="space-y-6">
-                <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground block text-center">Код из письма</label>
-                  <Input 
-                    type="text" 
-                    placeholder="000000" 
-                    maxLength={6}
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
-                    className="bg-background/50 border-border h-16 text-center text-3xl font-bold tracking-[0.5em] focus:ring-primary"
-                    required
-                    autoFocus
-                  />
-                </div>
-                <Button 
-                  type="submit" 
-                  className="w-full h-14 bg-primary text-white font-bold uppercase tracking-widest text-xs"
-                  disabled={isLoading || otp.length !== 6}
-                >
-                  <KeyRound className="mr-2 h-4 w-4" />
-                  Подтвердить
-                </Button>
-                <button 
-                  type="button"
-                  onClick={() => setView("forgot")}
-                  className="w-full text-[9px] font-bold uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors"
-                >
-                  Изменить email
-                </button>
-              </form>
-            </CardContent>
-          </>
-        )}
-
-        {view === "new_password" && (
-          <>
-            <CardHeader className="space-y-4 text-center pt-8">
-              <CardTitle className="text-3xl font-headline tracking-tighter uppercase">Новый пароль</CardTitle>
-              <CardDescription className="text-muted-foreground uppercase tracking-widest text-[10px]">
-                Установите новый пароль для {email}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleFinishReset} className="space-y-6">
-                <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Новый пароль</label>
-                  <Input 
-                    type="password" 
-                    placeholder="••••••••" 
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    className="bg-background/50 border-border h-12"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Повторите пароль</label>
-                  <Input 
-                    type="password" 
-                    placeholder="••••••••" 
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="bg-background/50 border-border h-12"
-                    required
-                  />
-                </div>
-                <Button 
-                  type="submit" 
-                  className="w-full h-14 bg-primary text-white font-bold uppercase tracking-widest text-xs"
-                  disabled={isLoading}
-                >
-                  <CheckCircle2 className="mr-2 h-4 w-4" />
-                  Сохранить пароль
-                </Button>
               </form>
             </CardContent>
           </>

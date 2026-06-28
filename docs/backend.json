@@ -70,11 +70,11 @@
   "firestore": {
     "/leads/{leadId}": {
       "schema": "Lead",
-      "description": "Collection of incoming leads. PUBLIC CREATE MUST BE ALLOWED."
+      "description": "Collection of incoming leads. PUBLIC CREATE (ALLOW WRITE) MUST BE ENABLED FOR ANYONE."
     },
     "/verificationCodes/{codeId}": {
       "schema": "VerificationCode",
-      "description": "Temporary storage for OTP. PUBLIC CREATE AND PUBLIC QUERY (READ) BY EMAIL AND CODE MUST BE ALLOWED."
+      "description": "Temporary storage for OTP. PUBLIC CREATE AND PUBLIC READ (QUERY BY EMAIL AND CODE) MUST BE ALLOWED FOR ANYONE."
     }
   }
 }
