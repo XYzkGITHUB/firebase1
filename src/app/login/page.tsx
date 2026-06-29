@@ -1,8 +1,6 @@
 
 "use client";
 import React, { useState } from "react";
-import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
-import { useAuth } from "@/firebase";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,7 +18,6 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   
-  const auth = useAuth();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -36,21 +33,15 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    try {
-      await signInWithEmailAndPassword(auth, email.toLowerCase().trim(), password);
-      toast({
-        title: "Успешный вход",
-        description: "Добро пожаловать.",
-      });
-      router.push("/");
-    } catch (error: any) {
+    // Backend functionality removed
+    setTimeout(() => {
       toast({
         variant: "destructive",
         title: "Ошибка",
-        description: "Неверные данные для входа.",
+        description: "Система входа временно отключена.",
       });
       setIsLoading(false);
-    }
+    }, 800);
   };
 
   const handleStartReset = async (e: React.FormEvent) => {
@@ -61,23 +52,15 @@ export default function LoginPage() {
     }
 
     setIsLoading(true);
-    try {
-      await sendPasswordResetEmail(auth, email.toLowerCase().trim());
-      toast({
-        title: "Запрос отправлен",
-        description: "Проверьте вашу почту для восстановления пароля.",
-      });
-      setView("login");
-    } catch (error: any) {
-      // Ambiguous error for security
+    // Backend functionality removed
+    setTimeout(() => {
       toast({
         variant: "destructive",
         title: "Ошибка",
-        description: "Не удалось выполнить запрос. Попробуйте позже.",
+        description: "Функция восстановления пароля недоступна.",
       });
-    } finally {
       setIsLoading(false);
-    }
+    }, 800);
   };
 
   return (

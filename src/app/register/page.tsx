@@ -1,9 +1,6 @@
 
 "use client";
 import React, { useState } from "react";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { useAuth, useFirestore } from "@/firebase";
-import { collection, addDoc, serverTimestamp, query, where, getDocs, limit } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,9 +10,6 @@ import Link from "next/link";
 import { UserPlus, ArrowLeft, Eye, EyeOff, ShieldCheck, Mail } from "lucide-react";
 import { TypingAnimation } from "@/components/ui/typing-animation";
 import { LuxuryLoader } from "@/components/ui/luxury-loader";
-import { sendVerificationEmail } from "@/app/actions/email";
-import { errorEmitter } from "@/firebase/error-emitter";
-import { FirestorePermissionError } from "@/firebase/errors";
 
 export default function RegisterPage() {
   const [step, setStep] = useState<"details" | "verify">("details");
@@ -28,8 +22,6 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   
-  const auth = useAuth();
-  const db = useFirestore();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -49,90 +41,29 @@ export default function RegisterPage() {
     }
 
     setIsLoading(true);
-    try {
-      const generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
-      const codeData = {
-        email: email.toLowerCase().trim(),
-        code: generatedCode,
-        type: 'registration',
-        createdAt: serverTimestamp(),
-      };
-
-      const codesRef = collection(db, "verificationCodes");
-      // Non-blocking write
-      addDoc(codesRef, codeData).catch(async (err) => {
-        const permissionError = new FirestorePermissionError({
-          path: codesRef.path,
-          operation: 'create',
-          requestResourceData: codeData,
-        });
-        errorEmitter.emit('permission-error', permissionError);
-      });
-
-      await sendVerificationEmail(email.toLowerCase().trim(), generatedCode, name);
-
-      toast({
-        title: "Код отправлен",
-        description: "Проверьте вашу почту.",
-      });
-      
-      setStep("verify");
-    } catch (error: any) {
+    // Backend functionality removed
+    setTimeout(() => {
       toast({
         variant: "destructive",
-        title: "Ошибка",
-        description: "Не удалось выполнить регистрацию. Попробуйте позже.",
+        title: "Регистрация приостановлена",
+        description: "Создание новых аккаунтов временно недоступно.",
       });
-    } finally {
       setIsLoading(false);
-    }
+    }, 800);
   };
 
   const handleVerifyAndRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-
-    try {
-      const codesRef = collection(db, "verificationCodes");
-      const q = query(
-        codesRef, 
-        where("email", "==", email.toLowerCase().trim()),
-        where("code", "==", otp),
-        limit(1)
-      );
-      
-      const querySnapshot = await getDocs(q).catch(async (err) => {
-        const permissionError = new FirestorePermissionError({
-          path: codesRef.path,
-          operation: 'list',
-        });
-        errorEmitter.emit('permission-error', permissionError);
-        throw err;
-      });
-
-      if (querySnapshot.empty) {
-        throw new Error("Invalid code");
-      }
-
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      if (userCredential.user) {
-        await updateProfile(userCredential.user, { displayName: name });
-      }
-
-      toast({
-        title: "Регистрация успешна",
-        description: "Добро пожаловать в IRGG.",
-      });
-      router.push("/");
-    } catch (error: any) {
+    // Backend functionality removed
+    setTimeout(() => {
       toast({
         variant: "destructive",
         title: "Ошибка",
-        description: "Не удалось подтвердить код. Проверьте данные и попробуйте снова.",
+        description: "Система подтверждения отключена.",
       });
-    } finally {
       setIsLoading(false);
-    }
+    }, 800);
   };
 
   return (
