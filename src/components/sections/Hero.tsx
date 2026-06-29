@@ -310,16 +310,16 @@ export function Hero({
                 className={cn(
                   "border-b border-white/10 bg-background/50 flex flex-col transition-all duration-500",
                   isMobile 
-                    ? (isStoreScrolled ? "h-0 p-0 overflow-hidden border-none opacity-0" : "py-10 px-8 items-center text-center") 
+                    ? (isStoreScrolled ? "h-0 p-0 overflow-hidden border-none opacity-0" : "py-6 px-6 items-center text-center") 
                     : "p-8 md:p-12 md:flex-row md:items-center md:justify-between md:gap-10"
                 )}
               >
                 <div className={cn(isMobile ? "max-w-xs mx-auto" : "")}>
                   <h2 className={cn(
                     "font-headline uppercase tracking-tighter text-foreground leading-tight",
-                    isMobile ? "text-3xl sm:text-4xl" : "text-4xl md:text-6xl"
+                    isMobile ? "text-2xl sm:text-3xl" : "text-4xl md:text-6xl"
                   )}>{storeTitle}</h2>
-                  <p className="text-[9px] md:text-[11px] uppercase tracking-[0.4em] font-bold text-muted-foreground mt-3 opacity-60">Каталог товаров IRGG</p>
+                  <p className="text-[9px] md:text-[11px] uppercase tracking-[0.4em] font-bold text-muted-foreground mt-2 opacity-60">Каталог товаров IRGG</p>
                 </div>
                 
                 {!isMobile && (
@@ -367,10 +367,10 @@ export function Hero({
               </motion.div>
 
               {isMobile && !isStoreScrolled && (
-                <div className="px-8 py-6 flex flex-col items-center border-b border-white/5 bg-background/30">
+                <div className="px-6 py-4 flex flex-col items-center border-b border-white/5 bg-background/30">
                   <Button 
                     variant="outline" 
-                    className="w-full max-w-sm h-12 rounded-none border-foreground/10 uppercase tracking-[0.3em] text-[9px] font-bold bg-background/50" 
+                    className="w-full max-w-sm h-10 rounded-none border-foreground/10 uppercase tracking-[0.3em] text-[9px] font-bold bg-background/50" 
                     onClick={() => setShowFilterMenu(true)}
                   >
                     <Filter className="mr-3 h-4 w-4" />
@@ -379,7 +379,7 @@ export function Hero({
                   {selectedCats.length > 0 && (
                     <button 
                       onClick={() => { setSelectedCats([]); onFilterChange?.([]); }}
-                      className="mt-4 text-[8px] uppercase tracking-widest font-bold text-muted-foreground underline underline-offset-4"
+                      className="mt-3 text-[8px] uppercase tracking-widest font-bold text-muted-foreground underline underline-offset-4"
                     >
                       Сбросить фильтры
                     </button>
@@ -479,7 +479,14 @@ export function Hero({
                                 <div key={prod.id} className="glass-panel p-6 md:p-10 border-white/5 hover:bg-foreground/5 transition-all group">
                                   <div className="aspect-square bg-muted/20 mb-6 md:mb-8 flex items-center justify-center relative overflow-hidden">
                                     {prod.image && (
-                                      <Image src={prod.image} alt={prod.name} fill className="object-cover group-hover:scale-110 transition-transform duration-500" unoptimized />
+                                      <Image 
+                                        src={prod.image} 
+                                        alt={prod.name} 
+                                        fill 
+                                        priority
+                                        className="object-cover group-hover:scale-110 transition-transform duration-500" 
+                                        unoptimized 
+                                      />
                                     )}
                                     <div className="absolute bottom-4 md:bottom-6 right-4 md:right-6">
                                       <Badge variant="outline" className="bg-background/80 border-primary/20 text-[9px] md:text-[10px] uppercase tracking-widest px-3 py-1">В наличии</Badge>
@@ -526,4 +533,3 @@ export function Hero({
     </section>
   );
 }
-
