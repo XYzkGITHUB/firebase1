@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
@@ -9,11 +10,10 @@ import BlurText from "@/components/ui/blur-text";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ShineButton } from "@/components/ui/shine-button";
 import { motion, AnimatePresence, useMotionValue, useTransform, animate } from "framer-motion";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { CATEGORIES, PRODUCTS } from "@/lib/products";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { Badge } from "@/components/ui/badge";
 
 interface HeroProps {
   activeTab: ContentTab;
@@ -298,14 +298,14 @@ export function Hero({
                 className={cn(
                   "border-b border-white/10 bg-background/50 flex flex-col transition-all duration-500",
                   isMobile 
-                    ? (isStoreScrolled ? "h-0 p-0 overflow-hidden border-none opacity-0" : "py-24 px-8 items-center text-center") 
+                    ? (isStoreScrolled ? "h-0 p-0 overflow-hidden border-none opacity-0" : "py-36 px-8 items-center text-center") 
                     : "p-8 md:p-12 md:flex-row md:items-center md:justify-between md:gap-10"
                 )}
               >
                 <div className={cn(isMobile ? "max-w-xs mx-auto" : "")}>
                   <h2 className={cn(
                     "font-headline uppercase tracking-tighter text-foreground",
-                    isMobile ? "text-4xl sm:text-5xl leading-tight" : "text-4xl md:text-6xl"
+                    isMobile ? "text-4xl sm:text-5xl lg:text-6xl leading-tight" : "text-4xl md:text-6xl"
                   )}>{storeTitle}</h2>
                   <p className="text-[10px] md:text-[11px] uppercase tracking-[0.4em] font-bold text-muted-foreground mt-4 md:mt-3 opacity-60">Каталог товаров IRGG</p>
                 </div>
@@ -355,10 +355,10 @@ export function Hero({
               </motion.div>
 
               {isMobile && !isStoreScrolled && (
-                <div className="px-8 py-8 flex flex-col items-center border-b border-white/5 bg-background/30">
+                <div className="px-8 py-10 flex flex-col items-center border-b border-white/5 bg-background/30">
                   <Button 
                     variant="outline" 
-                    className="w-full h-16 rounded-none border-foreground/10 uppercase tracking-[0.3em] text-[10px] font-bold bg-background/50" 
+                    className="w-full max-w-sm h-16 rounded-none border-foreground/10 uppercase tracking-[0.3em] text-[10px] font-bold bg-background/50" 
                     onClick={() => setShowFilterMenu(true)}
                   >
                     <Filter className="mr-3 h-4 w-4" />

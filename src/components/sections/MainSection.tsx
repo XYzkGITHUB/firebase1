@@ -27,7 +27,6 @@ export function MainSection({ setActiveTab, setIsStoreOpen }: MainSectionProps) 
   // Parallax values for decorative images
   const y1 = useTransform(scrollY, [0, 500], [0, -100]);
   const y2 = useTransform(scrollY, [0, 500], [0, 50]);
-  const rotate = useTransform(scrollY, [0, 1000], [0, 15]);
 
   const images = {
     tiles: PlaceHolderImages.find(i => i.id === "tiles-primary"),
@@ -107,8 +106,7 @@ export function MainSection({ setActiveTab, setIsStoreOpen }: MainSectionProps) 
             <motion.button
               key={item.id}
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
               onClick={() => {
                 setActiveTab(item.id as ContentTab);
@@ -136,11 +134,10 @@ export function MainSection({ setActiveTab, setIsStoreOpen }: MainSectionProps) 
             </motion.button>
           ))}
 
-          {/* Special Store Card with Integrated Image Slice */}
+          {/* Special Store Card */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
             className="lg:col-span-1 p-10 bg-primary text-white flex flex-col justify-between hover:bg-primary/90 transition-all cursor-pointer shadow-2xl relative overflow-hidden group min-h-[300px]"
             onClick={() => setIsStoreOpen(true)}
