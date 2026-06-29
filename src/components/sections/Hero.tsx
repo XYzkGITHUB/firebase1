@@ -74,6 +74,18 @@ export function Hero({
     }
   }, [externalFilter]);
 
+  // Handle Body Scroll Lock
+  useEffect(() => {
+    if (isStoreOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isStoreOpen]);
+
   useEffect(() => {
     const seen = sessionStorage.getItem('irgg_hero_rating_seen');
     if (seen) {
@@ -149,7 +161,7 @@ export function Hero({
 
   const handleStoreScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const scrollPos = e.currentTarget.scrollTop;
-    setIsStoreScrolled(scrollPos > 40);
+    setIsStoreScrolled(scrollPos > 30);
     setShowScrollTop(scrollPos > 400);
   };
 
@@ -249,7 +261,7 @@ export function Hero({
             </div>
           </motion.div>
         ) : (
-          <motion.div key="store-content" initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.02 }} className="z-[110] fixed inset-0 bg-background/95 backdrop-blur-3xl flex flex-col">
+          <motion.div key="store-content" initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.02 }} className="z-[110] fixed inset-0 bg-background/95 backdrop-blur-3xl flex flex-col overflow-hidden overscroll-none touch-none">
             {/* Decorative Architectural "Soul" Images */}
             <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden hidden xl:block">
               {soulImages.left && (
@@ -276,7 +288,7 @@ export function Hero({
 
             {/* Top Bar with Back Button */}
             <div className={cn(
-              "flex justify-between items-center px-4 md:px-8 py-4 md:py-6 border-b border-white/10 bg-background/50 relative z-10 transition-all duration-300",
+              "flex justify-between items-center px-4 md:px-8 py-4 md:py-6 border-b border-white/10 bg-background/50 relative z-[120] transition-all duration-300",
               isMobile && isStoreScrolled ? "h-14" : ""
             )}>
               <button 
@@ -293,21 +305,21 @@ export function Hero({
               )}
             </div>
 
-            <div className="flex-1 flex flex-col h-full overflow-hidden relative z-10">
+            <div className="flex-1 flex flex-col h-full overflow-hidden relative z-10 touch-auto">
               <motion.div 
                 className={cn(
                   "border-b border-white/10 bg-background/50 flex flex-col transition-all duration-500",
                   isMobile 
-                    ? (isStoreScrolled ? "h-0 p-0 overflow-hidden border-none opacity-0" : "py-36 px-8 items-center text-center") 
+                    ? (isStoreScrolled ? "h-0 p-0 overflow-hidden border-none opacity-0" : "py-10 px-8 items-center text-center") 
                     : "p-8 md:p-12 md:flex-row md:items-center md:justify-between md:gap-10"
                 )}
               >
                 <div className={cn(isMobile ? "max-w-xs mx-auto" : "")}>
                   <h2 className={cn(
-                    "font-headline uppercase tracking-tighter text-foreground",
-                    isMobile ? "text-4xl sm:text-5xl lg:text-6xl leading-tight" : "text-4xl md:text-6xl"
+                    "font-headline uppercase tracking-tighter text-foreground leading-tight",
+                    isMobile ? "text-3xl sm:text-4xl" : "text-4xl md:text-6xl"
                   )}>{storeTitle}</h2>
-                  <p className="text-[10px] md:text-[11px] uppercase tracking-[0.4em] font-bold text-muted-foreground mt-4 md:mt-3 opacity-60">Каталог товаров IRGG</p>
+                  <p className="text-[9px] md:text-[11px] uppercase tracking-[0.4em] font-bold text-muted-foreground mt-3 opacity-60">Каталог товаров IRGG</p>
                 </div>
                 
                 {!isMobile && (
@@ -355,10 +367,10 @@ export function Hero({
               </motion.div>
 
               {isMobile && !isStoreScrolled && (
-                <div className="px-8 py-10 flex flex-col items-center border-b border-white/5 bg-background/30">
+                <div className="px-8 py-6 flex flex-col items-center border-b border-white/5 bg-background/30">
                   <Button 
                     variant="outline" 
-                    className="w-full max-w-sm h-16 rounded-none border-foreground/10 uppercase tracking-[0.3em] text-[10px] font-bold bg-background/50" 
+                    className="w-full max-w-sm h-12 rounded-none border-foreground/10 uppercase tracking-[0.3em] text-[9px] font-bold bg-background/50" 
                     onClick={() => setShowFilterMenu(true)}
                   >
                     <Filter className="mr-3 h-4 w-4" />
@@ -367,7 +379,7 @@ export function Hero({
                   {selectedCats.length > 0 && (
                     <button 
                       onClick={() => { setSelectedCats([]); onFilterChange?.([]); }}
-                      className="mt-6 text-[9px] uppercase tracking-widest font-bold text-muted-foreground underline underline-offset-4"
+                      className="mt-4 text-[8px] uppercase tracking-widest font-bold text-muted-foreground underline underline-offset-4"
                     >
                       Сбросить фильтры
                     </button>
@@ -514,3 +526,4 @@ export function Hero({
     </section>
   );
 }
+
