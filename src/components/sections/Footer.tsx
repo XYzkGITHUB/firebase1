@@ -98,7 +98,7 @@ export function Footer({ onTabChange }: FooterProps) {
             </div>
             <div className="bg-primary/5 p-4 border border-primary/10">
               <p className="text-[9px] uppercase tracking-[0.2em] font-bold text-primary leading-tight">
-                Шоурум открыт ежедневно <br /> с 9:00 до 19:00
+                Шоурум открыт ежедневно <br /> с 9:00 до 17:30
               </p>
             </div>
           </div>
