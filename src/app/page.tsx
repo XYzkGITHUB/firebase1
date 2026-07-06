@@ -20,7 +20,7 @@ export default function Home() {
   const [isStoreOpen, setIsStoreOpen] = useState(false);
   const [storeFilter, setStoreFilter] = useState<string[]>([]);
 
-  // Listen for hash changes and initial page load with hash
+  // Listen for hash changes ONLY (interaction-driven), but always start on "main"
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '');
@@ -33,7 +33,8 @@ export default function Home() {
       }
     };
 
-    handleHashChange();
+    // We do NOT call handleHashChange() here anymore to ensure everyone starts at "main" 
+    // even if they reload with a hash in the URL.
     window.addEventListener('hashchange', handleHashChange);
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
