@@ -32,7 +32,7 @@ export function LogisticsAI() {
     <section className="py-24 px-6 bg-muted/20">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         <div>
-          <span className="text-primary font-code text-sm tracking-widest uppercase mb-4 block">Smart Logistics</span>
+          <span className="text-primary font-code text-sm tracking-widest uppercase mb-4 block">Умная логистика</span>
           <h2 className="text-4xl md:text-5xl font-headline mb-6">Прогнозирование сроков поставки</h2>
           <p className="text-muted-foreground text-lg mb-8 leading-relaxed">
             Наш ИИ анализирует глобальные логистические маршруты, таможенные условия и специфику груза, чтобы дать вам максимально точную оценку прибытия материалов на объект.
@@ -101,14 +101,14 @@ export function LogisticsAI() {
             {result && (
               <div className="space-y-8 animate-fade-in-up">
                 <div className="text-center space-y-2">
-                  <span className="text-primary font-code text-sm">Estimated Date</span>
+                  <span className="text-primary font-code text-sm uppercase">Ожидаемая дата</span>
                   <div className="text-6xl font-headline font-bold text-foreground">{result.estimatedDeliveryDate}</div>
                 </div>
 
                 <div className="space-y-3">
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-muted-foreground flex items-center">
-                      <ShieldCheck className="w-4 h-4 mr-1 text-primary" /> Confidence Score
+                      <ShieldCheck className="w-4 h-4 mr-1 text-primary" /> Точность прогноза
                     </span>
                     <span className="font-bold text-primary">{result.confidenceScore}%</span>
                   </div>

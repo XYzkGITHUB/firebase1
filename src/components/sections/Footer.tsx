@@ -109,10 +109,10 @@ export function Footer({ onTabChange }: FooterProps) {
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="flex flex-col items-center md:items-start gap-2">
             <div className="text-[10px] text-muted-foreground font-bold uppercase tracking-[0.4em]">
-              © {currentYear} IRGG Global Materials. All rights reserved.
+              © {currentYear} IRGG Global Materials. Все права защищены.
             </div>
             <div className="text-[9px] text-muted-foreground/60 uppercase tracking-[0.2em] font-medium">
-              From Elin Yurt with Excellence
+              Сделано с любовью в Элин-Юрт
             </div>
           </div>
           

@@ -123,7 +123,7 @@ export function MainSection({
              <div className="flex items-center gap-3 py-2 px-5 bg-card/40 border border-foreground/5 backdrop-blur-sm shadow-sm transition-all hover:border-primary/20">
                 <MousePointer2 size={12} className={cn("transition-colors", isCustomMouseEnabled ? "text-primary" : "text-muted-foreground")} />
                 <Label htmlFor="mouse-mode" className="text-[10px] font-bold uppercase tracking-[0.2em] cursor-pointer text-muted-foreground">
-                  Custom Cursor
+                  Кастомный курсор
                 </Label>
                 <Switch 
                   id="mouse-mode" 

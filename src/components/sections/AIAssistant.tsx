@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useState } from "react";
 import { materialRecommendationAssistant, type MaterialRecommendationAssistantOutput } from "@/ai/flows/material-recommendation-assistant-flow";
@@ -31,7 +32,7 @@ export function AIAssistant() {
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-16">
           <div>
-            <Badge variant="outline" className="mb-4 border-primary/30 text-primary uppercase tracking-[0.2em] px-4 py-1">AI Assistant</Badge>
+            <Badge variant="outline" className="mb-4 border-primary/30 text-primary uppercase tracking-[0.2em] px-4 py-1">ИИ-Ассистент</Badge>
             <SplitText
               text="Умный подбор покрытия"
               tag="h2"
@@ -98,7 +99,7 @@ export function AIAssistant() {
                   <Card key={i} className="glass-panel group hover:border-primary/50 transition-all duration-500 flex flex-col">
                     <div className="p-8 space-y-6 flex-1 flex flex-col">
                       <div className="flex items-center justify-between">
-                        <Badge className="bg-secondary/50 text-foreground text-[10px] uppercase tracking-widest">{rec.category.replace('_', ' ')}</Badge>
+                        <Badge className="bg-secondary/50 text-foreground text-[10px] uppercase tracking-widest">{rec.category === 'keramogranit' ? 'Керамогранит' : rec.category === 'laminate_sps' ? 'Ламинат' : 'Сантехника'}</Badge>
                         <div className="flex items-center text-primary font-bold">
                           <Star className="w-4 h-4 fill-current mr-1" />
                           <span>{rec.suitabilityScore}%</span>
