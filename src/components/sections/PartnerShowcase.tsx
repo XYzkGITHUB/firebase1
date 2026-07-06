@@ -80,10 +80,9 @@ export function PartnerShowcase() {
           <ScrollArea className="max-h-[75vh] p-8 md:p-16">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 md:gap-12">
               {PARTNERS.map((partner) => (
-                <motion.div 
+                <div 
                   key={partner.id}
-                  whileHover={{ scale: 1.05 }}
-                  className="aspect-square glass-panel relative group border-foreground/5 hover:border-primary/40 transition-all cursor-default overflow-hidden flex items-center justify-center p-8"
+                  className="aspect-square glass-panel relative border-foreground/5 hover:border-primary/20 transition-all cursor-default overflow-hidden flex items-center justify-center p-8"
                 >
                   <div className="relative w-full h-full">
                     <Image 
@@ -97,7 +96,7 @@ export function PartnerShowcase() {
                       unoptimized
                     />
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
           </ScrollArea>
