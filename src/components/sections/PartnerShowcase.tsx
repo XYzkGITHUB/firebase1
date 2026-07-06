@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PARTNERS } from "@/lib/partners";
 import { Button } from "@/components/ui/button";
-import { X, ExternalLink, ShieldCheck } from "lucide-react";
+import { ExternalLink, ShieldCheck } from "lucide-react";
 import Image from "next/image";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -13,7 +13,7 @@ export function PartnerShowcase() {
   const [isOpen, setIsOpen] = useState(false);
 
   // Duplicate list for seamless infinite scroll
-  const tickerPartners = [...PARTNERS, ...PARTNERS, ...PARTNERS];
+  const tickerPartners = [...PARTNERS, ...PARTNERS, ...PARTNERS, ...PARTNERS];
 
   return (
     <div className="w-full py-12 md:py-20 flex flex-col items-center gap-12 overflow-hidden">
@@ -27,30 +27,27 @@ export function PartnerShowcase() {
       {/* Infinite Ticker */}
       <div className="relative w-full before:absolute before:left-0 before:top-0 before:bottom-0 before:w-40 before:bg-gradient-to-r before:from-background before:to-transparent before:z-10 after:absolute after:right-0 after:top-0 after:bottom-0 after:w-40 after:bg-gradient-to-l after:from-background after:to-transparent after:z-10">
         <motion.div 
-          className="flex gap-12 md:gap-24 items-center whitespace-nowrap"
-          animate={{ x: [0, -2000] }}
+          className="flex gap-8 md:gap-16 items-center whitespace-nowrap"
+          animate={{ x: [0, -1500] }}
           transition={{ 
             repeat: Infinity, 
-            duration: 40, 
+            duration: 30, 
             ease: "linear" 
           }}
         >
           {tickerPartners.map((partner, idx) => (
             <div 
               key={`${partner.id}-${idx}`} 
-              className="flex items-center justify-center grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-default min-w-[120px] md:min-w-[180px]"
+              className="flex items-center justify-center grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-default"
             >
-              {/* Using a placeholder box if image fails, but logic uses real paths */}
-              <div className="flex flex-col items-center gap-3">
-                <div className="w-16 h-16 md:w-24 md:h-24 relative flex items-center justify-center">
-                   <div className="absolute inset-0 border border-primary/10 rounded-full animate-pulse" />
-                   <span className="font-headline italic text-lg md:text-xl font-bold text-foreground tracking-tighter">
-                     {partner.name.split(' ')[0]}
-                   </span>
-                </div>
-                <span className="text-[9px] uppercase tracking-widest font-bold opacity-0 group-hover:opacity-100 transition-opacity">
-                  {partner.name}
-                </span>
+              <div className="w-20 h-20 md:w-28 md:h-28 relative aspect-square overflow-hidden bg-card/10 border border-white/5">
+                <Image 
+                  src={partner.logo} 
+                  alt={partner.name}
+                  fill
+                  className="object-cover"
+                  unoptimized
+                />
               </div>
             </div>
           ))}
@@ -75,18 +72,20 @@ export function PartnerShowcase() {
           </DialogHeader>
           
           <ScrollArea className="max-h-[70vh] p-8 md:p-12">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 md:gap-12">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-8">
               {PARTNERS.map((partner) => (
                 <motion.div 
                   key={partner.id}
                   whileHover={{ scale: 1.05 }}
-                  className="aspect-square glass-panel flex flex-col items-center justify-center p-6 text-center group border-foreground/5 hover:border-primary/40 transition-all cursor-default"
+                  className="aspect-square glass-panel relative group border-foreground/5 hover:border-primary/40 transition-all cursor-default overflow-hidden"
                 >
-                  <div className="w-16 h-16 md:w-20 md:h-20 bg-primary/5 rounded-full flex items-center justify-center mb-4 transition-colors group-hover:bg-primary/10">
-                    <span className="font-headline text-2xl font-bold text-primary">{partner.name[0]}</span>
-                  </div>
-                  <h4 className="text-xs font-bold uppercase tracking-widest mb-1 group-hover:text-primary transition-colors">{partner.name}</h4>
-                  <p className="text-[9px] text-muted-foreground uppercase tracking-widest opacity-60">Официальный партнер</p>
+                  <Image 
+                    src={partner.logo}
+                    alt={partner.name}
+                    fill
+                    className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                    unoptimized
+                  />
                 </motion.div>
               ))}
             </div>

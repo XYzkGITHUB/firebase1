@@ -9,12 +9,14 @@ export interface Partner {
 }
 
 export const PARTNERS: Partner[] = [
-  { id: 'p1', name: "Tile Time", logo: "/imgs/Partners/tile-time.png" },
-  { id: 'p2', name: "Invest Ceramic", logo: "/imgs/Partners/invest-ceramic.png" },
-  { id: 'p3', name: "Global Logistics", logo: "/imgs/Partners/global-logistics.png" },
-  { id: 'p4', name: "India Tiles", logo: "/imgs/Partners/india-tiles.png" },
-  { id: 'p5', name: "China Decor", logo: "/imgs/Partners/china-decor.png" },
-  { id: 'p6', name: "Euro Santehnika", logo: "/imgs/Partners/euro-santehnika.png" },
-  { id: 'p7', name: "SPS Pro", logo: "/imgs/Partners/sps-pro.png" },
-  { id: 'p8', name: "Premium Keramika", logo: "/imgs/Partners/premium-keramika.png" },
+  { id: '11', name: "Partner 11", logo: "/imgs/Partners/11.png" },
+  { id: '22', name: "Partner 22", logo: "/imgs/Partners/22.png" },
+  { id: '33', name: "Partner 33", logo: "/imgs/Partners/33.png" },
+  { id: '44', name: "Partner 44", logo: "/imgs/Partners/44.png" },
+  { id: '55', name: "Partner 55", logo: "/imgs/Partners/55.png" },
+  { id: '66', name: "Partner 66", logo: "/imgs/Partners/66.png" },
+  { id: '77', name: "Partner 77", logo: "/imgs/Partners/77.png" },
+  { id: '88', name: "Partner 88", logo: "/imgs/Partners/88.png" },
+  { id: '99', name: "Partner 99", logo: "/imgs/Partners/99.png" },
+  { id: '100', name: "Partner 100", logo: "/imgs/Partners/100.png" },
 ];

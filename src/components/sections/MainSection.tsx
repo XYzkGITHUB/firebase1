@@ -112,7 +112,7 @@ export function MainSection({ setActiveTab, setIsStoreOpen }: MainSectionProps) 
               key={item.id}
               initial={{ opacity: 0, y: 20 }}
               animate={mounted ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
+              transition={{ delay: i * 0.05, duration: 0.5 }}
               onClick={() => {
                 setActiveTab(item.id as ContentTab);
                 window.scrollTo({ top: 0, behavior: "smooth" });
@@ -142,7 +142,7 @@ export function MainSection({ setActiveTab, setIsStoreOpen }: MainSectionProps) 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={mounted ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.5, duration: 0.5 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
             className="lg:col-span-1 p-10 bg-primary text-white flex flex-col justify-between hover:bg-primary/90 transition-all cursor-pointer shadow-2xl relative overflow-hidden group min-h-[300px]"
             onClick={() => setIsStoreOpen(true)}
           >

@@ -1,13 +1,11 @@
 "use client";
 import React, { useState } from "react";
-import { Handshake, Construction, ShieldCheck, Layers, Package, TrendingUp, Factory, Globe, Clock, ShieldAlert, Phone, Mail, MapPin, ChevronDown, ChevronUp, Droplets, Bath, Star } from "lucide-react";
+import { Handshake, Construction, ShieldCheck, Layers, Package, TrendingUp, Factory, Globe, Clock, ShieldAlert, Phone, Mail, MapPin, ChevronDown, ChevronUp, Droplets, Bath } from "lucide-react";
 import { ContentTab } from "@/app/page";
 import SplitText from "@/components/ui/split-text";
 import { BorderGlow } from "@/components/ui/border-glow";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
-import NumberTicker from "@/components/ui/number-ticker";
 import { PartnerShowcase } from "./PartnerShowcase";
 
 interface StatsProps {
