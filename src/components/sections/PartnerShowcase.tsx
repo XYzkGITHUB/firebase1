@@ -9,27 +9,15 @@ import Image from "next/image";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import { SmoothCursor } from "@/components/ui/smooth-cursor";
 
 export function PartnerShowcase() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
 
   // Duplicate the list once for a perfect percentage-based infinite loop
   const tickerPartners = [...PARTNERS, ...PARTNERS];
 
   return (
-    <div 
-      className={cn(
-        "w-full py-16 md:py-24 flex flex-col items-center gap-16 overflow-hidden relative",
-        isHovered && !isOpen && "lg:cursor-none"
-      )}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {/* Custom smooth cursor only visible on hover of this section */}
-      {isHovered && !isOpen && <SmoothCursor />}
-
+    <div className="w-full py-16 md:py-24 flex flex-col items-center gap-16 overflow-hidden relative">
       <div className="flex flex-col items-center text-center gap-3 px-6 relative z-10">
         <div className="flex items-center gap-2 text-primary font-bold uppercase tracking-[0.5em] text-[11px]">
           <ShieldCheck size={16} />
@@ -73,7 +61,9 @@ export function PartnerShowcase() {
       </div>
 
       {/* Action Button */}
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <Dialog open={isOpen} onOpenChange={setOpen => {
+        setIsOpen(setOpen);
+      }}>
         <DialogTrigger asChild>
           <Button 
             variant="outline" 

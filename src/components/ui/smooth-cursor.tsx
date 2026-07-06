@@ -105,7 +105,7 @@ export function SmoothCursor({
   const [isEnabled, setIsEnabled] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
-  // Use motion values to allow instant setting on first move
+  // Use motion values for direct control
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   
@@ -140,19 +140,18 @@ export function SmoothCursor({
     return () => mediaQuery.removeEventListener("change", updateEnabled);
   }, []);
 
-  // Reliability fix: Ensure default cursor is hidden globally while this is active
+  // Global cursor management
   useEffect(() => {
     if (isEnabled && isVisible) {
       document.body.style.cursor = "none";
-      // Additional safety: hide cursor on all elements
       const style = document.createElement('style');
-      style.id = 'hide-cursor-style';
+      style.id = 'smooth-cursor-hide-ptr';
       style.innerHTML = `* { cursor: none !important; }`;
       document.head.appendChild(style);
       
       return () => {
         document.body.style.cursor = "";
-        document.getElementById('hide-cursor-style')?.remove();
+        document.getElementById('smooth-cursor-hide-ptr')?.remove();
       };
     }
   }, [isEnabled, isVisible]);
@@ -183,16 +182,15 @@ export function SmoothCursor({
       const currentPos = { x: e.clientX, y: e.clientY };
 
       if (isFirstMove.current) {
-        // Instant initialization to prevent jump from left
+        // Instant snap for the first frame
         mouseX.set(currentPos.x);
         mouseY.set(currentPos.y);
         isFirstMove.current = false;
-        // Small delay before showing to ensure position is settled
+        // Small delay to ensure position is locked before showing
         requestAnimationFrame(() => setIsVisible(true));
       } else {
         mouseX.set(currentPos.x);
         mouseY.set(currentPos.y);
-        setIsVisible(true);
       }
 
       updateVelocity(currentPos);
