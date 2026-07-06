@@ -1,11 +1,36 @@
+
 "use client";
 import React from "react";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { Phone, Mail, MapPin, ArrowUpRight } from "lucide-react";
+import { ContentTab } from "@/app/page";
 
-export function Footer() {
+interface FooterProps {
+  onTabChange?: (tab: ContentTab) => void;
+}
+
+export function Footer({ onTabChange }: FooterProps) {
   const currentYear = new Date().getFullYear();
+
+  const handleNavClick = (e: React.MouseEvent, tabId: ContentTab) => {
+    if (onTabChange) {
+      e.preventDefault();
+      onTabChange(tabId);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Update hash without triggering immediate scroll if already handled
+      window.history.pushState(null, '', `#${tabId}`);
+    }
+  };
+
+  const navLinks = [
+    { label: "Главная", id: "main", href: "/#main" },
+    { label: "Керамогранит", id: "keramogranit", href: "/#keramogranit" },
+    { label: "Ламинат & SPS", id: "laminate_sps", href: "/#laminate_sps" },
+    { label: "Сантехника", id: "sanitary", href: "/#sanitary" },
+    { label: "Логистика", id: "delivery", href: "/#delivery" },
+    { label: "О компании", id: "contacts", href: "/#contacts" },
+  ];
 
   return (
     <footer className="pt-32 pb-16 px-6 md:px-12 bg-background border-t border-border/40">
@@ -27,17 +52,11 @@ export function Footer() {
           <div className="space-y-8">
             <h4 className="text-[11px] uppercase tracking-[0.3em] font-bold text-foreground">Навигация</h4>
             <ul className="space-y-4">
-              {[
-                { label: "Главная", href: "/" },
-                { label: "Керамогранит", href: "/#keramogranit" },
-                { label: "Ламинат & SPS", href: "/#laminate" },
-                { label: "Сантехника", href: "/#sanitary" },
-                { label: "Логистика", href: "/#delivery" },
-                { label: "О компании", href: "/#contacts" },
-              ].map((link) => (
+              {navLinks.map((link) => (
                 <li key={link.label}>
                   <Link 
                     href={link.href} 
+                    onClick={(e) => handleNavClick(e, link.id as ContentTab)}
                     className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center group font-light"
                   >
                     {link.label}

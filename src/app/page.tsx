@@ -1,6 +1,6 @@
 
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Navigation } from "@/components/sections/Navigation";
 import { Hero } from "@/components/sections/Hero";
 import { Stats } from "@/components/sections/Stats";
@@ -19,6 +19,24 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<ContentTab>("main");
   const [isStoreOpen, setIsStoreOpen] = useState(false);
   const [storeFilter, setStoreFilter] = useState<string[]>([]);
+
+  // Listen for hash changes and initial page load with hash
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace('#', '');
+      const validTabs: ContentTab[] = ["main", "keramogranit", "laminate_sps", "sanitary", "delivery", "contacts"];
+      
+      if (validTabs.includes(hash as ContentTab)) {
+        setActiveTab(hash as ContentTab);
+        setIsStoreOpen(false);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    };
+
+    handleHashChange();
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   const scrollToContact = () => {
     const element = document.getElementById('contact-form');
@@ -114,7 +132,7 @@ export default function Home() {
         )}
       </AnimatePresence>
       
-      <Footer />
+      <Footer onTabChange={setActiveTab} />
     </main>
   );
 }
