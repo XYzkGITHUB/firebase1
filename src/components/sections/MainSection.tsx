@@ -7,7 +7,6 @@ import TrueFocus from "@/components/ui/TrueFocus";
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { PartnerShowcase } from "./PartnerShowcase";
-import { SmoothCursor } from "@/components/ui/smooth-cursor";
 import { cn } from "@/lib/utils";
 
 interface MainSectionProps {
@@ -26,7 +25,6 @@ const navItems = [
 export function MainSection({ setActiveTab, setIsStoreOpen }: MainSectionProps) {
   const { scrollY } = useScroll();
   const [mounted, setMounted] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
   
   useEffect(() => {
     setMounted(true);
@@ -44,16 +42,8 @@ export function MainSection({ setActiveTab, setIsStoreOpen }: MainSectionProps) 
 
   return (
     <section 
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className={cn(
-        "min-h-screen pt-40 pb-20 px-6 bg-background relative overflow-hidden flex flex-col items-center",
-        isHovered && "lg:cursor-none"
-      )}
+      className="min-h-screen pt-40 pb-20 px-6 bg-background relative overflow-hidden flex flex-col items-center"
     >
-      {/* Custom smooth cursor active for the whole section */}
-      {isHovered && <SmoothCursor />}
-
       {/* Decorative Architectural Elements */}
       <motion.div 
         style={{ y: y1, rotate: -5 }}

@@ -105,7 +105,7 @@ export function SmoothCursor({
   const [isEnabled, setIsEnabled] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
-  // Use motion values for direct control
+  // Use motion values for direct, non-animated initial control
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   
@@ -140,18 +140,18 @@ export function SmoothCursor({
     return () => mediaQuery.removeEventListener("change", updateEnabled);
   }, []);
 
-  // Global cursor management
+  // Aggressively hide default cursor globally when active
   useEffect(() => {
     if (isEnabled && isVisible) {
       document.body.style.cursor = "none";
       const style = document.createElement('style');
-      style.id = 'smooth-cursor-hide-ptr';
+      style.id = 'smooth-cursor-global-hide';
       style.innerHTML = `* { cursor: none !important; }`;
       document.head.appendChild(style);
       
       return () => {
         document.body.style.cursor = "";
-        document.getElementById('smooth-cursor-hide-ptr')?.remove();
+        document.getElementById('smooth-cursor-global-hide')?.remove();
       };
     }
   }, [isEnabled, isVisible]);
@@ -182,11 +182,11 @@ export function SmoothCursor({
       const currentPos = { x: e.clientX, y: e.clientY };
 
       if (isFirstMove.current) {
-        // Instant snap for the first frame
+        // Instant snap for the first frame to prevent "teleporting" from 0,0
         mouseX.set(currentPos.x);
         mouseY.set(currentPos.y);
         isFirstMove.current = false;
-        // Small delay to ensure position is locked before showing
+        // Small delay to ensure position is locked before showing visuals
         requestAnimationFrame(() => setIsVisible(true));
       } else {
         mouseX.set(currentPos.x);
