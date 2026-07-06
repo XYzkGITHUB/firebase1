@@ -1,7 +1,7 @@
 "use client";
 
 import { FC, useEffect, useRef, useState } from "react";
-import { motion, useSpring } from "framer-motion";
+import { motion, useSpring, useMotionValue } from "framer-motion";
 
 interface Position {
   x: number;
@@ -100,16 +100,24 @@ export function SmoothCursor({
   const lastUpdateTime = useRef(Date.now());
   const previousAngle = useRef(0);
   const accumulatedRotation = useRef(0);
+  const isFirstMove = useRef(true);
+  
   const [isEnabled, setIsEnabled] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
-  const cursorX = useSpring(0, springConfig);
-  const cursorY = useSpring(0, springConfig);
+  // Use motion values to allow instant setting on first move
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  
+  const cursorX = useSpring(mouseX, springConfig);
+  const cursorY = useSpring(mouseY, springConfig);
+  
   const rotation = useSpring(0, {
     ...springConfig,
     damping: 60,
     stiffness: 300,
   });
+  
   const scale = useSpring(1, {
     ...springConfig,
     stiffness: 500,
@@ -122,7 +130,6 @@ export function SmoothCursor({
     const updateEnabled = () => {
       const nextIsEnabled = mediaQuery.matches;
       setIsEnabled(nextIsEnabled);
-
       if (!nextIsEnabled) {
         setIsVisible(false);
       }
@@ -130,16 +137,28 @@ export function SmoothCursor({
 
     updateEnabled();
     mediaQuery.addEventListener("change", updateEnabled);
-
-    return () => {
-      mediaQuery.removeEventListener("change", updateEnabled);
-    };
+    return () => mediaQuery.removeEventListener("change", updateEnabled);
   }, []);
 
+  // Reliability fix: Ensure default cursor is hidden globally while this is active
   useEffect(() => {
-    if (!isEnabled) {
-      return;
+    if (isEnabled && isVisible) {
+      document.body.style.cursor = "none";
+      // Additional safety: hide cursor on all elements
+      const style = document.createElement('style');
+      style.id = 'hide-cursor-style';
+      style.innerHTML = `* { cursor: none !important; }`;
+      document.head.appendChild(style);
+      
+      return () => {
+        document.body.style.cursor = "";
+        document.getElementById('hide-cursor-style')?.remove();
+      };
     }
+  }, [isEnabled, isVisible]);
+
+  useEffect(() => {
+    if (!isEnabled) return;
 
     let timeout: ReturnType<typeof setTimeout> | null = null;
 
@@ -159,21 +178,28 @@ export function SmoothCursor({
     };
 
     const smoothPointerMove = (e: PointerEvent) => {
-      if (!isTrackablePointer(e.pointerType)) {
-        return;
-      }
-
-      setIsVisible(true);
+      if (!isTrackablePointer(e.pointerType)) return;
 
       const currentPos = { x: e.clientX, y: e.clientY };
+
+      if (isFirstMove.current) {
+        // Instant initialization to prevent jump from left
+        mouseX.set(currentPos.x);
+        mouseY.set(currentPos.y);
+        isFirstMove.current = false;
+        // Small delay before showing to ensure position is settled
+        requestAnimationFrame(() => setIsVisible(true));
+      } else {
+        mouseX.set(currentPos.x);
+        mouseY.set(currentPos.y);
+        setIsVisible(true);
+      }
+
       updateVelocity(currentPos);
 
       const speed = Math.sqrt(
         Math.pow(velocity.current.x, 2) + Math.pow(velocity.current.y, 2)
       );
-
-      cursorX.set(currentPos.x);
-      cursorY.set(currentPos.y);
 
       if (speed > 0.1) {
         const currentAngle =
@@ -201,34 +227,24 @@ export function SmoothCursor({
 
     let rafId = 0;
     const throttledPointerMove = (e: PointerEvent) => {
-      if (!isTrackablePointer(e.pointerType)) {
-        return;
-      }
-
+      if (!isTrackablePointer(e.pointerType)) return;
       if (rafId) return;
-
       rafId = requestAnimationFrame(() => {
         smoothPointerMove(e);
         rafId = 0;
       });
     };
 
-    window.addEventListener("pointermove", throttledPointerMove, {
-      passive: true,
-    });
+    window.addEventListener("pointermove", throttledPointerMove, { passive: true });
 
     return () => {
       window.removeEventListener("pointermove", throttledPointerMove);
       if (rafId) cancelAnimationFrame(rafId);
-      if (timeout !== null) {
-        clearTimeout(timeout);
-      }
+      if (timeout !== null) clearTimeout(timeout);
     };
-  }, [cursorX, cursorY, rotation, scale, isEnabled]);
+  }, [mouseX, mouseY, rotation, scale, isEnabled]);
 
-  if (!isEnabled) {
-    return null;
-  }
+  if (!isEnabled) return null;
 
   return (
     <motion.div
@@ -247,9 +263,7 @@ export function SmoothCursor({
       }}
       initial={false}
       animate={{ opacity: isVisible ? 1 : 0 }}
-      transition={{
-        duration: 0.15,
-      }}
+      transition={{ duration: 0.15 }}
     >
       {cursor}
     </motion.div>

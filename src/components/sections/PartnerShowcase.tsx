@@ -94,7 +94,7 @@ export function PartnerShowcase() {
               {PARTNERS.map((partner) => (
                 <div 
                   key={partner.id}
-                  className="aspect-square glass-panel relative border-foreground/5 hover:border-primary/20 transition-all cursor-default overflow-hidden flex items-center justify-center p-8"
+                  className="aspect-square glass-panel relative border-foreground/5 transition-all cursor-default overflow-hidden flex items-center justify-center p-8"
                 >
                   <div className="relative w-full h-full">
                     <Image 
