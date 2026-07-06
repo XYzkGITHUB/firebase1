@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState } from "react";
 import { Handshake, Construction, ShieldCheck, Layers, Package, TrendingUp, Factory, Globe, Clock, ShieldAlert, Phone, Mail, MapPin, ChevronDown, ChevronUp, Droplets, Bath, Star } from "lucide-react";
@@ -9,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import NumberTicker from "@/components/ui/number-ticker";
+import { PartnerShowcase } from "./PartnerShowcase";
 
 interface StatsProps {
   activeTab: ContentTab;
@@ -133,7 +133,7 @@ export function Stats({ activeTab }: StatsProps) {
         </div>
         
         {isContacts ? (
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-6xl mx-auto space-y-32">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <BorderGlow borderRadius={8} className="border-[0.5px] border-foreground/5 shadow-sm">
                 <div className="p-12 h-full bg-card/20 flex flex-col gap-10">
@@ -198,6 +198,11 @@ export function Stats({ activeTab }: StatsProps) {
                   </Button>
                 </div>
               </BorderGlow>
+            </div>
+
+            {/* Partners integrated into About Section */}
+            <div className="w-full">
+               <PartnerShowcase />
             </div>
           </div>
         ) : (

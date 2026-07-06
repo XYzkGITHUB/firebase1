@@ -1,12 +1,12 @@
-
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Grid3X3, Layers, Bath, Truck, Info, ShoppingBag } from "lucide-react";
 import { ContentTab } from "@/app/page";
 import TrueFocus from "@/components/ui/TrueFocus";
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { PartnerShowcase } from "./PartnerShowcase";
 
 interface MainSectionProps {
   setActiveTab: (tab: ContentTab) => void;
@@ -23,6 +23,11 @@ const navItems = [
 
 export function MainSection({ setActiveTab, setIsStoreOpen }: MainSectionProps) {
   const { scrollY } = useScroll();
+  const [mounted, setMounted] = useState(false);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   
   // Parallax values for decorative images
   const y1 = useTransform(scrollY, [0, 500], [0, -100]);
@@ -35,7 +40,7 @@ export function MainSection({ setActiveTab, setIsStoreOpen }: MainSectionProps) 
   };
 
   return (
-    <section className="min-h-screen pt-40 pb-20 px-6 bg-background relative overflow-hidden flex flex-col items-center justify-center">
+    <section className="min-h-screen pt-40 pb-20 px-6 bg-background relative overflow-hidden flex flex-col items-center">
       {/* Decorative Architectural Elements */}
       <motion.div 
         style={{ y: y1, rotate: -5 }}
@@ -81,7 +86,7 @@ export function MainSection({ setActiveTab, setIsStoreOpen }: MainSectionProps) 
         <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-primary/15 blur-[180px] rounded-full" />
       </div>
 
-      <div className="max-w-[1400px] w-full mx-auto relative z-10">
+      <div className="max-w-[1400px] w-full mx-auto relative z-10 flex flex-col items-center">
         <div className="text-center mb-20">
           <div className="mb-6 h-auto min-h-[120px] flex items-center justify-center">
             <TrueFocus 
@@ -101,13 +106,13 @@ export function MainSection({ setActiveTab, setIsStoreOpen }: MainSectionProps) 
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative w-full">
           {navItems.map((item, i) => (
             <motion.button
               key={item.id}
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
+              animate={mounted ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: i * 0.1, duration: 0.5 }}
               onClick={() => {
                 setActiveTab(item.id as ContentTab);
                 window.scrollTo({ top: 0, behavior: "smooth" });
@@ -129,7 +134,6 @@ export function MainSection({ setActiveTab, setIsStoreOpen }: MainSectionProps) 
                 </span>
               </div>
               
-              {/* Subtle architectural accent inside card */}
               <div className="absolute bottom-0 right-0 w-24 h-24 bg-primary/5 -rotate-45 translate-x-12 translate-y-12 transition-transform group-hover:scale-150" />
             </motion.button>
           ))}
@@ -137,8 +141,8 @@ export function MainSection({ setActiveTab, setIsStoreOpen }: MainSectionProps) 
           {/* Special Store Card */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
+            animate={mounted ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 0.5, duration: 0.5 }}
             className="lg:col-span-1 p-10 bg-primary text-white flex flex-col justify-between hover:bg-primary/90 transition-all cursor-pointer shadow-2xl relative overflow-hidden group min-h-[300px]"
             onClick={() => setIsStoreOpen(true)}
           >
@@ -170,6 +174,11 @@ export function MainSection({ setActiveTab, setIsStoreOpen }: MainSectionProps) 
                <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform" />
              </div>
           </motion.div>
+        </div>
+
+        {/* Partners Showcase under cards */}
+        <div className="w-full mt-24">
+           <PartnerShowcase />
         </div>
       </div>
 
