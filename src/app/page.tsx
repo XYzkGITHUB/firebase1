@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useState, useEffect } from "react";
 import { Navigation } from "@/components/sections/Navigation";
@@ -21,6 +22,20 @@ export default function Home() {
   const [isStoreOpen, setIsStoreOpen] = useState(false);
   const [storeFilter, setStoreFilter] = useState<string[]>([]);
   const [isMainTabHovered, setIsMainTabHovered] = useState(false);
+  const [isCustomMouseEnabled, setIsCustomMouseEnabled] = useState(true);
+
+  // Load mouse preference from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('irgg-custom-mouse');
+    if (saved !== null) {
+      setIsCustomMouseEnabled(saved === 'true');
+    }
+  }, []);
+
+  const handleToggleCustomMouse = (enabled: boolean) => {
+    setIsCustomMouseEnabled(enabled);
+    localStorage.setItem('irgg-custom-mouse', enabled.toString());
+  };
 
   // Listen for hash changes ONLY (interaction-driven), but always start on "main"
   useEffect(() => {
@@ -80,7 +95,7 @@ export default function Home() {
       <div 
         onMouseEnter={() => setIsMainTabHovered(true)}
         onMouseLeave={() => setIsMainTabHovered(false)}
-        className={cn(isMainTab && isMainTabHovered && "lg:cursor-none")}
+        className={cn(isMainTab && isMainTabHovered && isCustomMouseEnabled && "lg:cursor-none")}
       >
         <AnimatePresence mode="wait">
           {isMainTab ? (
@@ -88,6 +103,8 @@ export default function Home() {
               key="main-section" 
               setActiveTab={setActiveTab} 
               setIsStoreOpen={setIsStoreOpen}
+              isCustomMouseEnabled={isCustomMouseEnabled}
+              onCustomMouseToggle={handleToggleCustomMouse}
             />
           ) : (
             <motion.div
@@ -140,7 +157,7 @@ export default function Home() {
         
         <Footer onTabChange={setActiveTab} />
 
-        {isMainTab && isMainTabHovered && <SmoothCursor />}
+        {isMainTab && isMainTabHovered && isCustomMouseEnabled && <SmoothCursor />}
       </div>
     </main>
   );
