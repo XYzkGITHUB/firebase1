@@ -40,7 +40,7 @@ export function PartnerShowcase() {
           {tickerPartners.map((partner, idx) => (
             <div 
               key={`${partner.id}-${idx}`} 
-              className="flex items-center justify-center grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-700 cursor-default shrink-0"
+              className="flex items-center justify-center transition-all duration-700 cursor-default shrink-0"
             >
               <div className="h-24 md:h-40 w-auto relative">
                 <Image 
@@ -91,7 +91,7 @@ export function PartnerShowcase() {
                       alt={partner.name}
                       fill
                       className={cn(
-                        "object-contain grayscale group-hover:grayscale-0 transition-all duration-700",
+                        "object-contain transition-all duration-700",
                         partner.id === '77' && "scale-[2.0]"
                       )}
                       unoptimized
