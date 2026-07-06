@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import './TrueFocus.css';
 
@@ -46,6 +46,23 @@ const TrueFocus: React.FC<TrueFocusProps> = ({
     height: 0
   });
 
+  // Function to calculate the position of the current word
+  const updateFocusRect = useCallback(() => {
+    if (currentIndex === null || currentIndex === -1) return;
+    if (!wordRefs.current[currentIndex] || !containerRef.current) return;
+
+    const parentRect = containerRef.current.getBoundingClientRect();
+    const activeRect = wordRefs.current[currentIndex]!.getBoundingClientRect();
+
+    setFocusRect({
+      x: activeRect.left - parentRect.left,
+      y: activeRect.top - parentRect.top,
+      width: activeRect.width,
+      height: activeRect.height
+    });
+  }, [currentIndex]);
+
+  // Handle auto-advancing index
   useEffect(() => {
     if (!manualMode) {
       const interval = setInterval(
@@ -59,21 +76,25 @@ const TrueFocus: React.FC<TrueFocusProps> = ({
     }
   }, [manualMode, animationDuration, pauseBetweenAnimations, words.length]);
 
+  // Update rect whenever index or content changes
   useEffect(() => {
-    if (currentIndex === null || currentIndex === -1) return;
+    updateFocusRect();
+  }, [currentIndex, updateFocusRect, sentence]);
 
-    if (!wordRefs.current[currentIndex] || !containerRef.current) return;
+  // Update on resize and initial mount to handle late layout shifts
+  useEffect(() => {
+    window.addEventListener('resize', updateFocusRect);
+    
+    // Multiple small intervals to ensure it catches the font/layout settle
+    const t1 = setTimeout(updateFocusRect, 50);
+    const t2 = setTimeout(updateFocusRect, 500);
 
-    const parentRect = containerRef.current.getBoundingClientRect();
-    const activeRect = wordRefs.current[currentIndex]!.getBoundingClientRect();
-
-    setFocusRect({
-      x: activeRect.left - parentRect.left,
-      y: activeRect.top - parentRect.top,
-      width: activeRect.width,
-      height: activeRect.height
-    });
-  }, [currentIndex, words.length]);
+    return () => {
+      window.removeEventListener('resize', updateFocusRect);
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, [updateFocusRect]);
 
   const handleMouseEnter = (index: number) => {
     if (manualMode) {
@@ -119,12 +140,13 @@ const TrueFocus: React.FC<TrueFocusProps> = ({
 
       <motion.div
         className="focus-frame"
+        initial={false} // Prevents jump from 0,0 on first render
         animate={{
           x: focusRect.x,
           y: focusRect.y,
           width: focusRect.width,
           height: focusRect.height,
-          opacity: currentIndex >= 0 ? 1 : 0
+          opacity: currentIndex >= 0 && focusRect.width > 0 ? 1 : 0
         }}
         transition={{
           duration: animationDuration,
