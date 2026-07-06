@@ -8,6 +8,7 @@ import { ExternalLink, ShieldCheck } from "lucide-react";
 import Image from "next/image";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
 
 export function PartnerShowcase() {
   const [isOpen, setIsOpen] = useState(false);
@@ -47,7 +48,10 @@ export function PartnerShowcase() {
                   alt={partner.name}
                   height={160}
                   width={320}
-                  className="h-full w-auto object-contain"
+                  className={cn(
+                    "h-full w-auto object-contain transition-transform duration-700",
+                    partner.id === '77' && "scale-[1.4]"
+                  )}
                   unoptimized
                 />
               </div>
@@ -86,7 +90,10 @@ export function PartnerShowcase() {
                       src={partner.logo}
                       alt={partner.name}
                       fill
-                      className="object-contain grayscale group-hover:grayscale-0 transition-all duration-700"
+                      className={cn(
+                        "object-contain grayscale group-hover:grayscale-0 transition-all duration-700",
+                        partner.id === '77' && "scale-[2.0]"
+                      )}
                       unoptimized
                     />
                   </div>
