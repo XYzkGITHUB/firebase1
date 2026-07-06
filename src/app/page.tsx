@@ -12,7 +12,6 @@ import { FAQ } from "@/components/sections/FAQ";
 import { Footer } from "@/components/sections/Footer";
 import { MainSection } from "@/components/sections/MainSection";
 import { motion, AnimatePresence } from "framer-motion";
-import { SmoothCursor } from "@/components/ui/smooth-cursor";
 import { cn } from "@/lib/utils";
 
 export type ContentTab = "main" | "keramogranit" | "laminate_sps" | "sanitary" | "delivery" | "contacts";
@@ -21,21 +20,6 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<ContentTab>("main");
   const [isStoreOpen, setIsStoreOpen] = useState(false);
   const [storeFilter, setStoreFilter] = useState<string[]>([]);
-  const [isMainTabHovered, setIsMainTabHovered] = useState(false);
-  const [isCustomMouseEnabled, setIsCustomMouseEnabled] = useState(true);
-
-  // Load mouse preference from localStorage
-  useEffect(() => {
-    const saved = localStorage.getItem('irgg-custom-mouse');
-    if (saved !== null) {
-      setIsCustomMouseEnabled(saved === 'true');
-    }
-  }, []);
-
-  const handleToggleCustomMouse = (enabled: boolean) => {
-    setIsCustomMouseEnabled(enabled);
-    localStorage.setItem('irgg-custom-mouse', enabled.toString());
-  };
 
   // Listen for hash changes ONLY (interaction-driven), but always start on "main"
   useEffect(() => {
@@ -92,19 +76,13 @@ export default function Home() {
         onFilterChange={setStoreFilter}
       />
 
-      <div 
-        onMouseEnter={() => setIsMainTabHovered(true)}
-        onMouseLeave={() => setIsMainTabHovered(false)}
-        className={cn(isMainTab && isMainTabHovered && isCustomMouseEnabled && "lg:cursor-none")}
-      >
+      <div>
         <AnimatePresence mode="wait">
           {isMainTab ? (
             <MainSection 
               key="main-section" 
               setActiveTab={setActiveTab} 
               setIsStoreOpen={setIsStoreOpen}
-              isCustomMouseEnabled={isCustomMouseEnabled}
-              onCustomMouseToggle={handleToggleCustomMouse}
             />
           ) : (
             <motion.div
@@ -156,8 +134,6 @@ export default function Home() {
         </AnimatePresence>
         
         <Footer onTabChange={setActiveTab} />
-
-        {isMainTab && isMainTabHovered && isCustomMouseEnabled && <SmoothCursor />}
       </div>
     </main>
   );

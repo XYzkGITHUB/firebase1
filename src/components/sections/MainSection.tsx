@@ -2,21 +2,17 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowRight, Grid3X3, Layers, Bath, Truck, Info, ShoppingBag, MousePointer2 } from "lucide-react";
+import { ArrowRight, Grid3X3, Layers, Bath, Truck, Info, ShoppingBag } from "lucide-react";
 import { ContentTab } from "@/app/page";
 import TrueFocus from "@/components/ui/TrueFocus";
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { PartnerShowcase } from "./PartnerShowcase";
 import { cn } from "@/lib/utils";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
 
 interface MainSectionProps {
   setActiveTab: (tab: ContentTab) => void;
   setIsStoreOpen: (open: boolean) => void;
-  isCustomMouseEnabled?: boolean;
-  onCustomMouseToggle?: (enabled: boolean) => void;
 }
 
 const navItems = [
@@ -29,9 +25,7 @@ const navItems = [
 
 export function MainSection({ 
   setActiveTab, 
-  setIsStoreOpen, 
-  isCustomMouseEnabled = true, 
-  onCustomMouseToggle 
+  setIsStoreOpen
 }: MainSectionProps) {
   const { scrollY } = useScroll();
   const [mounted, setMounted] = useState(false);
@@ -117,22 +111,6 @@ export function MainSection({
             Международные поставки строительных материалов. <br/>
             <span className="text-primary/60 text-sm font-bold mt-2 block tracking-[0.3em]">Выберите интересующий раздел</span>
           </p>
-          
-          {/* Custom Mouse Toggle */}
-          <div className="mt-10 flex items-center justify-center gap-3">
-             <div className="flex items-center gap-3 py-2 px-5 bg-card/40 border border-foreground/5 backdrop-blur-sm shadow-sm transition-all hover:border-primary/20">
-                <MousePointer2 size={12} className={cn("transition-colors", isCustomMouseEnabled ? "text-primary" : "text-muted-foreground")} />
-                <Label htmlFor="mouse-mode" className="text-[10px] font-bold uppercase tracking-[0.2em] cursor-pointer text-muted-foreground">
-                  Кастомный курсор
-                </Label>
-                <Switch 
-                  id="mouse-mode" 
-                  checked={isCustomMouseEnabled}
-                  onCheckedChange={onCustomMouseToggle}
-                  className="data-[state=checked]:bg-primary scale-75"
-                />
-             </div>
-          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative w-full">
