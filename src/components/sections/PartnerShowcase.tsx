@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { PARTNERS } from "@/lib/partners";
 import { Button } from "@/components/ui/button";
 import { ExternalLink, ShieldCheck } from "lucide-react";
@@ -12,8 +12,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 export function PartnerShowcase() {
   const [isOpen, setIsOpen] = useState(false);
 
-  // Duplicate list for seamless infinite scroll
-  const tickerPartners = [...PARTNERS, ...PARTNERS, ...PARTNERS, ...PARTNERS];
+  // Duplicate the list once for a perfect percentage-based infinite loop
+  const tickerPartners = [...PARTNERS, ...PARTNERS];
 
   return (
     <div className="w-full py-12 md:py-20 flex flex-col items-center gap-12 overflow-hidden">
@@ -27,25 +27,28 @@ export function PartnerShowcase() {
       {/* Infinite Ticker */}
       <div className="relative w-full before:absolute before:left-0 before:top-0 before:bottom-0 before:w-40 before:bg-gradient-to-r before:from-background before:to-transparent before:z-10 after:absolute after:right-0 after:top-0 after:bottom-0 after:w-40 after:bg-gradient-to-l after:from-background after:to-transparent after:z-10">
         <motion.div 
-          className="flex gap-8 md:gap-16 items-center whitespace-nowrap"
-          animate={{ x: [0, -1500] }}
+          className="flex gap-16 md:gap-32 items-center whitespace-nowrap w-fit"
+          animate={{ x: ["0%", "-50%"] }}
           transition={{ 
             repeat: Infinity, 
-            duration: 30, 
-            ease: "linear" 
+            duration: 40, 
+            ease: "linear",
+            // This ensures it doesn't wait to start
+            repeatDelay: 0
           }}
         >
           {tickerPartners.map((partner, idx) => (
             <div 
               key={`${partner.id}-${idx}`} 
-              className="flex items-center justify-center grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-default"
+              className="flex items-center justify-center grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-default shrink-0"
             >
-              <div className="w-20 h-20 md:w-28 md:h-28 relative aspect-square overflow-hidden bg-card/10 border border-white/5">
+              <div className="h-12 md:h-20 w-auto relative">
                 <Image 
                   src={partner.logo} 
                   alt={partner.name}
-                  fill
-                  className="object-cover"
+                  height={80}
+                  width={160}
+                  className="h-full w-auto object-contain"
                   unoptimized
                 />
               </div>
@@ -77,15 +80,17 @@ export function PartnerShowcase() {
                 <motion.div 
                   key={partner.id}
                   whileHover={{ scale: 1.05 }}
-                  className="aspect-square glass-panel relative group border-foreground/5 hover:border-primary/40 transition-all cursor-default overflow-hidden"
+                  className="aspect-square glass-panel relative group border-foreground/5 hover:border-primary/40 transition-all cursor-default overflow-hidden flex items-center justify-center p-4"
                 >
-                  <Image 
-                    src={partner.logo}
-                    alt={partner.name}
-                    fill
-                    className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-                    unoptimized
-                  />
+                  <div className="relative w-full h-full">
+                    <Image 
+                      src={partner.logo}
+                      alt={partner.name}
+                      fill
+                      className="object-contain grayscale group-hover:grayscale-0 transition-all duration-500"
+                      unoptimized
+                    />
+                  </div>
                 </motion.div>
               ))}
             </div>
