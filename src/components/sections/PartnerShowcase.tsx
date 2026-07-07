@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState } from "react";
@@ -25,7 +26,7 @@ export function PartnerShowcase() {
       </div>
 
       {/* Бесконечная лента */}
-      <div className="relative w-full before:absolute before:left-0 before:top-0 before:bottom-0 before:w-20 md:w-64 before:bg-gradient-to-r before:from-background before:to-transparent before:z-10 after:absolute after:right-0 after:top-0 after:bottom-0 after:w-20 md:w-64 after:bg-gradient-to-l after:from-background after:to-transparent after:z-10">
+      <div className="relative w-full">
         <motion.div 
           className="flex gap-16 md:gap-40 items-center whitespace-nowrap w-fit"
           animate={{ x: ["0%", "-50%"] }}
@@ -64,19 +65,19 @@ export function PartnerShowcase() {
         <DialogTrigger asChild>
           <Button 
             variant="outline" 
-            className="rounded-none border-primary/20 bg-background/50 backdrop-blur-md px-8 md:px-12 h-14 md:h-16 uppercase tracking-[0.4em] text-[9px] md:text-[10px] font-bold hover:bg-primary hover:text-white transition-all shadow-xl relative z-10"
+            className="rounded-none border-primary/20 bg-background px-8 md:px-12 h-14 md:h-16 uppercase tracking-[0.4em] text-[9px] md:text-[10px] font-bold hover:bg-primary hover:text-white transition-all shadow-xl relative z-10"
           >
             Все партнеры <ExternalLink className="ml-3 w-3 h-3" />
           </Button>
         </DialogTrigger>
-        <DialogContent className="max-w-5xl w-[95vw] md:w-full bg-background border-border rounded-none p-0 overflow-hidden shadow-2xl flex flex-col max-h-[85vh] sm:max-h-[90vh]">
+        <DialogContent className="max-w-5xl w-[95vw] md:w-full bg-background border-border rounded-none p-0 overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
           <DialogHeader className="p-8 md:p-12 border-b border-border bg-background relative shrink-0">
             <DialogTitle className="text-2xl md:text-5xl font-headline uppercase tracking-tighter text-center pr-8 md:pr-0 text-foreground">
               Стратегические партнеры <span className="text-primary">IRGG</span>
             </DialogTitle>
           </DialogHeader>
           
-          <div className="flex-1 overflow-y-auto custom-scrollbar p-6 md:p-12 bg-background/50">
+          <div className="flex-1 overflow-y-auto p-6 md:p-12 bg-background/50">
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
               {PARTNERS.map((partner) => (
                 <div 
