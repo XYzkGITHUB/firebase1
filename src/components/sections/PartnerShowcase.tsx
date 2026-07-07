@@ -5,10 +5,9 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { PARTNERS } from "@/lib/partners";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, ShieldCheck, X } from "lucide-react";
+import { ExternalLink, ShieldCheck } from "lucide-react";
 import Image from "next/image";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 
 export function PartnerShowcase() {
@@ -66,32 +65,32 @@ export function PartnerShowcase() {
         <DialogTrigger asChild>
           <Button 
             variant="outline" 
-            className="rounded-none border-foreground/10 bg-card/40 backdrop-blur-md px-8 md:px-12 h-14 md:h-16 uppercase tracking-[0.3em] md:tracking-[0.4em] text-[9px] md:text-[10px] font-bold hover:bg-primary hover:text-white transition-all shadow-xl relative z-10"
+            className="rounded-none border-primary/20 bg-background/50 backdrop-blur-md px-8 md:px-12 h-14 md:h-16 uppercase tracking-[0.4em] text-[9px] md:text-[10px] font-bold hover:bg-primary hover:text-white transition-all shadow-xl relative z-10"
           >
             Все партнеры <ExternalLink className="ml-3 w-3 h-3" />
           </Button>
         </DialogTrigger>
-        <DialogContent className="max-w-5xl w-[95vw] md:w-full bg-background/98 backdrop-blur-3xl border-border rounded-none p-0 overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
-          <DialogHeader className="p-6 md:p-10 border-b border-border bg-card/10 relative shrink-0">
-            <DialogTitle className="text-2xl md:text-4xl font-headline uppercase tracking-tighter text-center pr-8 md:pr-0">
-              Стратегические партнеры IRGG
+        <DialogContent className="max-w-5xl w-[95vw] md:w-full bg-background border-border rounded-none p-0 overflow-hidden shadow-2xl flex flex-col max-h-[85vh] sm:max-h-[90vh]">
+          <DialogHeader className="p-8 md:p-12 border-b border-border bg-background relative shrink-0">
+            <DialogTitle className="text-2xl md:text-5xl font-headline uppercase tracking-tighter text-center pr-8 md:pr-0 text-foreground">
+              Стратегические партнеры <span className="text-primary">IRGG</span>
             </DialogTitle>
           </DialogHeader>
           
-          <div className="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-12">
+          <div className="flex-1 overflow-y-auto custom-scrollbar p-6 md:p-12 bg-background/50">
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
               {PARTNERS.map((partner) => (
                 <div 
                   key={partner.id}
-                  className="aspect-square glass-panel relative border-foreground/5 transition-all flex items-center justify-center p-4 md:p-8"
+                  className="aspect-square bg-card border border-border/50 hover:border-primary/30 transition-all flex items-center justify-center p-6 md:p-10 group"
                 >
-                  <div className="relative w-full h-full">
+                  <div className="relative w-full h-full transition-transform duration-500 group-hover:scale-110">
                     <Image 
                       src={partner.logo}
                       alt={partner.name}
                       fill
                       className={cn(
-                        "object-contain",
+                        "object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all",
                         partner.id === '77' && "scale-[1.6] md:scale-[2.0]"
                       )}
                       unoptimized
@@ -102,12 +101,12 @@ export function PartnerShowcase() {
             </div>
           </div>
 
-          <div className="bg-primary/5 p-4 md:p-8 text-center border-t border-border shrink-0">
+          <div className="bg-background p-6 md:p-10 text-center border-t border-border shrink-0">
              <DialogClose asChild>
                <button 
-                 className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.4em] md:tracking-[0.5em] text-primary/60 hover:text-primary transition-colors"
+                 className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.5em] text-primary/60 hover:text-primary transition-colors py-2"
                >
-                 Закрыть список
+                 Вернуться на сайт
                </button>
              </DialogClose>
           </div>
