@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState } from "react";
@@ -49,7 +48,7 @@ export function PartnerShowcase() {
                   height={120}
                   width={240}
                   className={cn(
-                    "h-full w-auto object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500",
+                    "h-full w-auto object-contain transition-all duration-500",
                     partner.id === '77' && "scale-[1.3] md:scale-[1.4]"
                   )}
                   unoptimized
@@ -82,7 +81,7 @@ export function PartnerShowcase() {
               {PARTNERS.map((partner) => (
                 <div 
                   key={partner.id}
-                  className="aspect-square bg-card border border-border/50 hover:border-primary/30 transition-all flex items-center justify-center p-6 md:p-10 group"
+                  className="aspect-square bg-white border border-border/50 hover:border-primary/30 transition-all flex items-center justify-center p-6 md:p-10 group"
                 >
                   <div className="relative w-full h-full transition-transform duration-500 group-hover:scale-110">
                     <Image 
@@ -90,7 +89,7 @@ export function PartnerShowcase() {
                       alt={partner.name}
                       fill
                       className={cn(
-                        "object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all",
+                        "object-contain transition-all",
                         partner.id === '77' && "scale-[1.6] md:scale-[2.0]"
                       )}
                       unoptimized
