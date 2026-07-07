@@ -70,19 +70,19 @@ export function PartnerShowcase() {
             Все партнеры <ExternalLink className="ml-3 w-3 h-3" />
           </Button>
         </DialogTrigger>
-        <DialogContent className="max-w-5xl w-[95vw] md:w-full bg-background border-border rounded-none p-0 overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
-          <DialogHeader className="p-8 md:p-12 border-b border-border bg-background relative shrink-0">
-            <DialogTitle className="text-2xl md:text-5xl font-headline uppercase tracking-tighter text-center pr-8 md:pr-0 text-foreground">
+        <DialogContent className="max-w-5xl w-[95vw] md:w-full bg-background border-border rounded-none p-0 overflow-hidden shadow-2xl flex flex-col max-h-[70vh] md:max-h-[85vh]">
+          <DialogHeader className="p-6 md:p-12 border-b border-border bg-background relative shrink-0">
+            <DialogTitle className="text-xl md:text-5xl font-headline uppercase tracking-tighter text-center pr-8 md:pr-0 text-foreground">
               Стратегические партнеры <span className="text-primary">IRGG</span>
             </DialogTitle>
           </DialogHeader>
           
-          <div className="flex-1 overflow-y-auto p-6 md:p-12 bg-background/50">
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
+          <div className="flex-1 overflow-y-auto p-4 md:p-12 bg-background/50">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-8">
               {PARTNERS.map((partner) => (
                 <div 
                   key={partner.id}
-                  className="aspect-square bg-white border border-border/50 hover:border-primary/30 transition-all flex items-center justify-center p-6 md:p-10 group"
+                  className="aspect-square bg-white border border-border/50 hover:border-primary/30 transition-all flex items-center justify-center p-4 md:p-10 group"
                 >
                   <div className="relative w-full h-full transition-transform duration-500 group-hover:scale-110">
                     <Image 
@@ -101,10 +101,10 @@ export function PartnerShowcase() {
             </div>
           </div>
 
-          <div className="bg-background p-6 md:p-10 text-center border-t border-border shrink-0">
+          <div className="bg-background p-4 md:p-10 text-center border-t border-border shrink-0">
              <DialogClose asChild>
                <button 
-                 className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.5em] text-primary/60 hover:text-primary transition-colors py-2"
+                 className="text-[9px] md:text-[11px] font-bold uppercase tracking-[0.5em] text-primary/60 hover:text-primary transition-colors py-2"
                >
                  Вернуться на сайт
                </button>
