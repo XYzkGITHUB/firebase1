@@ -34,7 +34,7 @@ export function PartnerShowcase() {
           animate={{ x: ["0%", "-50%"] }}
           transition={{ 
             repeat: Infinity, 
-            duration: isMobile ? 30 : 40, // Чуть быстрее на мобилках для плавности
+            duration: isMobile ? 30 : 40,
             ease: "linear",
             repeatDelay: 0
           }}
@@ -55,6 +55,7 @@ export function PartnerShowcase() {
                     partner.id === '77' && "scale-[1.3] md:scale-[1.4]"
                   )}
                   priority={idx < 5} // Загружаем первые логотипы быстрее
+                  loading={idx < 5 ? "eager" : "lazy"}
                 />
               </div>
             </div>
@@ -62,7 +63,6 @@ export function PartnerShowcase() {
         </motion.div>
       </div>
 
-      {/* Кнопка открытия всех партнеров */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
           <Button 
@@ -76,9 +76,7 @@ export function PartnerShowcase() {
           className={cn(
             "max-w-5xl bg-background border-border rounded-none p-0 overflow-hidden shadow-2xl flex flex-col",
             "w-[95vw] md:w-full",
-            // Высота 70% на мобильных, авто на десктопе
             "max-h-[70vh] md:max-h-[85vh]",
-            // Центрирование
             "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
           )}
         >
@@ -88,7 +86,6 @@ export function PartnerShowcase() {
             </DialogTitle>
           </DialogHeader>
           
-          {/* Нативный скролл для мобильных вместо тяжелых компонентов */}
           <div className="flex-1 overflow-y-auto p-4 md:p-12 bg-background/50 scrollbar-hide">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-8">
               {PARTNERS.map((partner) => (
@@ -105,6 +102,7 @@ export function PartnerShowcase() {
                         "object-contain transition-all",
                         partner.id === '77' && "scale-[1.6] md:scale-[2.0]"
                       )}
+                      loading="lazy"
                     />
                   </div>
                 </div>

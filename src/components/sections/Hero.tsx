@@ -1,19 +1,24 @@
 
 "use client";
-import React, { useState, useMemo, useEffect, useRef } from "react";
+import React, { useState, useMemo, useEffect } from "react";
+import dynamic from 'next/dynamic';
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Grid3X3, Layers, Layout, Filter, ArrowLeft, ShoppingBag, LampCeiling, Bath, X, ArrowUp } from "lucide-react";
+import { ArrowRight, ArrowLeft, ShoppingBag } from "lucide-react";
 import { ContentTab } from "@/app/page";
-import { cn } from "@/lib/utils";
 import BlurText from "@/components/ui/blur-text";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ShineButton } from "@/components/ui/shine-button";
 import { motion, AnimatePresence, useMotionValue, useTransform, animate } from "framer-motion";
-import Image from "next/image";
-import { CATEGORIES, PRODUCTS } from "@/lib/products";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Badge } from "@/components/ui/badge";
+
+// Dynamically load StoreView only when needed
+const StoreView = dynamic(() => import('./StoreView'), {
+  loading: () => <div className="fixed inset-0 z-[110] bg-background/95 flex items-center justify-center">
+    <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+  </div>,
+  ssr: false
+});
 
 interface HeroProps {
   activeTab: ContentTab;
@@ -23,19 +28,6 @@ interface HeroProps {
   onFilterChange?: (filters: string[]) => void;
 }
 
-const categoryIcons: Record<string, React.ReactNode> = {
-  keramogranit: <Grid3X3 className="w-6 h-6" />,
-  laminate: <Layers className="w-6 h-6" />,
-  carpets: <Layout className="w-6 h-6" />,
-  lyustri: <LampCeiling className="w-6 h-6" />,
-  sanitary: <Bath className="w-6 h-6" />,
-};
-
-const categoriesWithIcons = CATEGORIES.map(cat => ({
-  ...cat,
-  icon: categoryIcons[cat.id] || <ShoppingBag className="w-6 h-6" />
-}));
-
 export function Hero({ 
   activeTab, 
   isStoreOpen, 
@@ -44,11 +36,6 @@ export function Hero({
   onFilterChange
 }: HeroProps) {
   const isMobile = useIsMobile();
-  const [selectedCats, setSelectedCats] = useState<string[]>([]);
-  const [showFilterMenu, setShowFilterMenu] = useState(false);
-  const [isStoreScrolled, setIsStoreScrolled] = useState(false);
-  const [showScrollTop, setShowScrollTop] = useState(false);
-  const storeScrollRef = useRef<HTMLDivElement>(null);
   
   // Star Rating Animation
   const count = useMotionValue(0);
@@ -64,15 +51,7 @@ export function Hero({
   const soulImages = useMemo(() => ({
     left: PlaceHolderImages.find(img => img.id === "tiles-secondary"),
     right: PlaceHolderImages.find(img => img.id === "sanitary-secondary"),
-    bottom: PlaceHolderImages.find(img => img.id === "store-random"),
   }), []);
-
-  // Sync external filter with internal state
-  useEffect(() => {
-    if (externalFilter.length > 0) {
-      setSelectedCats(externalFilter);
-    }
-  }, [externalFilter]);
 
   // Handle Body Scroll Lock
   useEffect(() => {
@@ -129,44 +108,7 @@ export function Hero({
   };
 
   const toggleStore = () => {
-    if (isStoreOpen) {
-      setIsStoreOpen(false);
-      setIsStoreScrolled(false);
-      setShowFilterMenu(false);
-      setShowScrollTop(false);
-    } else {
-      setIsStoreOpen(true);
-      setSelectedCats([]);
-    }
-  };
-
-  const storeTitle = useMemo(() => {
-    if (selectedCats.length === 0) return "Весь ассортимент";
-    const names = CATEGORIES
-      .filter(c => selectedCats.includes(c.id))
-      .map(c => c.name);
-    
-    if (names.length === 1) return names[0];
-    if (names.length === 2) return `${names[0]} & ${names[1]}`;
-    return "Коллекции IRGG";
-  }, [selectedCats]);
-
-  const toggleCategory = (id: string) => {
-    setSelectedCats(prev => {
-      const next = prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id];
-      onFilterChange?.(next);
-      return next;
-    });
-  };
-
-  const handleStoreScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const scrollPos = e.currentTarget.scrollTop;
-    setIsStoreScrolled(scrollPos > 100);
-    setShowScrollTop(scrollPos > 400);
-  };
-
-  const handleScrollToTop = () => {
-    storeScrollRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+    setIsStoreOpen(!isStoreOpen);
   };
 
   const currentContent = {
@@ -198,8 +140,6 @@ export function Hero({
 
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-start overflow-hidden bg-background pt-32 md:pt-48 pb-40">
-      <button data-shop-trigger="true" className="hidden" onClick={() => setIsStoreOpen(true)} />
-      
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute inset-0 opacity-[0.08] dark:opacity-[0.15]" style={{ backgroundImage: `linear-gradient(to right, hsl(var(--primary)) 1px, transparent 1px), linear-gradient(to bottom, hsl(var(--primary)) 1px, transparent 1px)`, backgroundSize: '100px 100px' }} />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
@@ -261,253 +201,13 @@ export function Hero({
             </div>
           </motion.div>
         ) : (
-          <motion.div key="store-content" initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.02 }} className="z-[110] fixed inset-0 bg-background/95 backdrop-blur-3xl flex flex-col overflow-hidden overscroll-none touch-none">
-            {/* Decorative Architectural "Soul" Images */}
-            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden hidden xl:block">
-              {soulImages.left && (
-                <motion.div 
-                  initial={{ x: -100, opacity: 0 }}
-                  animate={{ x: 0, opacity: 0.1 }}
-                  transition={{ delay: 0.2, duration: 1 }}
-                  className="absolute -left-20 top-0 bottom-0 w-[400px] border-r border-primary/10"
-                >
-                  <Image src={soulImages.left.imageUrl} alt="Texture Left" fill className="object-cover grayscale" unoptimized />
-                </motion.div>
-              )}
-              {soulImages.right && (
-                <motion.div 
-                  initial={{ x: 100, opacity: 0 }}
-                  animate={{ x: 0, opacity: 0.1 }}
-                  transition={{ delay: 0.3, duration: 1 }}
-                  className="absolute -right-20 top-0 bottom-0 w-[400px] border-l border-primary/10"
-                >
-                  <Image src={soulImages.right.imageUrl} alt="Texture Right" fill className="object-cover grayscale" unoptimized />
-                </motion.div>
-              )}
-            </div>
-
-            {/* Top Bar with Back Button */}
-            <div className="flex justify-between items-center px-4 md:px-8 py-4 md:py-6 border-b border-white/10 bg-background/50 relative z-[120] transition-all duration-300">
-              <button 
-                onClick={toggleStore} 
-                className="flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.3em] text-muted-foreground hover:text-primary transition-colors"
-              >
-                <ArrowLeft size={18} /> <span>Назад</span>
-              </button>
-              
-              {isMobile && isStoreScrolled && (
-                 <span className="text-[10px] font-bold uppercase tracking-widest text-primary absolute left-1/2 -translate-x-1/2 animate-in fade-in slide-in-from-top-2">
-                   {storeTitle}
-                 </span>
-              )}
-            </div>
-
-            <div className="flex-1 flex flex-col h-full overflow-hidden relative z-10 touch-auto">
-              {/* Desktop Header */}
-              {!isMobile && (
-                <motion.div 
-                  className="p-8 md:p-12 border-b border-white/10 bg-background/50 flex flex-row items-center justify-between gap-10"
-                >
-                  <div>
-                    <h2 className="font-headline uppercase tracking-tighter text-foreground leading-tight text-4xl md:text-6xl">{storeTitle}</h2>
-                    <p className="text-[9px] md:text-[11px] uppercase tracking-[0.4em] font-bold text-muted-foreground mt-2 opacity-60">Каталог товаров IRGG</p>
-                  </div>
-                  
-                  <div className="flex items-center gap-6 justify-end">
-                    <div className="relative">
-                      <Button 
-                        variant="outline" 
-                        className="h-16 px-10 rounded-none border-foreground/20 uppercase tracking-[0.2em] text-[11px] font-bold bg-background/50 hover:bg-primary hover:text-white transition-all shadow-xl" 
-                        onClick={() => setShowFilterMenu(!showFilterMenu)}
-                      >
-                        <Filter className="mr-3 h-5 w-5" />
-                        Фильтр {selectedCats.length > 0 && `(${selectedCats.length})`}
-                      </Button>
-                      
-                      <AnimatePresence>
-                        {showFilterMenu && (
-                          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="absolute top-full right-0 mt-4 bg-background border border-border shadow-2xl p-6 min-w-[240px] z-[60] flex flex-col gap-3">
-                            {categoriesWithIcons.map((cat) => (
-                              <button 
-                                key={cat.id} 
-                                onClick={() => toggleCategory(cat.id)} 
-                                className={cn(
-                                  "flex items-center justify-between px-6 py-4 text-[11px] font-bold uppercase tracking-widest transition-colors text-left", 
-                                  selectedCats.includes(cat.id) ? "bg-primary text-white" : "hover:bg-muted"
-                                )}
-                              >
-                                <div className="flex items-center gap-4">
-                                  {cat.icon}
-                                  <span>{cat.name}</span>
-                                </div>
-                              </button>
-                            ))}
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                    
-                    {selectedCats.length > 0 && (
-                      <Button variant="ghost" className="h-16 px-10 rounded-none uppercase tracking-[0.2em] text-[11px] font-bold text-muted-foreground hover:text-primary" onClick={() => { setSelectedCats([]); onFilterChange?.([]); }}>
-                        Очистить
-                      </Button>
-                    )}
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Mobile Filter Menu (Full Screen Overlay) */}
-              <AnimatePresence>
-                {isMobile && showFilterMenu && (
-                  <motion.div 
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 20 }}
-                    className="fixed inset-0 top-0 z-[125] bg-background/98 backdrop-blur-2xl p-8 overflow-y-auto"
-                  >
-                    <div className="flex justify-between items-center mb-10 border-b border-border pb-6 pt-12">
-                       <h3 className="text-3xl font-headline uppercase tracking-tight">Категории</h3>
-                       <button onClick={() => setShowFilterMenu(false)} className="p-2 text-muted-foreground"><X size={24}/></button>
-                    </div>
-                    <div className="grid grid-cols-1 gap-4">
-                      {categoriesWithIcons.map((cat) => (
-                        <button 
-                          key={cat.id} 
-                          onClick={() => toggleCategory(cat.id)} 
-                          className={cn(
-                            "flex items-center gap-6 px-6 py-6 text-xs font-bold uppercase tracking-[0.2em] transition-all border border-border/50", 
-                            selectedCats.includes(cat.id) ? "bg-primary text-white border-primary shadow-xl" : "hover:bg-muted"
-                          )}
-                        >
-                          <div className={cn("shrink-0", selectedCats.includes(cat.id) ? "text-white" : "text-primary")}>
-                            {cat.icon}
-                          </div>
-                          <span>{cat.name}</span>
-                        </button>
-                      ))}
-                    </div>
-                    <Button 
-                      className="w-full h-16 mt-12 bg-primary text-white font-bold uppercase tracking-widest text-[11px]" 
-                      onClick={() => setShowFilterMenu(false)}
-                    >
-                      Показать товары
-                    </Button>
-                    <button 
-                      onClick={() => { setSelectedCats([]); onFilterChange?.([]); setShowFilterMenu(false); }} 
-                      className="w-full mt-6 text-[10px] font-bold text-muted-foreground uppercase tracking-widest text-center"
-                    >
-                      Сбросить всё
-                    </button>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              <div 
-                ref={storeScrollRef}
-                className="flex-1 overflow-y-auto overflow-x-hidden p-6 md:p-12 scroll-smooth"
-                onScroll={handleStoreScroll}
-              >
-                <div className="max-w-[1400px] mx-auto space-y-16 md:space-y-32 pb-32">
-                  {/* Mobile-only header inside scroll container to prevent snapping */}
-                  {isMobile && (
-                    <div className="py-10 px-4 flex flex-col items-center text-center border-b border-white/5 bg-card/10 -mx-6 -mt-6 mb-12">
-                      <h2 className="text-3xl font-headline uppercase tracking-tighter text-foreground leading-tight">{storeTitle}</h2>
-                      <p className="text-[10px] uppercase tracking-[0.4em] font-bold text-muted-foreground mt-2 opacity-60">Каталог товаров IRGG</p>
-                      <Button 
-                        variant="outline" 
-                        className="mt-8 w-full max-w-[240px] h-12 rounded-none border-foreground/10 uppercase tracking-[0.3em] text-[10px] font-bold bg-background/50" 
-                        onClick={() => setShowFilterMenu(true)}
-                      >
-                        <Filter className="mr-3 h-4 w-4" />
-                        Фильтр {selectedCats.length > 0 && `(${selectedCats.length})`}
-                      </Button>
-                    </div>
-                  )}
-
-                  {categoriesWithIcons
-                    .filter(cat => selectedCats.length === 0 || selectedCats.includes(cat.id))
-                    .map(cat => {
-                      const categoryProducts = PRODUCTS.filter(p => p.cat === cat.id);
-                      if (categoryProducts.length === 0) return null;
-                      return (
-                        <div key={cat.id} className="space-y-8 md:space-y-12">
-                          <div className="flex items-center gap-6 md:gap-10">
-                            <div className="h-[1px] flex-1 bg-primary/20" />
-                            <h3 className="text-2xl md:text-4xl font-headline uppercase tracking-tight text-primary whitespace-nowrap">{cat.name}</h3>
-                            <div className="h-[1px] flex-1 bg-primary/20" />
-                          </div>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-12">
-                            {categoryProducts.map(prod => (
-                                <div key={prod.id} className="glass-panel p-6 md:p-10 border-white/5 hover:bg-foreground/5 transition-all group">
-                                  <div className="aspect-square bg-muted/20 mb-6 md:mb-8 flex items-center justify-center relative overflow-hidden">
-                                    {prod.image && (
-                                      <Image 
-                                        src={prod.image} 
-                                        alt={prod.name} 
-                                        fill 
-                                        priority
-                                        className="object-cover group-hover:scale-110 transition-transform duration-500" 
-                                        unoptimized 
-                                      />
-                                    )}
-                                    <div className="absolute bottom-4 md:bottom-6 right-4 md:right-6">
-                                      <Badge variant="outline" className="bg-background/80 border-primary/20 text-[9px] md:text-[10px] uppercase tracking-widest px-3 py-1">В наличии</Badge>
-                                    </div>
-                                  </div>
-                                  <h4 className="text-lg md:text-xl font-bold uppercase tracking-tight mb-2 group-hover:text-primary transition-colors">{prod.name}</h4>
-                                  <p className="text-[10px] md:text-[11px] text-muted-foreground uppercase tracking-widest font-bold mb-4">{prod.sub}</p>
-                                  <p className="text-primary font-headline font-bold text-xl md:text-2xl">{prod.price}</p>
-                                  <Button className="w-full mt-6 md:mt-8 rounded-none bg-primary/10 text-primary hover:bg-primary hover:text-white border border-primary/20 font-bold uppercase tracking-widest text-[10px] md:text-[11px] h-12 md:h-14">Подробнее</Button>
-                                </div>
-                              ))}
-                          </div>
-                        </div>
-                      );
-                    })}
-                </div>
-              </div>
-
-              {/* Mobile Filter FAB - Appears above Scroll to Top button */}
-              <AnimatePresence>
-                {isMobile && isStoreScrolled && (
-                  <motion.button
-                    initial={{ opacity: 0, scale: 0.5, x: 20 }}
-                    animate={{ 
-                      opacity: 1, 
-                      scale: 1, 
-                      x: 0,
-                      bottom: showScrollTop ? 104 : 40 
-                    }}
-                    exit={{ opacity: 0, scale: 0.5, x: 20 }}
-                    onClick={() => setShowFilterMenu(true)}
-                    className="fixed right-6 z-[145] w-14 h-14 rounded-full bg-primary text-white shadow-2xl flex items-center justify-center transition-all active:scale-90"
-                  >
-                    <Filter size={20} />
-                    {selectedCats.length > 0 && (
-                      <div className="absolute -top-1 -right-1 w-6 h-6 bg-white text-primary text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-primary">
-                        {selectedCats.length}
-                      </div>
-                    )}
-                  </motion.button>
-                )}
-              </AnimatePresence>
-
-              {/* Scroll to Top Button */}
-              <AnimatePresence>
-                {showScrollTop && (
-                  <motion.button
-                    initial={{ opacity: 0, scale: 0.8, y: 20 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.8, y: 20 }}
-                    onClick={handleScrollToTop}
-                    className="fixed bottom-10 right-6 md:right-12 z-[140] w-14 h-14 rounded-full bg-primary text-white shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-transform"
-                  >
-                    <ArrowUp size={24} />
-                  </motion.button>
-                )}
-              </AnimatePresence>
-            </div>
-          </motion.div>
+          <StoreView 
+            key="store-view"
+            onClose={() => setIsStoreOpen(false)}
+            externalFilter={externalFilter}
+            onFilterChange={onFilterChange}
+            soulImages={soulImages}
+          />
         )}
       </AnimatePresence>
 

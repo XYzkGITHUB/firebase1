@@ -1,18 +1,20 @@
 
 "use client";
 import React, { useState, useEffect } from "react";
+import dynamic from 'next/dynamic';
 import { Navigation } from "@/components/sections/Navigation";
 import { Hero } from "@/components/sections/Hero";
-import { Stats } from "@/components/sections/Stats";
-import { ProductExplorer } from "@/components/sections/ProductExplorer";
-import { LogisticsJourney } from "@/components/sections/LogisticsJourney";
-import { AIAssistant } from "@/components/sections/AIAssistant";
-import { Contact } from "@/components/sections/Contact";
-import { FAQ } from "@/components/sections/FAQ";
-import { Footer } from "@/components/sections/Footer";
 import { MainSection } from "@/components/sections/MainSection";
 import { motion, AnimatePresence } from "framer-motion";
-import { cn } from "@/lib/utils";
+
+// Lazy load below-the-fold sections
+const Stats = dynamic(() => import('@/components/sections/Stats').then(mod => mod.Stats), { ssr: false });
+const ProductExplorer = dynamic(() => import('@/components/sections/ProductExplorer').then(mod => mod.ProductExplorer), { ssr: false });
+const AIAssistant = dynamic(() => import('@/components/sections/AIAssistant').then(mod => mod.AIAssistant), { ssr: false });
+const LogisticsJourney = dynamic(() => import('@/components/sections/LogisticsJourney').then(mod => mod.LogisticsJourney), { ssr: false });
+const FAQ = dynamic(() => import('@/components/sections/FAQ').then(mod => mod.FAQ), { ssr: false });
+const Contact = dynamic(() => import('@/components/sections/Contact').then(mod => mod.Contact), { ssr: false });
+const Footer = dynamic(() => import('@/components/sections/Footer').then(mod => mod.Footer), { ssr: false });
 
 export type ContentTab = "main" | "keramogranit" | "laminate_sps" | "sanitary" | "delivery" | "contacts";
 
@@ -21,7 +23,6 @@ export default function Home() {
   const [isStoreOpen, setIsStoreOpen] = useState(false);
   const [storeFilter, setStoreFilter] = useState<string[]>([]);
 
-  // Listen for hash changes ONLY (interaction-driven), but always start on "main"
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '');
