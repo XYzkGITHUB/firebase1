@@ -9,9 +9,11 @@ import { ExternalLink, ShieldCheck } from "lucide-react";
 import Image from "next/image";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export function PartnerShowcase() {
   const [isOpen, setIsOpen] = useState(false);
+  const isMobile = useIsMobile();
 
   // Дублируем список для бесконечной ленты
   const tickerPartners = [...PARTNERS, ...PARTNERS];
@@ -32,7 +34,7 @@ export function PartnerShowcase() {
           animate={{ x: ["0%", "-50%"] }}
           transition={{ 
             repeat: Infinity, 
-            duration: 40, 
+            duration: isMobile ? 30 : 40, // Чуть быстрее на мобилках для плавности
             ease: "linear",
             repeatDelay: 0
           }}
@@ -42,7 +44,7 @@ export function PartnerShowcase() {
               key={`${partner.id}-${idx}`} 
               className="flex items-center justify-center shrink-0"
             >
-              <div className="h-16 md:h-32 w-auto relative">
+              <div className="h-12 md:h-32 w-auto relative">
                 <Image 
                   src={partner.logo} 
                   alt={partner.name}
@@ -52,7 +54,7 @@ export function PartnerShowcase() {
                     "h-full w-auto object-contain transition-all duration-500",
                     partner.id === '77' && "scale-[1.3] md:scale-[1.4]"
                   )}
-                  unoptimized
+                  priority={idx < 5} // Загружаем первые логотипы быстрее
                 />
               </div>
             </div>
@@ -70,14 +72,24 @@ export function PartnerShowcase() {
             Все партнеры <ExternalLink className="ml-3 w-3 h-3" />
           </Button>
         </DialogTrigger>
-        <DialogContent className="max-w-5xl w-[95vw] md:w-full bg-background border-border rounded-none p-0 overflow-hidden shadow-2xl flex flex-col max-h-[70vh] md:max-h-[85vh]">
+        <DialogContent 
+          className={cn(
+            "max-w-5xl bg-background border-border rounded-none p-0 overflow-hidden shadow-2xl flex flex-col",
+            "w-[95vw] md:w-full",
+            // Высота 70% на мобильных, авто на десктопе
+            "max-h-[70vh] md:max-h-[85vh]",
+            // Центрирование
+            "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+          )}
+        >
           <DialogHeader className="p-6 md:p-12 border-b border-border bg-background relative shrink-0">
             <DialogTitle className="text-xl md:text-5xl font-headline uppercase tracking-tighter text-center pr-8 md:pr-0 text-foreground">
               Стратегические партнеры <span className="text-primary">IRGG</span>
             </DialogTitle>
           </DialogHeader>
           
-          <div className="flex-1 overflow-y-auto p-4 md:p-12 bg-background/50">
+          {/* Нативный скролл для мобильных вместо тяжелых компонентов */}
+          <div className="flex-1 overflow-y-auto p-4 md:p-12 bg-background/50 scrollbar-hide">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-8">
               {PARTNERS.map((partner) => (
                 <div 
@@ -93,7 +105,6 @@ export function PartnerShowcase() {
                         "object-contain transition-all",
                         partner.id === '77' && "scale-[1.6] md:scale-[2.0]"
                       )}
-                      unoptimized
                     />
                   </div>
                 </div>
